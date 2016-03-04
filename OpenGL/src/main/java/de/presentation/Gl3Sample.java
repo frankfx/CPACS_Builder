@@ -1,4 +1,4 @@
-package de.parsing;
+package de.presentation;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -18,6 +19,8 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
+
+import de.parsing.XMLParser;
 
 /**
  * inspired from
@@ -40,8 +43,10 @@ public class Gl3Sample implements GLEventListener {
 			0.0f, };
 
 	// Data for triangle x,y,z,w
-	float vertices[] = { 0.8f, 0.2f, .0f, 1.0f, 0.2f, 0.2f, .0f, 1.0f, 0.5f, 0.8f, .0f, 1.0f };
-
+	//float vertices[] = { 0.8f, 0.2f, .0f, 1.0f, 0.2f, 0.2f, .0f, 1.0f, 0.5f, 0.8f, .0f, 1.0f };
+	float vertices [] = getVertices();
+	
+	
 	float colorArray[] = { // RGBA
 			0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f };
 
@@ -386,8 +391,8 @@ public class Gl3Sample implements GLEventListener {
 
 	int newProgram(GL3 gl) {
 		// create the two shader and compile them
-		int v = this.newShaderFromCurrentClass(gl, "/home/rene/Documents/git/OpenGL/src/main/java/de/parsing/vertex.shader", ShaderType.VertexShader);
-		int f = this.newShaderFromCurrentClass(gl, "/home/rene/Documents/git/OpenGL/src/main/java/de/parsing//fragment.shader", ShaderType.FragmentShader);
+		int v = this.newShaderFromCurrentClass(gl, "/home/rene/Documents/git/OpenGL/src/main/java/de/presentation/vertex.shader", ShaderType.VertexShader);
+		int f = this.newShaderFromCurrentClass(gl, "/home/rene/Documents/git/OpenGL/src/main/java/de/presentation/fragment.shader", ShaderType.FragmentShader);
 
 		System.out.println(getShaderInfoLog(gl, v));
 		System.out.println(getShaderInfoLog(gl, f));
@@ -484,7 +489,7 @@ public class Gl3Sample implements GLEventListener {
 		return frame;
 	}
 
-	public static void main(String[] args) {
+	private float [] getVertices(){
 		StringBuffer sb = new StringBuffer();
 		sb.append(System.getProperty("user.dir"));
 		sb.append(File.separator);
@@ -497,11 +502,21 @@ public class Gl3Sample implements GLEventListener {
 		sb.append("myData.xml");
 
 		XMLParser parser = new XMLParser(sb.toString());		
-		System.out.println(parser.getRoot());
-		System.out.println(parser.getXVector("uid_2"));
-		System.out.println(parser.getYVector("uid_2"));
-		System.out.println(parser.getZVector("uid_2"));
+		List<Float> a = parser.getXVector("uid_1");
+		List<Float> b = parser.getYVector("uid_1");
+		List<Float> c = parser.getZVector("uid_1");
 		
+		float [] vertices = new float[a.size()*3];
+		
+		for (int i=0; i<a.size(); i++){
+			vertices[3*i] =  a.get(i); 
+			vertices[3*i+1] =  b.get(i);
+			vertices[3*i+2] =  c.get(i);
+		}
+		return vertices;
+	}
+	
+	public static void main(String[] args) {
 		
 		// allocate the openGL application
 		Gl3Sample sample = new Gl3Sample();

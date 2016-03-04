@@ -14,9 +14,9 @@
           <name>Cube 1</name>
           <description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
           <pointList>
-            <x mapType="vector">0.0;0.0;0.0;0.0;0.0</x>
-            <y mapType="vector">0.0;1.0;0.0;-1.0;0.0</y>
-            <z mapType="vector">1.0;0.0;-1.0;0.0;1.0</z>
+            <x mapType="vector">0.8;1.0;0.0;0.8</x>
+            <y mapType="vector">0.2;0.2;1.0;0.0</y>
+            <z mapType="vector">0.0;0.2;0.5;1.0</z>           
           </pointList>
         </cubeProfile>
         <cubeProfile id="uid_2">

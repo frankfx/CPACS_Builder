@@ -60,7 +60,7 @@ public class XMLParser {
 		return cubeProfile;		
 	}
 	
-	private List<Double> getVector(String param, String uid){
+	private List<Float> getVector(String param, String uid){
 		NodeList nodes = getNodeByID("cubeProfiles", uid).getChildNodes();
 		
 		for(int i=0; i<nodes.getLength(); i++){
@@ -69,9 +69,9 @@ public class XMLParser {
 				for(int j=0; j<vectors.getLength(); j++){
 					if(vectors.item(j).getNodeName().equals(param)){
 						String [] tmp = vectors.item(j).getTextContent().split(";");
-						List<Double> list = new ArrayList<Double>();
+						List<Float> list = new ArrayList<Float>();
 						for(int k=0; k<tmp.length; k++){
-							list.add(Double.parseDouble(tmp[k]));
+							list.add(Float.parseFloat(tmp[k]));
 						}
 						return list;
 					}
@@ -81,15 +81,15 @@ public class XMLParser {
 		return null;
 	}
 	
-	public List<Double> getXVector(String uid) {
+	public List<Float> getXVector(String uid) {
 		return this.getVector("x", uid);
 	}
 	
-	public List<Double> getYVector(String uid) {
+	public List<Float> getYVector(String uid) {
 		return this.getVector("y", uid);
 	}
 	
-	public List<Double> getZVector(String uid) {
+	public List<Float> getZVector(String uid) {
 		return this.getVector("z", uid);
 	}	
 	
