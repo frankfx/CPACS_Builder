@@ -1,5 +1,6 @@
 package de.parsing;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,12 +59,23 @@ public class TestParser {
 			if (event.isStartElement()){
 				StartElement startElem = event.asStartElement();
 				
-				switch (startElem.getName().getLocalPart()){
-				case NAME: event = eventReader.nextEvent(); item.setName(event.asCharacters().getData()); break;
-				case DESCRIPTION: event = eventReader.nextEvent(); item.setDescription(event.asCharacters().getData()); break;
-				case CREATOR: event = eventReader.nextEvent(); item.setCreator(event.asCharacters().getData()); break;
-				case VERSION: event = eventReader.nextEvent(); item.setVersion(event.asCharacters().getData()); break;
-				case SHAPEVERSION: event = eventReader.nextEvent(); item.setShapeVersion(event.asCharacters().getData()); break;
+				String tmp = startElem.getName().getLocalPart();
+				
+				if(tmp.equals(NAME)){
+					event = eventReader.nextEvent(); 
+					item.setName(event.asCharacters().getData());
+				} else if(tmp.equals(DESCRIPTION)){
+					event = eventReader.nextEvent(); 
+					item.setDescription(event.asCharacters().getData());
+				} else if(tmp.equals(CREATOR)){
+					event = eventReader.nextEvent(); 
+					item.setCreator(event.asCharacters().getData());
+				} else if(tmp.equals(VERSION)){
+					event = eventReader.nextEvent(); 
+					item.setVersion(event.asCharacters().getData());
+				} else if(tmp.equals(SHAPEVERSION)){
+					event = eventReader.nextEvent(); 
+					item.setShapeVersion(event.asCharacters().getData()); break;
 				}	
 			} else if (event.isEndElement() && event.asEndElement().getName().getLocalPart().equals(HEADER)){
 				break;
@@ -95,8 +107,20 @@ public class TestParser {
 
 	public static void main(String[] args) throws XMLStreamException, IOException {
 		TestParser test = new TestParser();
-		
+
 		// C:\Users\U018445\Documents\workspace\XMLParsen == user.dir
-		System.out.println(test.read(System.getProperty("user.dir") + "\\src\\myData.xml"));
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(System.getProperty("user.dir"));
+		sb.append(File.separator);
+		sb.append("src");
+		sb.append(File.separator);
+		sb.append("main");
+		sb.append(File.separator);
+		sb.append("resources");
+		sb.append(File.separator);
+		sb.append("myData.xml");
+		
+		System.out.println(test.read(sb.toString()));
 	}
 }
