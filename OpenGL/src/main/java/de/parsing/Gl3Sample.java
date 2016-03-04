@@ -1,6 +1,7 @@
 package de.parsing;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -484,6 +485,24 @@ public class Gl3Sample implements GLEventListener {
 	}
 
 	public static void main(String[] args) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(System.getProperty("user.dir"));
+		sb.append(File.separator);
+		sb.append("src");
+		sb.append(File.separator);
+		sb.append("main");
+		sb.append(File.separator);
+		sb.append("resources");
+		sb.append(File.separator);
+		sb.append("myData.xml");
+
+		XMLParser parser = new XMLParser(sb.toString());		
+		System.out.println(parser.getRoot());
+		System.out.println(parser.getXVector("uid_2"));
+		System.out.println(parser.getYVector("uid_2"));
+		System.out.println(parser.getZVector("uid_2"));
+		
+		
 		// allocate the openGL application
 		Gl3Sample sample = new Gl3Sample();
 

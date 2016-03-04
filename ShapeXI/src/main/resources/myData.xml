@@ -10,7 +10,7 @@
   <cube>	
 	<profiles>
       <cubeProfiles>
-        <cubeProfile uID="fuselageCircleProfileuID">
+        <cubeProfile id="uid_1">
           <name>Cube 1</name>
           <description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
           <pointList>

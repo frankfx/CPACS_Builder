@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="/home/rene/Documents/git/OpenGL/src/main/resources/jogl-all.jar"/>
 	<classpathentry kind="lib" path="/home/rene/Documents/git/OpenGL/src/main/resources/jogl-all-natives-linux-amd64.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="lib" path="/home/rene/Documents/git/ShapeXI/target/ShapeXI-1.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
