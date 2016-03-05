@@ -1,0 +1,34 @@
+<shape>
+  <header>
+    <name>cube test</name>
+    <description>Simple Cube test</description>
+    <creator>Rene Frank</creator>
+    <timestamp>2016-03-04</timestamp>
+    <version>0.0</version>
+    <shapeVersion>2.0</shapeVersion>
+  </header>
+  <cube>	
+	<profiles>
+      <cubeProfiles>
+        <cubeProfile id="uid_1">
+          <name>Cube 1</name>
+          <description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
+          <pointList>
+            <x mapType="vector">0.8;1.0;0.0;0.8</x>
+            <y mapType="vector">0.2;0.2;1.0;0.0</y>
+            <z mapType="vector">0.0;0.2;0.5;1.0</z>           
+          </pointList>
+        </cubeProfile>
+        <cubeProfile id="uid_2">
+          <name>Cube 1</name>
+          <description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
+          <pointList>
+            <x mapType="vector">0.0;1.0</x>
+            <y mapType="vector">0.7;1.0</y>
+            <z mapType="vector">1.0;0.25</z>
+          </pointList>
+        </cubeProfile>        
+      </cubeProfiles>
+    </profiles>
+  </cube>
+</shape>

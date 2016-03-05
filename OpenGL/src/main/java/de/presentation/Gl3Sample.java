@@ -31,6 +31,22 @@ import de.parsing.XMLParser;
 
 public class Gl3Sample implements GLEventListener {
 
+	String inputFile;
+	
+	public Gl3Sample() {
+		this.inputFile = "/home/rene/Documents/git/OpenGL/src/main/resources/myData.xml";
+		vertices = getVertices();
+	}
+	
+	public Gl3Sample(String inputFile) {
+		this.inputFile = inputFile;
+		vertices = getVertices();
+	}
+	
+	public void setInputFile(String file){
+		this.inputFile = file;
+	}
+	
 	enum ShaderType {
 		VertexShader, FragmentShader
 	}
@@ -44,7 +60,7 @@ public class Gl3Sample implements GLEventListener {
 
 	// Data for triangle x,y,z,w
 	//float vertices[] = { 0.8f, 0.2f, .0f, 1.0f, 0.2f, 0.2f, .0f, 1.0f, 0.5f, 0.8f, .0f, 1.0f };
-	float vertices [] = getVertices();
+	float vertices [];
 	
 	
 	float colorArray[] = { // RGBA
@@ -490,18 +506,8 @@ public class Gl3Sample implements GLEventListener {
 	}
 
 	private float [] getVertices(){
-		StringBuffer sb = new StringBuffer();
-		sb.append(System.getProperty("user.dir"));
-		sb.append(File.separator);
-		sb.append("src");
-		sb.append(File.separator);
-		sb.append("main");
-		sb.append(File.separator);
-		sb.append("resources");
-		sb.append(File.separator);
-		sb.append("myData.xml");
 
-		XMLParser parser = new XMLParser(sb.toString());		
+		XMLParser parser = new XMLParser(this.inputFile);		
 		List<Float> a = parser.getXVector("uid_1");
 		List<Float> b = parser.getYVector("uid_1");
 		List<Float> c = parser.getZVector("uid_1");
@@ -516,15 +522,40 @@ public class Gl3Sample implements GLEventListener {
 		return vertices;
 	}
 	
+	public void startGui(){
+
+		// allocate a frame and display the openGL inside it
+		JFrame frame = newJFrame("JOGL3 sample with Shader", this, 10, 10, 300, 200);
+
+		// display it and let's go
+		frame.setVisible(true);		
+	}
+	
 	public static void main(String[] args) {
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(System.getProperty("user.dir"));
+		sb.append(File.separator);
+		sb.append("src");
+		sb.append(File.separator);
+		sb.append("main");
+		sb.append(File.separator);
+		sb.append("resources");
+		sb.append(File.separator);
+		sb.append("myData.xml");		
+		
 		
 		// allocate the openGL application
 		Gl3Sample sample = new Gl3Sample();
 
-		// allocate a frame and display the openGL inside it
-		JFrame frame = newJFrame("JOGL3 sample with Shader", sample, 10, 10, 300, 200);
-
-		// display it and let's go
-		frame.setVisible(true);
+		//sample.setInputFile(sb.toString());
+		
+		sample.startGui();
+		
+//		// allocate a frame and display the openGL inside it
+//		JFrame frame = newJFrame("JOGL3 sample with Shader", sample, 10, 10, 300, 200);
+//
+//		// display it and let's go
+//		frame.setVisible(true);		
 	}
 }
