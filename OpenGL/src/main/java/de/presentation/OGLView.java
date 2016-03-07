@@ -21,7 +21,6 @@ import com.jogamp.opengl.awt.GLCanvas;
 
 import de.presentation.listener.MyMouseListener;
 import de.utils.math.matrix.Matrix;
-import de.utils.math.vector.Vector;
 
 public class OGLView implements GLEventListener{
 
