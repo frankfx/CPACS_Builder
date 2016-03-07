@@ -1,12 +1,10 @@
 package de.parsing;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
 
@@ -28,7 +26,7 @@ public class XMLParser {
 			doc = dBuilder.parse(inputFile);
 			doc.getDocumentElement().normalize();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return false;
 		}
 		return true;
