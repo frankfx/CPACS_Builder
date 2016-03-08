@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xs:schema xmlns="http://meinnamespace.meinefirmarrr.de"
+           targetNamespace="http://meinnamespace.meinefirmarrr.de"
+           elementFormDefault="qualified">
+ <xs:element name="shape">
+    <xs:complexType>
+      <xs:sequence>
+		<xs:element name="header"> 
+		  <xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="description" type="xs:string"/>
+				<xs:element name="creator" type="xs:string"/>
+				<xs:element name="timestamp" type="xs:string"/>
+				<xs:element name="version" type="xs:string"/>
+				<xs:element name="shapeVersion" type="xs:string"/>
+			</xs:sequence>
+		  </xs:complexType>
+		</xs:element>
+		<xs:element name="cube"> 
+		  <xs:complexType>
+			<xs:sequence>
+			  <xs:element name="profiles">
+				  <xs:complexType>
+					<xs:sequence>
+					  <xs:element name="cubeProfile">
+						  <xs:complexType>
+							<xs:sequence>
+							  <xs:element name="name" type="xs:string"/>
+							  <xs:element name="description" type="xs:string"/>
+							  <xs:element name="pointList">
+								  <xs:complexType>
+									<xs:sequence>
+									  <xs:element name="x" type="xs:string"/>
+									  <xs:element name="y" type="xs:string"/>
+									  <xs:element name="z" type="xs:string"/>
+									</xs:sequence>
+								  </xs:complexType>								  
+							  </xs:element>
+							</xs:sequence>
+							<xs:attribute  name="id" type="xs:string" use="required"/>
+						  </xs:complexType>		
+					  </xs:element>
+					</xs:sequence>
+				  </xs:complexType>
+			  </xs:element>
+			</xs:sequence>
+		  </xs:complexType>
+		</xs:element>	  
+	  </xs:sequence>
+	</xs:complexType>
+  </xs:element>
+</xs:schema>
