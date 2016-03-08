@@ -44,7 +44,7 @@ public class XMLParser {
 
 	private boolean validate(String schemaFile, Document document) {
 		// create a SchemaFactory capable of understanding WXS schemas
-		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_INSTANCE_NS_URI);
+		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			   
 		// load a WXS schema, represented by a Schema instance
 		Source source = new StreamSource(new File(schemaFile));

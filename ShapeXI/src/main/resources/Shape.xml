@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<shape xmlns="http://meinnamespace.meinefirmarrr.de"
-          xsi:schemaLocation="http://meinnamespace.meinefirmarrr.de ShapeSchema.xsd">
+<shape xmlns="http://meinnamespace.meinefirmarrr.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirmarrr.de ShapeSchema.xsd">
   <header>
     <name>cube test</name>
     <description>Simple Cube test</description>
