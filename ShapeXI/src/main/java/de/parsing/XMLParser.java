@@ -1,10 +1,14 @@
 package de.parsing;
 
+
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.*;
@@ -20,28 +24,37 @@ public class XMLParser {
 	private DocumentBuilderFactory dbFactory;
 	private Document doc;
 
-	public XMLParser(String schemaFile, String inputFile){
-		init(schemaFile, inputFile);
+	public XMLParser(){
+		init();
 	}
 	
-	public boolean init(String schemaFile, String inputFile) {
+	public void init() {
 		dbFactory = DocumentBuilderFactory.newInstance();
 		
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
-			doc = dBuilder.parse(inputFile);
-			
-			if(this.validate(schemaFile, doc))
-				return false;
-			
-			doc.getDocumentElement().normalize();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return false;
+		} catch (ParserConfigurationException ex) {
+			System.out.println(ex.getMessage());
 		}
-		return true;
 	}
 
+	public boolean parseFile(String schemaFile, String inputFile){
+		try {
+			doc = dBuilder.parse(inputFile);
+		} catch (SAXException ex) {
+			System.out.println("SAXException: " + ex.getMessage());
+		} catch (IOException ex) {
+			System.out.println("IOException: " + ex.getMessage());
+		}
+		
+		if(this.validate(schemaFile, doc))
+			return false;
+		
+		doc.getDocumentElement().normalize();
+		
+		return true;
+	}
+	
 	private boolean validate(String schemaFile, Document document) {
 		// create a SchemaFactory capable of understanding WXS schemas
 		SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -60,23 +73,23 @@ public class XMLParser {
 		return true;
 	}
 	
+	public Node getRoot(){
+		if (doc == null)
+			return null;
+		return doc.getDocumentElement();
+	}	
 	
-	public String getRoot(){
-		doc.getDocumentElement().normalize();
-		return doc.getDocumentElement().getNodeName();
-	}
-	
-	private Node getNodeByID(String parent, String uid){
-		NodeList nodes = doc.getElementsByTagName(parent);
+	private Node getNodeByID(String node, String uid){
+		NodeList nodes = doc.getElementsByTagName(node);
 
 		Node cubeProfile = null;
-		
+
 		for(int i=0; i<nodes.getLength(); i++){
 			cubeProfile = nodes.item(i);
 			if (cubeProfile.hasAttributes()){
 				NamedNodeMap map = cubeProfile.getAttributes();
 				for(int k=0; k<map.getLength(); k++){
-					if(map.item(k).getNodeValue().equals(uid)){
+					if(map.item(k).getNodeName().equals("id") && map.item(k).getNodeValue().equals(uid)){
 						return cubeProfile;
 					}
 				}
@@ -86,11 +99,13 @@ public class XMLParser {
 	}
 	
 	private List<Float> getVector(String param, String uid){
-		NodeList nodes = getNodeByID("cubeProfile", uid).getChildNodes();
+		String vectorType = param.equals("color")? "colorList" : "pointList";
 		
-		for(int i=0; i<nodes.getLength(); i++){
-			if(nodes.item(i).getNodeName().equals("pointList")){
-				NodeList vectors = nodes.item(i).getChildNodes();
+		NodeList cubeProfiles = getNodeByID("cubeProfile", uid).getChildNodes();
+		
+		for(int i=0; i<cubeProfiles.getLength(); i++){
+			if(cubeProfiles.item(i).getNodeName().equals(vectorType)){
+				NodeList vectors = cubeProfiles.item(i).getChildNodes();
 				for(int j=0; j<vectors.getLength(); j++){
 					if(vectors.item(j).getNodeName().equals(param)){
 						String [] tmp = vectors.item(j).getTextContent().split(";");
@@ -117,6 +132,10 @@ public class XMLParser {
 	public List<Float> getZVector(String uid) {
 		return this.getVector("z", uid);
 	}	
+
+	public List<Float> getColorVector(String uid) {
+		return this.getVector("color", uid);
+	}	
 	
 	public static void main(String[] args) {
 
@@ -125,17 +144,24 @@ public class XMLParser {
 		sb.append(File.separator);
 		sb.append("src");
 		sb.append(File.separator);
-		sb.append("main");
-		sb.append(File.separator);
-		sb.append("resources");
+//		sb.append("main");
+//		sb.append(File.separator);
+//		sb.append("resources");
 
-		XMLParser parser = new XMLParser(sb.toString() + File.separator + "ShapeSchema.xsd", sb.toString() + File.separator + "Shape.xml");
+		System.out.println(sb.toString()+"ShapeShema.xsd");
 		
-		System.out.println(parser.getRoot());
+		XMLParser parser = new XMLParser();
+		parser.parseFile(sb.toString()+"ShapeSchema.xsd", sb.toString()+"Shape.xml");
+		
+	//	XMLParser parser = new XMLParser(sb.toString()+"contacts.xsd", sb.toString()+"contacts.xml");
+		
+		System.out.println(parser.getRoot().getNodeName());
 		
 		System.out.println(parser.getXVector("uid_1"));
 //		System.out.println(parser.getYVector("uid_1"));
 //		System.out.println(parser.getZVector("uid_1"));
+		
+		System.out.println(parser.getColorVector("uid_1"));
 		
 		System.out.println(parser.getRoot());
 	}

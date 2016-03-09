@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<shape xmlns="http://meinnamespace.meinefirmarrr.de" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://meinnamespace.meinefirmarrr.de ShapeSchema.xsd">
+<shape>  
   <header>
     <name>cube test</name>
     <description>Simple Cube test</description>
@@ -18,7 +18,19 @@
            <y>0.0;1.0;0.0;-1.0;0.0</y>
            <z>1.0;0.0;-1.0;0.0;1.0</z>
          </pointList>
+		 <colorList>
+           <color>0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0</color>
+         </colorList>		 
        </cubeProfile>
+		<cubeProfile id="uid_2">
+         <name>Cube 1</name>
+         <description>Profile build up from set of Points on Circle where may Dimensions are 1..-1</description>
+         <pointList>
+           <x>0.0;0.0;0.0;0.0;0.0</x>
+           <y>0.0;1.0;0.0;-1.0;0.0</y>
+           <z>1.0;0.0;-1.0;0.0;1.0</z>
+         </pointList>
+       </cubeProfile>	   
     </profiles>
   </cube>  
 </shape>
