@@ -17,11 +17,13 @@ public class Main {
 		sb.append("main");
 		sb.append(File.separator);
 		sb.append("resources");
-		sb.append(File.separator);
-		sb.append("myData.xml");		
+		sb.append(File.separator);		
 		
 		// allocate the openGL application
-		ShapeModel model = new ShapeModel(sb.toString());
+		ShapeModel model = new ShapeModel(sb.toString()+"ShapeSchema.xsd", sb.toString()+"Shape.xml");
+		model.parseVertices("uid_1");
+		model.parseColorArray("uid_1");
+		
 		OGLView view = new OGLView(model.getVerticesAxis(), model.getColorAxis(), model.getVertices(), model.getColorArray());
 		
 		Controller controller = new Controller(model, view);

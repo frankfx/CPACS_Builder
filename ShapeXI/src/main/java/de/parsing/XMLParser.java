@@ -144,16 +144,15 @@ public class XMLParser {
 		sb.append(File.separator);
 		sb.append("src");
 		sb.append(File.separator);
-//		sb.append("main");
-//		sb.append(File.separator);
-//		sb.append("resources");
-
-		System.out.println(sb.toString()+"ShapeShema.xsd");
+		sb.append("main");
+		sb.append(File.separator);
+		sb.append("resources");
+		sb.append(File.separator);
+		
+//		System.out.println(sb.toString()+"ShapeShema.xsd");
 		
 		XMLParser parser = new XMLParser();
 		parser.parseFile(sb.toString()+"ShapeSchema.xsd", sb.toString()+"Shape.xml");
-		
-	//	XMLParser parser = new XMLParser(sb.toString()+"contacts.xsd", sb.toString()+"contacts.xml");
 		
 		System.out.println(parser.getRoot().getNodeName());
 		

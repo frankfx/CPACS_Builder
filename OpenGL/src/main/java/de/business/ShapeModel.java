@@ -6,6 +6,8 @@ import de.parsing.XMLParser;
 
 public class ShapeModel {
 	
+	XMLParser parser;
+	
 	// Data for drawing Axis
 	private float mVerticesAxis[] = { -1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f };
 	private float mColorAxis[] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, };	
@@ -14,13 +16,13 @@ public class ShapeModel {
 	private float [] mVertices; // = { 0.8f, 0.2f, .0f, 1.0f, 0.2f, 0.2f, .0f, 1.0f, 0.5f, 0.8f, .0f, 1.0f };
 	
 	// Data RGBA
-	private float mColorArray[] = { 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f };
+	private float [] mColorArray;// = { 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f };
 	
-	
-	public ShapeModel(String file){
+	public ShapeModel(String schema, String file){
 		if(file == null)
 			return;
-		setVertices(file);		
+		parser = new XMLParser();
+		parser.parseFile(schema, file);
 	}
 	
 	public float[] getVertices() {
@@ -31,11 +33,11 @@ public class ShapeModel {
 		this.mVertices = mVertices;
 	}
 	
-	public void setVertices(String inputFile){
-		XMLParser parser = new XMLParser(inputFile);		
-		List<Float> a = parser.getXVector("uid_1");
-		List<Float> b = parser.getYVector("uid_1");
-		List<Float> c = parser.getZVector("uid_1");
+	public void parseVertices(String uid){
+				
+		List<Float> a = parser.getXVector(uid);
+		List<Float> b = parser.getYVector(uid);
+		List<Float> c = parser.getZVector(uid);
 		
 		mVertices = new float[a.size()*3];
 		
@@ -60,6 +62,15 @@ public class ShapeModel {
 
 	public void setColorAxis(float[] colorAxis) {
 		this.mColorAxis = colorAxis;
+	}
+
+	public void parseColorArray(String uid) {		
+		List<Float> l = parser.getColorVector(uid);
+		this.mColorArray = new float [l.size()];
+		
+		for(int i=0; i<l.size(); i++){
+			this.mColorArray[i] = l.get(i);
+		}
 	}
 	
 	public float[] getColorArray() {
