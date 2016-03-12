@@ -1,12 +1,11 @@
 package de.parsing;
 
-
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -19,40 +18,49 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 public class XMLParser {
-
 	private DocumentBuilder dBuilder;
 	private DocumentBuilderFactory dbFactory;
 	private Document doc;
 
-	public XMLParser(){
-		init();
-	}
+	private boolean flag_schemaCompliant;
+
+	final static Logger logger = Logger.getLogger(XMLParser.class);
 	
-	public void init() {
+	public XMLParser(){
 		dbFactory = DocumentBuilderFactory.newInstance();
-		
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException ex) {
 			System.out.println(ex.getMessage());
 		}
+		logger.info("init parser complete");
 	}
 
-	public boolean parseFile(String schemaFile, String inputFile){
+	private boolean parse(String pInputFile){
 		try {
-			doc = dBuilder.parse(inputFile);
+			doc = dBuilder.parse(pInputFile);
 		} catch (SAXException ex) {
-			System.out.println("SAXException: " + ex.getMessage());
-		} catch (IOException ex) {
-			System.out.println("IOException: " + ex.getMessage());
-		}
-		
-		if(this.validate(schemaFile, doc))
+			logger.error("SAXException: " + ex.getMessage());
 			return false;
-		
+		} catch (IOException ex) {
+			logger.error("IOException: " + ex.getMessage());
+			return false;
+		}
+		logger.info("parsing " + pInputFile + " complete");
+		return true;		
+	}
+	
+	public boolean parseFile(String pSchemaFile, String pInputFile){
+		if(!parse(pInputFile) || !this.validate(pSchemaFile, doc))
+			return false;
 		doc.getDocumentElement().normalize();
-		
 		return true;
+	}
+
+	public boolean parseFile(String pInputFile){
+		this.flag_schemaCompliant = false;
+		logger.warn("Warning: parsing with no schema");
+		return parse(pInputFile);
 	}
 	
 	private boolean validate(String schemaFile, Document document) {
@@ -98,6 +106,9 @@ public class XMLParser {
 		return null;		
 	}
 	
+	
+	
+	
 	private List<Float> getVector(String param, String uid){
 		String vectorType = param.equals("color")? "colorList" : "pointList";
 		
@@ -138,7 +149,6 @@ public class XMLParser {
 	}	
 	
 	public static void main(String[] args) {
-
 		StringBuffer sb = new StringBuffer();
 		sb.append(System.getProperty("user.dir"));
 		sb.append(File.separator);
@@ -149,19 +159,16 @@ public class XMLParser {
 		sb.append("resources");
 		sb.append(File.separator);
 		
-//		System.out.println(sb.toString()+"ShapeShema.xsd");
-		
 		XMLParser parser = new XMLParser();
-		parser.parseFile(sb.toString()+"ShapeSchema.xsd", sb.toString()+"Shape.xml");
+		boolean success = parser.parseFile(sb.toString()+"ShapeSchema.xsd", sb.toString()+"Shape.xml");
+		
+		System.out.println("successful parsing: " + success);
 		
 		System.out.println(parser.getRoot().getNodeName());
-		
 		System.out.println(parser.getXVector("uid_1"));
-//		System.out.println(parser.getYVector("uid_1"));
-//		System.out.println(parser.getZVector("uid_1"));
-		
+		System.out.println(parser.getYVector("uid_1"));
+		System.out.println(parser.getZVector("uid_1"));
 		System.out.println(parser.getColorVector("uid_1"));
-		
 		System.out.println(parser.getRoot());
 	}
 }

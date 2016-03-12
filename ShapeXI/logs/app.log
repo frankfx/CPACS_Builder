@@ -1,0 +1,46 @@
+2016-03-12 09:50:21,799 ERROR d.p.XMLParser [main] This is error : 
+2016-03-12 09:50:21,801 FATAL d.p.XMLParser [main] fatal
+2016-03-12 09:52:11,707 ERROR d.p.XMLParser [main] This is error : 
+2016-03-12 09:52:11,709 FATAL d.p.XMLParser [main] fatal
+2016-03-12 09:54:19,256 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:54:19,257 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:54:19,257 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 09:54:59,380 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 09:54:59,381 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:54:59,382 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:54:59,382 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 09:57:52,570 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 09:57:52,571 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:57:52,571 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:57:52,571 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 09:58:16,442 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 09:58:16,444 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:58:16,444 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:58:16,444 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 09:58:21,096 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 09:58:21,097 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:58:21,097 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:58:21,097 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 09:59:12,546 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 09:59:12,547 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 09:59:12,547 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 09:59:12,547 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 10:00:21,872 DEBUG d.p.LoggerExample [main] This is debug : Rene
+2016-03-12 10:00:21,874 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 10:00:21,874 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 10:00:21,874 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 10:00:21,874 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 10:00:31,099 DEBUG d.p.LoggerExample [main] This is debug : Rene
+2016-03-12 10:00:31,100 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 10:00:31,100 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 10:00:31,100 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 10:00:31,100 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 10:02:34,149 DEBUG d.p.LoggerExample [main] This is debug : Rene
+2016-03-12 10:02:34,150 INFO d.p.LoggerExample [main] This is info : Rene
+2016-03-12 10:02:34,150 WARN d.p.LoggerExample [main] This is warn : Rene
+2016-03-12 10:02:34,150 ERROR d.p.LoggerExample [main] This is error : Rene
+2016-03-12 10:02:34,151 FATAL d.p.LoggerExample [main] This is fatal : Rene
+2016-03-12 10:02:40,293 WARN d.p.XMLParser [main] This is warn : 
+2016-03-12 10:02:40,294 INFO d.p.XMLParser [main] init complete
+2016-03-12 10:02:40,294 ERROR d.p.XMLParser [main] This is error : 
+2016-03-12 10:02:40,294 FATAL d.p.XMLParser [main] fatal
