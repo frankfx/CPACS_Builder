@@ -44,3 +44,107 @@
 2016-03-12 10:02:40,294 INFO d.p.XMLParser [main] init complete
 2016-03-12 10:02:40,294 ERROR d.p.XMLParser [main] This is error : 
 2016-03-12 10:02:40,294 FATAL d.p.XMLParser [main] fatal
+2016-03-13 07:39:15,665 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 07:39:15,665 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 07:39:16,305 WARN d.p.XMLParser [main] this method is only available for schema compliant files
+2016-03-13 07:39:16,307 WARN d.p.XMLParser [main] this method is only available for schema compliant files
+2016-03-13 07:39:16,307 WARN d.p.XMLParser [main] this method is only available for schema compliant files
+2016-03-13 07:39:16,307 WARN d.p.XMLParser [main] this method is only available for schema compliant files
+2016-03-13 07:40:42,250 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 07:40:42,266 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 07:56:10,839 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 07:56:10,854 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 07:57:05,321 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 07:57:05,321 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 07:57:05,415 ERROR d.p.XMLParser [main] schema_reference.4: Failed to read schema document 'file:/C:/Users/frank/workspace/git/ShapeXI/src/main/resources/ShapSchema.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
+2016-03-13 08:21:34,289 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:21:34,289 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:22:37,793 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:22:37,793 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:22:37,824 DEBUG d.p.XMLParser [main] com.sun.org.apache.xerces.internal.dom.DeepNodeListImpl@d2fa64
+2016-03-13 08:22:47,643 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:22:47,643 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:22:47,690 DEBUG d.p.XMLParser [main] false
+2016-03-13 08:23:18,900 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:23:18,900 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:23:18,947 DEBUG d.p.XMLParser [main] false
+2016-03-13 08:24:05,747 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:24:05,747 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: name
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: description
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: creator
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: timestamp
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: version
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: shapeVersion
+2016-03-13 08:24:05,809 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,796 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:24:38,796 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: name
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: description
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: creator
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: timestamp
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: version
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: shapeVersion
+2016-03-13 08:24:38,859 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,190 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:25:24,190 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: name
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] equals name
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: description
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: creator
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: timestamp
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: version
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: shapeVersion
+2016-03-13 08:25:24,237 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,729 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:25:51,729 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: name
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] equals name null
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: description
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: creator
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: timestamp
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: version
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: shapeVersion
+2016-03-13 08:25:51,823 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,131 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:26:57,131 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: name
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] equals name cube test
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: description
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: creator
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: timestamp
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: version
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: shapeVersion
+2016-03-13 08:26:57,178 DEBUG d.p.XMLParser [main] hei: #text
+2016-03-13 08:27:44,017 INFO d.p.XMLParser [main] init parser complete
+2016-03-13 08:27:44,017 INFO d.p.XMLParser [main] parsing C:\Users\frank\workspace\git\ShapeXI\src\main\resources\Shape.xml complete

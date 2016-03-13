@@ -1,11 +1,11 @@
 package de.parsing;
 
-
 public class HeaderItem {
 	
 	private String name;
 	private String description;
 	private String creator;
+	private String timestamp;
 	private String version;
 	private String shapeVersion;	
 	
@@ -27,6 +27,12 @@ public class HeaderItem {
 	public void setCreator(String pCreator) {
 		creator = pCreator;
 	}
+	public String getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}	
 	public String getVersion() {
 		return version;
 	}
@@ -42,6 +48,6 @@ public class HeaderItem {
 
 	public String toString(){
 	    return "Item [name=" + name + ", description=" + description + ", creator="
-	            + creator + ", version=" + version + ", shapeVersion=" + shapeVersion + "]";
+	            + creator + ", timestamp=" + timestamp + ", version=" + version + ", shapeVersion=" + shapeVersion + "]";
 	}
 }
