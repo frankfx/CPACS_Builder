@@ -19,9 +19,9 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	BundesligaTableContainer mTablePanel;
-	BundesligaFixtureContainer mFixturePanel;
-	ButtonPanelContainer mButtonPanel;
+	public BundesligaTableContainer mTablePanel;
+	public BundesligaFixtureContainer mFixturePanel;
+	public ButtonPanelContainer mButtonPanel;
 	
 	@Override
 	public void initView() {
