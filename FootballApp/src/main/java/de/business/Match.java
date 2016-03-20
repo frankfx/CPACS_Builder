@@ -15,44 +15,47 @@ public class Match {
 		mScore2 = pScore2;
 	}
 
-	public int getmId() {
+	public int getId() {
 		return mId;
 	}
 
-	public void setmId(int mId) {
-		this.mId = mId;
+	public void setId(int pId) {
+		this.mId = pId;
 	}	
 	
-	public String getmTeam1() {
+	public String getTeam1() {
 		return mTeam1;
 	}
 
-	public void setmTeam1(String mTeam1) {
-		this.mTeam1 = mTeam1;
+	public void setTeam1(String pTeam1) {
+		this.mTeam1 = pTeam1;
 	}
 
-	public String getmTeam2() {
+	public String getTeam2() {
 		return mTeam2;
 	}
 
-	public void setmTeam2(String mTeam2) {
-		this.mTeam2 = mTeam2;
+	public void setTeam2(String pTeam2) {
+		this.mTeam2 = pTeam2;
 	}
 
-	public int getmScore1() {
+	public int getScore1() {
 		return mScore1;
 	}
 
-	public void setmScore1(int mScore1) {
-		this.mScore1 = mScore1;
+	public void setScore1(int pScore1) {
+		this.mScore1 = pScore1;
 	}
 
-	public int getmScore2() {
+	public int getScore2() {
 		return mScore2;
 	}
 
-	public void setmScore2(int mScore2) {
-		this.mScore2 = mScore2;
+	public void setScore2(int pScore2) {
+		this.mScore2 = pScore2;
 	}
-
+	
+	public String toString(){
+		return "[" + getTeam1() + ", " + getTeam2() + "]";
+	}
 }

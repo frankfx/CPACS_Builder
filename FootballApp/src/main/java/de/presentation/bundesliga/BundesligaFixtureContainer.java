@@ -26,7 +26,7 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
     }
 
 	/** Creates an Fixture, or null if the path was invalid. */
-	public void createFixture (TeamModel pTeam1, TeamModel pTeam2, String pGoal1, String pGoal2) {	
+	public void createFixture (TeamModel pTeam1, TeamModel pTeam2, int pGoal1, int pGoal2) {	
 		JLabel lTeam1 = new JLabel(pTeam1.getName(), pTeam1.getIcon(), JLabel.LEFT);
         JLabel lTeam2 = new JLabel(pTeam2.getName(), pTeam2.getIcon(), JLabel.LEFT);
         JLabel result = new JLabel(pGoal1+":"+pGoal2);
@@ -34,7 +34,7 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
         c.fill = GridBagConstraints.BOTH;
        // c.weightx = 0.1;
        // c.weighty = 0.1;
-        c.insets = new Insets(10, 10, 10, 10);
+        c.insets = new Insets(5, 10, 10, 0);
 		c.gridx = col++;
 		c.gridy = row;
 		this.add(lTeam1, c);		

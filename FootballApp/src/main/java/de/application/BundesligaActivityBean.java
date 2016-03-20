@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.Map;
 
 import de.business.BundesligaModel;
+import de.business.Match;
+import de.business.OpenLigaDBModel;
 import de.business.TipicoModel;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
@@ -24,16 +26,24 @@ public class BundesligaActivityBean {
 	}
 	
 	public void addSubController(){
-		this.mSubController = new TipicoActivityBean(new TipicoModel(), mView.mTipicoPanel);		
+		//this.mSubController = new TipicoActivityBean(new TipicoModel(), mView.mTipicoPanel);		
+		
+		
+		Match [] lMatches = OpenLigaDBModel.parseFootballData(27, "bl1", "2015");
+		
 		Map<TeamIDEnum, TeamModel> map = mModel.getTeams();
-		mView.mFixturePanel.createFixture(map.get(TeamIDEnum.BVB), map.get(TeamIDEnum.FCB), "1", "0");
-		mView.mFixturePanel.createFixture(map.get(TeamIDEnum.FCA), map.get(TeamIDEnum.VFB), "3", "1");	
+
+		for(Match lMatch : lMatches)
+			mView.mFixturePanel.createFixture(map.get(TeamIDEnum.getType(lMatch.getTeam1())), 
+					map.get(TeamIDEnum.getType(lMatch.getTeam2())), 
+					lMatch.getScore1(), lMatch.getScore2());
 	}
 	
 	public void runApp() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			
 			public void run() {
+				System.out.println("hiet");
 				mView.initView();
 				addListener();
 				addSubController();

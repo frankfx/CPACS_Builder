@@ -9,17 +9,10 @@ import de.msiggi.sportsdata.webservices.Sportsdata;
 import de.msiggi.sportsdata.webservices.SportsdataSoap;
 
 public class OpenLigaDBModel {
-	private Match [] mMatches;
-	private Sportsdata mSportsdata;
-	private SportsdataSoap mSportsdataSoap;
+	private static Sportsdata mSportsdata = new Sportsdata();
+	private static SportsdataSoap mSportsdataSoap = mSportsdata.getSportsdataSoap();
 	
-	public OpenLigaDBModel(){
-		mSportsdata = new Sportsdata();
-		mSportsdataSoap = mSportsdata.getSportsdataSoap();
-		mMatches = new Match [9];
-	}
-	
-	public void parseAvailableSports(){
+	public static void parseAvailableSports(){
 		System.out.println("*** Test Webservice OpenLigaDB ***");
 		System.out.println("");
 		System.out.println("Verfügbare Sportarten");		
@@ -33,13 +26,17 @@ public class OpenLigaDBModel {
 	}
 
 	// 26, "bl1", "2015"
-	public void parseFootballData(int lMatchday, String lLeague, String year){
+	public static Match [] parseFootballData(int lMatchday, String lLeague, String year){
+		Match [] lMatches = new Match [9];
+		
 		int i = 0;
 		for (Matchdata dat : mSportsdataSoap.getMatchdataByGroupLeagueSaison(lMatchday, lLeague, year).getMatchdata()){
 			
 			List<MatchResult> lMatchResults = dat.getMatchResults().getMatchResult();
-			mMatches[i] = new Match(i, dat.getNameTeam1(), dat.getNameTeam2(), lMatchResults.get(1).getPointsTeam1(), lMatchResults.get(1).getPointsTeam2());
+			lMatches[i] = new Match(i, dat.getNameTeam1(), dat.getNameTeam2(), lMatchResults.get(1).getPointsTeam1(), lMatchResults.get(1).getPointsTeam2());
+			i++;
 		}
+		return lMatches;
 	}
 //	for (MatchResult lResult : lMatchResults)
 //		System.out.println(lResult.getPointsTeam1());
