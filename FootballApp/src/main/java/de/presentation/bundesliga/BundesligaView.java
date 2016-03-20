@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import de.presentation.ButtonPanelContainer;
 import de.presentation.IDefaultGUI;
@@ -22,6 +21,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	public BundesligaTableContainer mTablePanel;
 	public BundesligaFixtureContainer mFixturePanel;
 	public ButtonPanelContainer mButtonPanel;
+	public TipicoBetContainer mTipicoPanel;
 	
 	@Override
 	public void initView() {
@@ -39,12 +39,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		mTablePanel = new BundesligaTableContainer();
 		mFixturePanel = new BundesligaFixtureContainer();
+		mTipicoPanel = new TipicoBetContainer();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		pane.add(mTablePanel);
 		pane.add(mFixturePanel);
 		
-		getContentPane().add(pane, BorderLayout.CENTER);
+		getContentPane().add(pane, BorderLayout.NORTH);
+		getContentPane().add(mTipicoPanel, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 
 //		createMenuBar();

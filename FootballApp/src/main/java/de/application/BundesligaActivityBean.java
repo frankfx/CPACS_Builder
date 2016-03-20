@@ -6,46 +6,47 @@ import java.io.File;
 import java.util.Map;
 
 import de.business.BundesligaModel;
+import de.business.TipicoModel;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
+import de.presentation.popups.Popup;
 
 public class BundesligaActivityBean {
-	BundesligaModel model;
-	BundesligaView view;
+	private BundesligaModel mModel;
+	private BundesligaView mView;
 	
-	public BundesligaActivityBean(BundesligaModel model, BundesligaView view) {
-		this.model = model;
-		this.view = view;
+	private TipicoActivityBean mSubController;
+	
+	public BundesligaActivityBean(BundesligaModel pModel, BundesligaView pView) {
+		this.mModel = pModel;
+		this.mView = pView;
 	}
 	
-	public void initView(){
-		Map<TeamIDEnum, TeamModel> map = model.getTeams();
-		view.mFixturePanel.createFixture(map.get(TeamIDEnum.BVB), map.get(TeamIDEnum.FCB), "1", "0");
-		view.mFixturePanel.createFixture(map.get(TeamIDEnum.FCA), map.get(TeamIDEnum.VFB), "3", "1");
+	public void addSubController(){
+		this.mSubController = new TipicoActivityBean(new TipicoModel(), mView.mTipicoPanel);		
+		Map<TeamIDEnum, TeamModel> map = mModel.getTeams();
+		mView.mFixturePanel.createFixture(map.get(TeamIDEnum.BVB), map.get(TeamIDEnum.FCB), "1", "0");
+		mView.mFixturePanel.createFixture(map.get(TeamIDEnum.FCA), map.get(TeamIDEnum.VFB), "3", "1");	
 	}
 	
-
 	public void runApp() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			
 			public void run() {
-				view.initView();
+				mView.initView();
 				addListener();
-				initView();
+				addSubController();
 			}
 		});
 	}
 	
 	private void addListener() {
-		view.setButtonExitListener(new ActionListener() {
+		mView.setButtonExitListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				view.dispose();
+				mView.dispose();
 			}
 		});
 	}
-	
-	
-	
 }

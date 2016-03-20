@@ -1,26 +1,20 @@
 package de.presentation.bundesliga;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import de.business.teams.TeamModel;
 import de.presentation.AbstractPanelContainer;
 
 public class BundesligaFixtureContainer extends AbstractPanelContainer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private GridBagConstraints c;
 	private int row = 0;
 	private int col = 0;
