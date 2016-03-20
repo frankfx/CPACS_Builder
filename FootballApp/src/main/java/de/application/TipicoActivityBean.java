@@ -4,6 +4,10 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import de.business.Database;
 import de.business.TipicoModel;
 import de.presentation.bundesliga.TipicoBetContainer;
@@ -24,8 +28,6 @@ public class TipicoActivityBean {
 	private TipicoBetContainer mView;
 
 	public TipicoActivityBean(TipicoModel pModel, TipicoBetContainer pView) {
-		System.out.println();
-		
 		this.mModel = pModel;
 		this.mView = pView;
 
@@ -36,7 +38,7 @@ public class TipicoActivityBean {
 			mDB = null;
 		}
 		
-		System.out.println("hier");
+		this.initTable();
 		this.addListener();
 	}
 	
@@ -129,11 +131,56 @@ public class TipicoActivityBean {
 		});
 	}
 	
-	public void actionLoad(){
-		// get selected table value id and load this.
-		// at the moment hard code id --> id = 1
+	public void initTable(){
+		DefaultTableModel lModel = new DefaultTableModel();
 		
-		mDB.query("select * from Tipico where tnr=1;");
+		
+		
+		String[] columnNames = {"ID", "TEAM", "WINVALUE", "EXPENSES", "BET", "PROFIT", "SUCCESSFUL"};
+		
+		lModel.setColumnIdentifiers(columnNames);
+		
+		Object[] data = new Object[7];
+		
+		mDB.query("select * from Tipico;");
+
+		
+		
+		try {
+			while(mDB.getResultSet().next()){
+				data[0] = mDB.getResultSet().getInt(1);
+				data[1] = mDB.getResultSet().getString(2);
+				data[2] = mDB.getResultSet().getFloat(3);
+				
+				data[3] = mDB.getResultSet().getFloat(4);
+				data[4] = mDB.getResultSet().getFloat(5);
+				data[5] = mDB.getResultSet().getFloat(6);
+				data[6] = true;
+				
+				lModel.addRow(data);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		
+		
+		mView.getTable().setModel(lModel);
+	}
+	
+	
+	
+	
+	public void actionLoad(){
+		int lSelectedRow = mView.getTable().getSelectedRow();
+		
+		if(lSelectedRow < 0){
+			Popup.startHintPopup("No row selected");
+			return;
+		}
+			
+		int lTnr = Integer.parseInt(mView.getTable().getModel().getValueAt(lSelectedRow, 0).toString());
+		
+		mDB.query("select * from Tipico where tnr=" + lTnr + ";");
 		try {
 			mDB.getResultSet().next();
 			
@@ -143,24 +190,33 @@ public class TipicoActivityBean {
 					 mDB.getResultSet().getFloat(5), 
 					 mDB.getResultSet().getFloat(6), false);
 
-			actionNew();
-			
+			boolean validData = startInputPopup();
+				
 			Popup.resetPopupInputValues();		
-		
-			updateDBWithModel();
+						
+			if (validData)
+				updateDBWithModel();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
 	
 	public void actionNew(){
+		startInputPopup();
+	}
+	
+	private boolean startInputPopup(){
 		String [] res = Popup.startTipicoPopupNew();
+		if (res == null)
+			return false;
+		
 		if (!parseNewTipicoEntry(res)){
 			Popup.startPopupError("Wrong input");
-		}
+			return false;
+		}		
+		return true;
 	}
 	
 	private boolean parseNewTipicoEntry(String [] args){
@@ -206,10 +262,10 @@ public class TipicoActivityBean {
 	}
 	
 	
-	public static void main(String[] args) throws SQLException {
-		
-		
-		System.out.println(computeBetValue(3.4, 2.91, 3.3));
+//	public static void main(String[] args) throws SQLException {
+//		
+//		
+//		System.out.println(computeBetValue(3.4, 2.91, 3.3));
 		
 //		TipicoActivityBean main = new TipicoActivityBean();
 //		
@@ -250,5 +306,5 @@ public class TipicoActivityBean {
 //			
 //			main.mDB.disconnect();
 //		}
-	}
+//	}
 }

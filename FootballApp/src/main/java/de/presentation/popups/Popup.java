@@ -20,6 +20,7 @@ public class Popup {
 	public static String [] startTipicoPopupNew(){
 		JSpinner lID = new JSpinner(new SpinnerNumberModel(mTempID, 1, 100, 1));
 		JTextField lTeam = new JTextField(mTempTeam);
+		
 		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(mTempWinValue, 1, 100, 0.1));
 		JSpinner lExpenses = new JSpinner(new SpinnerNumberModel(mTempExpenses, 1, 1000, 1.1));
 		JSpinner lBet = new JSpinner(new SpinnerNumberModel(mTempBet, 1, 100, 0.2));
@@ -56,6 +57,10 @@ public class Popup {
 		mIDEnalbe = pIDEnable;
 	}
 
+	public static void startHintPopup(String pMessage){
+		new JOptionPane(pMessage, JOptionPane.WARNING_MESSAGE).createDialog("Hint").setVisible(true);;
+	}
+	
 	public static void resetPopupInputValues(){
 		setPopupInputValues(1, "", 3.4f, 3.4f, 1.0f, 3.0f, true);
 	}
@@ -63,6 +68,4 @@ public class Popup {
 	public static void startPopupError(String pMessage){
 		new JOptionPane(pMessage, JOptionPane.ERROR_MESSAGE).createDialog("ERROR").setVisible(true);
 	}
-	
-	
 }

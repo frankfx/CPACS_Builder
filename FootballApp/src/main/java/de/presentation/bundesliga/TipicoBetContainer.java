@@ -1,24 +1,15 @@
 package de.presentation.bundesliga;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
 
-import de.business.TipicoModel;
-import de.business.teams.TeamModel;
 import de.presentation.AbstractPanelContainer;
-import de.presentation.popups.Popup;
 
 public class TipicoBetContainer extends AbstractPanelContainer {
 	/**
@@ -54,7 +45,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.weightx=0.1;
 		c.weighty=0.1;		
 		
-		mTable = createTipicoTable();
+		mTable = new JTable();
+		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
+        mTable.setFillsViewportHeight(true);		
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
 	    
@@ -117,23 +110,6 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	}	
 	
 	
-	private JTable createTipicoTable() {
-		String[] columnNames = {"ID", "TEAM", "WINVALUE", "Description", "AMOUNT", "Test"};
-		
-		Object[][] data = {
-		        {"1", "HSV",
-		         new Float(3.4), new Float(1.0), new Float(1.0), new Boolean(false)}
-		        };		
-		
-        JTable lTable = new JTable(data, columnNames);
-        lTable.setPreferredScrollableViewportSize(lTable.getPreferredSize());
-        lTable.setFillsViewportHeight(true);
-        
-        return lTable;
-	}
-	
-
-	
 	public JButton getBtnSubmit() {
 		return mBtnSubmit;
 	}
@@ -164,5 +140,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 
 	public void setmBtnLoad(JButton pBtnLoad) {
 		this.mBtnLoad = pBtnLoad;
+	}	
+	public JTable getTable() {
+		return mTable;
+	}
+	public void setTable(JTable pTable) {
+		this.mTable = pTable;
 	}	
 }
