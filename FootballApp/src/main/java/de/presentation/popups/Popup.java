@@ -47,6 +47,27 @@ public class Popup {
 		}
 	}
 
+	public static String [] startTipicoPopupBetValue(){
+//		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(mTempWinValue, 1, 100, 0.1));
+		JSpinner lOdds = new JSpinner(new SpinnerNumberModel(3.0, 1, 40, 0.1));
+		
+		Object[] message = {"Odds.", lOdds};
+
+		JOptionPane pane = new JOptionPane( message,
+				JOptionPane.PLAIN_MESSAGE, 
+				JOptionPane.OK_CANCEL_OPTION);		
+		
+		pane.createDialog(null, "Tipico").setVisible(true);
+		
+		int n = Integer.parseInt(pane.getValue().toString());
+		
+		if (n == JOptionPane.OK_OPTION){
+			return new String[]{lOdds.getValue().toString()};
+		} else {
+			return null;
+		}
+	}	
+	
 	public static void setPopupInputValues(int pID, String pTeam, float pWinValue, float pExpenses, float pBet, float pProfit, boolean pIDEnable){
 		mTempID = pID;
 		mTempTeam = pTeam;

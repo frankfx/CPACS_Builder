@@ -18,10 +18,12 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BundesligaTableContainer mTablePanel;
-	public BundesligaFixtureContainer mFixturePanel;
-	public ButtonPanelContainer mButtonPanel;
-	public TipicoBetContainer mTipicoPanel;
+
+	private BundesligaTableContainer mTablePanel;
+	private BundesligaFixtureContainer mFixturePanel;
+	private ButtonPanelContainer mButtonPanel;
+	private TipicoBetContainer mTipicoPanel;
+	private BundesligaConsoleContainer mConsolenPanel;
 	
 	@Override
 	public void initView() {
@@ -35,18 +37,20 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 	private void createGUIElements() {
 		Container pane = new Container();
-		pane.setLayout(new GridLayout(1, 2));
+		pane.setLayout(new GridLayout(2, 2));
 		
 		mTablePanel = new BundesligaTableContainer();
 		mFixturePanel = new BundesligaFixtureContainer();
+		mConsolenPanel = new BundesligaConsoleContainer();
 		mTipicoPanel = new TipicoBetContainer();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		pane.add(mTablePanel);
 		pane.add(mFixturePanel);
+		pane.add(mConsolenPanel);
+		pane.add(mTipicoPanel);
 		
-		getContentPane().add(pane, BorderLayout.NORTH);
-		getContentPane().add(mTipicoPanel, BorderLayout.CENTER);
+		getContentPane().add(pane, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 
 //		createMenuBar();
@@ -65,5 +69,48 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
     public void setButtonExitListener(ActionListener l){
         this.mButtonPanel.getBtnExit().addActionListener(l);
-    }	
+    }
+    
+
+	public BundesligaTableContainer getTablePanel() {
+		return mTablePanel;
+	}
+
+	public void setTablePanel(BundesligaTableContainer lTablePanel) {
+		this.mTablePanel = lTablePanel;
+	}
+
+	public BundesligaFixtureContainer getFixturePanel() {
+		return mFixturePanel;
+	}
+
+	public void setFixturePanel(BundesligaFixtureContainer lFixturePanel) {
+		this.mFixturePanel = lFixturePanel;
+	}
+
+	public ButtonPanelContainer getButtonPanel() {
+		return mButtonPanel;
+	}
+
+	public void setButtonPanel(ButtonPanelContainer lButtonPanel) {
+		this.mButtonPanel = lButtonPanel;
+	}
+
+	public TipicoBetContainer getTipicoPanel() {
+		return mTipicoPanel;
+	}
+
+	public void setTipicoPanel(TipicoBetContainer lTipicoPanel) {
+		this.mTipicoPanel = lTipicoPanel;
+	}
+
+	public BundesligaConsoleContainer getConsolenPanel() {
+		return mConsolenPanel;
+	}
+
+	public void setConsolenPanel(BundesligaConsoleContainer lConsolenPanel) {
+		this.mConsolenPanel = lConsolenPanel;
+	}
+    
+    
 }

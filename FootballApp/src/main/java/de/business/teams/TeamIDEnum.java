@@ -1,8 +1,8 @@
 package de.business.teams;
 
 public enum TeamIDEnum {
-	BVB("Borussia Dortmund"), FCB("Bayern München"), LEV("Bayer 04 Leverkusen"), Hertha("Hertha BSC"), BMG("Borussia Mönchengladbach"), 
-	S04("FC Schalke 04"), FSV("1. FSV Mainz 05"), VFL("VfL Wolfsburg"), FCK("1. FC Köln"), Ingol("FC Ingolstadt 04"), 
+	BVB("Borussia Dortmund"), FCB("Bayern MÃ¼nchen"), LEV("Bayer 04 Leverkusen"), Hertha("Hertha BSC"), BMG("Borussia MÃ¶nchengladbach"), 
+	S04("FC Schalke 04"), FSV("1. FSV Mainz 05"), VFL("VfL Wolfsburg"), FCK("1. FC KÃ¶ln"), Ingol("FC Ingolstadt 04"), 
 	VFB("VfB Stuttgart"), HSV("Hamburger SV"), FCA("FC Augsburg"), D89("SV Darmstadt 98"), SVW("Werder Bremen"), 
 	EINTRACHT("Eintracht Frankfurt"), TSG("TSG 1899 Hoffenheim"), H96("Hannover 96"), EMTPY("Empty");
 

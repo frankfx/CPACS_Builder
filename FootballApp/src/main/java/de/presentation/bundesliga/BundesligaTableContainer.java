@@ -15,5 +15,11 @@ public class BundesligaTableContainer extends AbstractPanelContainer {
 	
 	public BundesligaTableContainer() {	
 		initPanel("Table", new BorderLayout(), Color.WHITE);
+	}
+
+
+	@Override
+	public void initView() {
+		// TODO Auto-generated method stub
 	}	
 }

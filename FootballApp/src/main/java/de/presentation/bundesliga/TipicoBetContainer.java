@@ -19,23 +19,23 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	
 	private JTable mTable;
 	private JScrollPane mTablePane;	
-	private JButton mBtnSubmit;
+	private JButton mBtnBetValue;
 	private JButton mBtnNew;
 	private JButton mBtnCancel;
-	private JButton mBtnLoad;	
+	private JButton mBtnModify;	
 	
 	public TipicoBetContainer() {	
 		// create an default panel
 		initPanel("Tipico", new GridBagLayout(), Color.WHITE);
-        createTipico();
     }
 
 	/** Creates Tipico panel. */
-	public void createTipico() {
-		mBtnSubmit = new JButton("Submit");
+	@Override
+	public void initView() {
+		mBtnBetValue = new JButton("Bet Value");
 		mBtnNew = new JButton("New");
 		mBtnCancel = new JButton("Cancel");
-		mBtnLoad = new JButton("Load");
+		mBtnModify = new JButton("Load");
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -60,10 +60,10 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridy = 1;
 		c.weightx=0.1;
 		c.weighty=0.0;
-		this.add(mBtnSubmit, c);
+		this.add(mBtnBetValue, c);
 		c.gridx = 1;
 		c.gridy = 1;
-		this.add(mBtnLoad, c);
+		this.add(mBtnModify, c);
 		c.gridx = 2;
 		c.gridy = 1;
 		this.add(mBtnNew, c);
@@ -106,16 +106,19 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	}
 	
 	public void setButtonLadenListener(ActionListener l){
-		this.mBtnLoad.addActionListener(l);
+		this.mBtnModify.addActionListener(l);
 	}	
 	
+	public void setButtonBetValueListener(ActionListener l){
+		this.mBtnBetValue.addActionListener(l);
+	}		
 	
-	public JButton getBtnSubmit() {
-		return mBtnSubmit;
+	public JButton getBtnBetValue() {
+		return mBtnBetValue;
 	}
 
-	public void setBtnSubmit(JButton pBtnSubmit) {
-		this.mBtnSubmit = pBtnSubmit;
+	public void setBtnBetValue(JButton pBtnBetValue) {
+		this.mBtnBetValue = pBtnBetValue;
 	}
 
 	public JButton getBtnNew() {
@@ -135,16 +138,21 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	}
 
 	public JButton getBtnLoad() {
-		return mBtnLoad;
+		return mBtnModify;
 	}
 
 	public void setmBtnLoad(JButton pBtnLoad) {
-		this.mBtnLoad = pBtnLoad;
+		this.mBtnModify = pBtnLoad;
 	}	
 	public JTable getTable() {
 		return mTable;
 	}
 	public void setTable(JTable pTable) {
 		this.mTable = pTable;
-	}	
+	}
+
+	public void updateTable(){
+    	mTable.invalidate();
+    	mTablePane.repaint();		
+	}
 }

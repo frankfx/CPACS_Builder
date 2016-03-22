@@ -26,4 +26,10 @@ public class ButtonPanelContainer extends AbstractPanelContainer {
 	public void setBtnExit(JButton btnExit) {
 		this.btnExit = btnExit;
 	}
+
+	@Override
+	public void initView() {
+		// TODO Auto-generated method stub
+		
+	}
 }

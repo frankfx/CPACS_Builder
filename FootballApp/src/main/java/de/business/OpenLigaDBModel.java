@@ -15,7 +15,7 @@ public class OpenLigaDBModel {
 	public static void parseAvailableSports(){
 		System.out.println("*** Test Webservice OpenLigaDB ***");
 		System.out.println("");
-		System.out.println("Verfügbare Sportarten");		
+		System.out.println("Verfuegbare Sportarten");		
 		
 		List<Sport> sportlist = mSportsdataSoap.getAvailSports().getSport();
 

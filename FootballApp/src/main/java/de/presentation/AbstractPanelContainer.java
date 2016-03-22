@@ -16,5 +16,9 @@ public abstract class AbstractPanelContainer extends JPanel{
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		this.setLayout(layout);
 		this.setBackground(backgroundColor);
+		
+		initView();
 	}
+	
+	public abstract void initView();
 }
