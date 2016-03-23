@@ -2,16 +2,21 @@ package de.business;
 
 import java.util.List;
 
+import de.msiggi.sportsdata.webservices.ArrayOfMatchResult;
 import de.msiggi.sportsdata.webservices.MatchResult;
 import de.msiggi.sportsdata.webservices.Matchdata;
 import de.msiggi.sportsdata.webservices.Sport;
 import de.msiggi.sportsdata.webservices.Sportsdata;
 import de.msiggi.sportsdata.webservices.SportsdataSoap;
 
-public class OpenLigaDBModel {
+public class LigaWService {
+	
 	private static Sportsdata mSportsdata = new Sportsdata();
 	private static SportsdataSoap mSportsdataSoap = mSportsdata.getSportsdataSoap();
 	
+	/**
+	 * Prints all Available sports
+	 */		
 	public static void parseAvailableSports(){
 		System.out.println("*** Test Webservice OpenLigaDB ***");
 		System.out.println("");
@@ -25,25 +30,29 @@ public class OpenLigaDBModel {
 		}	
 	}
 
-	// 26, "bl1", "2015"
-	public static Match [] parseFootballData(int lMatchday, String lLeague, String year){
+	/**
+	 * Computes football data by given parameters
+	 * 
+	 * @param lMatchday the specific match day. Example input 26
+	 * @param lLeague the football league. Example input "bl1"
+	 * @param lYear the football season. Example input "2015"
+	 * 
+	 * @return Match Array with all data
+	 */	
+	public static Match [] parseFootballData(int lMatchday, String lLeague, String lYear){
 		Match [] lMatches = new Match [9];
 		
 		int i = 0;
-		for (Matchdata dat : mSportsdataSoap.getMatchdataByGroupLeagueSaison(lMatchday, lLeague, year).getMatchdata()){
+		for (Matchdata dat : mSportsdataSoap.getMatchdataByGroupLeagueSaison(lMatchday, lLeague, lYear).getMatchdata()){
 			
-			List<MatchResult> lMatchResults = dat.getMatchResults().getMatchResult();
-			lMatches[i] = new Match(i, dat.getNameTeam1(), dat.getNameTeam2(), lMatchResults.get(1).getPointsTeam1(), lMatchResults.get(1).getPointsTeam2());
-			i++;
+			ArrayOfMatchResult lMatchResults = dat.getMatchResults();
+
+			if(lMatchResults != null){
+				List<MatchResult> lListMatchResult = lMatchResults.getMatchResult();
+				lMatches[i] = new Match(i, dat.getNameTeam1(), dat.getNameTeam2(), lListMatchResult.get(1).getPointsTeam1(), lListMatchResult.get(1).getPointsTeam2());
+				i++;				
+			}
 		}
 		return lMatches;
 	}
-//	for (MatchResult lResult : lMatchResults)
-//		System.out.println(lResult.getPointsTeam1());
-	
-//	List<Goal> goal = dat.getGoals().getGoal();
-//	
-//	for (Goal g : goal)
-//		System.out.println(g.getGoalScoreTeam1() + " - " + g.getGoalScoreTeam2());
-	
 }

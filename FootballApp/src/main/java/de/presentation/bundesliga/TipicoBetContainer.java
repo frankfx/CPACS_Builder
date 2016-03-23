@@ -21,7 +21,6 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private JScrollPane mTablePane;	
 	private JButton mBtnBetValue;
 	private JButton mBtnNew;
-	private JButton mBtnCancel;
 	private JButton mBtnModify;	
 	
 	public TipicoBetContainer() {	
@@ -32,10 +31,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	/** Creates Tipico panel. */
 	@Override
 	public void initView() {
-		mBtnBetValue = new JButton("Bet Value");
+		mBtnBetValue = new JButton("Compute");
 		mBtnNew = new JButton("New");
-		mBtnCancel = new JButton("Cancel");
-		mBtnModify = new JButton("Load");
+		mBtnModify = new JButton("Modify");
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -53,7 +51,6 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	    
 		this.add(mTablePane, c);
 		
-		
 		c.fill = GridBagConstraints.HORIZONTAL;		
 		c.gridwidth = 1;
 		c.gridx = 0;
@@ -67,40 +64,21 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridx = 2;
 		c.gridy = 1;
 		this.add(mBtnNew, c);
-		c.gridx = 3;
-		c.gridy = 1;
-		this.add(mBtnCancel, c);		
-		
-		
-		//		
-//		
-//		
-//		
-//		int row = 0;
-//		int col = 0;
-//		
-//		
-//		
-//		
-//        c.fill = GridBagConstraints.BOTH;
-//       // c.weightx = 0.1;
-//       // c.weighty = 0.1;
-//        c.insets = new Insets(10, 10, 10, 10);
-//		c.gridx = col++;
-//		c.gridy = row;
-////		this.add(lTeam1, c);		
-//		
-//		c.gridx = col++;
-//		c.gridy = row;
-////        this.add(lTeam2, c);		
-//		
-//		c.gridx = col;
-//		c.gridy = row++;
-////		this.add(result, c);		
-//		
-//		col = 0;
 	}
 
+	/**
+	 * Updates the Tipico JTable
+	 */		
+	public void updateTable(){
+    	mTable.invalidate();
+    	mTablePane.repaint();		
+	}
+	
+	/**
+	 * ========================
+	 * BEGIN GETTER AND SETTER
+	 * ========================
+	 */	
 	public void setButtonNewBetListener(ActionListener l){
 		this.mBtnNew.addActionListener(l);
 	}
@@ -129,14 +107,6 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		this.mBtnNew = pBtnNew;
 	}
 
-	public JButton getBtnCancel() {
-		return mBtnCancel;
-	}
-
-	public void setBtnCancel(JButton pBtnCancel) {
-		this.mBtnCancel = pBtnCancel;
-	}
-
 	public JButton getBtnLoad() {
 		return mBtnModify;
 	}
@@ -150,9 +120,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	public void setTable(JTable pTable) {
 		this.mTable = pTable;
 	}
-
-	public void updateTable(){
-    	mTable.invalidate();
-    	mTablePane.repaint();		
-	}
+	/**
+	 * ========================
+	 * END GETTER AND SETTER
+	 * ========================
+	 */
 }

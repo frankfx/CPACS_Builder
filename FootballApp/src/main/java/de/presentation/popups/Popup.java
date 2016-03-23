@@ -1,11 +1,15 @@
 package de.presentation.popups;
 
-import javax.swing.JFrame;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+
+import de.utils.SpinnerTemporalModel;
 
 public class Popup {
 
@@ -13,8 +17,9 @@ public class Popup {
 	static String mTempTeam = "";
 	static float mTempWinValue = 3.4f;	
 	static float mTempExpenses = 3.4f;	
-	static float mTempBet = 1.0f;	
-	static float mTempProfit = 3.0f;
+	static int mTempAttempts = 1;	
+	static LocalDate mTempDate = LocalDate.now(); //new Date(1900, 1, 1);
+	static boolean mTempSuccess = false;
 	static boolean mIDEnalbe = true;
 	
 	public static String [] startTipicoPopupNew(){
@@ -23,13 +28,18 @@ public class Popup {
 		
 		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(mTempWinValue, 1, 100, 0.1));
 		JSpinner lExpenses = new JSpinner(new SpinnerNumberModel(mTempExpenses, 1, 1000, 1.1));
-		JSpinner lBet = new JSpinner(new SpinnerNumberModel(mTempBet, 1, 100, 0.2));
-		JSpinner lProfit = new JSpinner(new SpinnerNumberModel(mTempProfit, 0.0f, 1000, 1.0));
-				
+		JSpinner lAttempts = new JSpinner(new SpinnerNumberModel(mTempAttempts, 1, 100, 1));
+		JSpinner lDate = new JSpinner(new SpinnerTemporalModel(mTempDate, LocalDate.of(2016, 01, 01), LocalDate.of(2017, 01, 01), ChronoUnit.DAYS));
+		
+		
+		JComboBox<Boolean> lSuccess = new JComboBox<Boolean>();
+		lSuccess.addItem(true);
+		lSuccess.addItem(false);
+		
 		lID.setEnabled(mIDEnalbe);
 		
 		Object[] message = {"TNr.", lID, "Team", lTeam, "Win Value", lWinValue, 
-				"Expenses", lExpenses, "Bet", lBet, "Profit", lProfit};
+				"Expenses", lExpenses, "Attempts", lAttempts, "Date", lDate, "Successfull" , lSuccess};
 
 		JOptionPane pane = new JOptionPane( message,
 				JOptionPane.PLAIN_MESSAGE, 
@@ -41,7 +51,7 @@ public class Popup {
 		
 		if (n == JOptionPane.OK_OPTION){
 			return new String[]{lID.getValue().toString(), lTeam.getText(), lWinValue.getValue().toString(), 
-					lExpenses.getValue().toString(), lBet.getValue().toString(), lProfit.getValue().toString()};
+					lExpenses.getValue().toString(), lAttempts.getValue().toString(), lDate.getValue().toString(), lSuccess.getSelectedItem().toString()};
 		} else {
 			return null;
 		}
@@ -67,23 +77,24 @@ public class Popup {
 			return null;
 		}
 	}	
-	
-	public static void setPopupInputValues(int pID, String pTeam, float pWinValue, float pExpenses, float pBet, float pProfit, boolean pIDEnable){
+
+	public static void setPopupInputValues(int pID, String pTeam, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess, boolean pIDEnable){
 		mTempID = pID;
 		mTempTeam = pTeam;
 		mTempWinValue = pWinValue;
 		mTempExpenses = pExpenses;
-		mTempBet = pBet;
-		mTempProfit = pProfit;
+		mTempAttempts = pAttempts;
+		mTempDate = pDate;
+		mTempSuccess = pSuccess;
 		mIDEnalbe = pIDEnable;
 	}
 
 	public static void startHintPopup(String pMessage){
-		new JOptionPane(pMessage, JOptionPane.WARNING_MESSAGE).createDialog("Hint").setVisible(true);;
+		new JOptionPane(pMessage, JOptionPane.WARNING_MESSAGE).createDialog("Hint").setVisible(true);
 	}
 	
 	public static void resetPopupInputValues(){
-		setPopupInputValues(1, "", 3.4f, 3.4f, 1.0f, 3.0f, true);
+		setPopupInputValues(1, "", 3.4f, 3.4f, 1, LocalDate.now(), false, true);
 	}
 	
 	public static void startPopupError(String pMessage){

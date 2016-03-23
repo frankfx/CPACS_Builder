@@ -3,7 +3,8 @@ package de.presentation.bundesliga;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
@@ -18,12 +19,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-	private BundesligaTableContainer mTablePanel;
 	private BundesligaFixtureContainer mFixturePanel;
-	private ButtonPanelContainer mButtonPanel;
-	private TipicoBetContainer mTipicoPanel;
 	private BundesligaConsoleContainer mConsolenPanel;
+	private TipicoBetContainer mTipicoPanel;
+	private ButtonPanelContainer mButtonPanel;
 	
 	@Override
 	public void initView() {
@@ -35,50 +34,58 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		setVisible(true);
 	}
 
-	private void createGUIElements() {
-		Container pane = new Container();
-		pane.setLayout(new GridLayout(2, 2));
-		
-		mTablePanel = new BundesligaTableContainer();
-		mFixturePanel = new BundesligaFixtureContainer();
-		mConsolenPanel = new BundesligaConsoleContainer();
-		mTipicoPanel = new TipicoBetContainer();
-		mButtonPanel = new ButtonPanelContainer();
-		
-		pane.add(mTablePanel);
-		pane.add(mFixturePanel);
-		pane.add(mConsolenPanel);
-		pane.add(mTipicoPanel);
-		
-		getContentPane().add(pane, BorderLayout.CENTER);
-		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
-
-//		createMenuBar();
-	}
-
 	@Override
 	public void evaluateGuiState() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void disposeGUI() {
 		this.dispose();
+	}	
+	
+	/**
+	 * Creates all GUI Components
+	 */	
+	private void createGUIElements() {
+		Container pane = new Container();
+		pane.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		
+		mFixturePanel = new BundesligaFixtureContainer();
+		mConsolenPanel = new BundesligaConsoleContainer();
+		mTipicoPanel = new TipicoBetContainer();
+		mButtonPanel = new ButtonPanelContainer();
+		
+		c.fill = GridBagConstraints.BOTH;	
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0.1;
+		c.weighty = 0.1;
+		pane.add(mConsolenPanel, c);
+
+		c.gridx = 1;
+		pane.add(mFixturePanel, c);
+
+		c.gridwidth = 2;
+		c.gridx = 0;
+		c.gridy = 1;
+		pane.add(mTipicoPanel, c);
+		
+		getContentPane().add(pane, BorderLayout.CENTER);
+		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 	}
 
+	
+	/**
+	 * ========================
+	 * BEGIN GETTER AND SETTER
+	 * ========================
+	 */
     public void setButtonExitListener(ActionListener l){
         this.mButtonPanel.getBtnExit().addActionListener(l);
     }
-    
-
-	public BundesligaTableContainer getTablePanel() {
-		return mTablePanel;
-	}
-
-	public void setTablePanel(BundesligaTableContainer lTablePanel) {
-		this.mTablePanel = lTablePanel;
-	}
 
 	public BundesligaFixtureContainer getFixturePanel() {
 		return mFixturePanel;
@@ -111,6 +118,9 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	public void setConsolenPanel(BundesligaConsoleContainer lConsolenPanel) {
 		this.mConsolenPanel = lConsolenPanel;
 	}
-    
-    
+	/**
+	 * ========================
+	 * END GETTER AND SETTER
+	 * ========================
+	 */	
 }

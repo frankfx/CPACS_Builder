@@ -16,8 +16,8 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
 	 */
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints c;
-	private int row = 0;
-	private int col = 0;
+	private int mRow = 0;
+	private int mCol = 0;
 	
 	public BundesligaFixtureContainer() {	
 		// create an default panel
@@ -26,9 +26,7 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
     }
 
 	@Override
-	public void initView() {
-		// TODO Auto-generated method stub
-	}	
+	public void initView() {}	
 	
 	/** Creates an Fixture, or null if the path was invalid. */
 	public void createFixture (TeamModel pTeam1, TeamModel pTeam2, int pGoal1, int pGoal2) {	
@@ -37,21 +35,19 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
         JLabel result = new JLabel(pGoal1+":"+pGoal2);
         
         c.fill = GridBagConstraints.BOTH;
-       // c.weightx = 0.1;
-       // c.weighty = 0.1;
         c.insets = new Insets(5, 10, 0, 0);
-		c.gridx = col++;
-		c.gridy = row;
+		c.gridx = mCol++;
+		c.gridy = mRow;
 		this.add(lTeam1, c);		
 		
-		c.gridx = col++;
-		c.gridy = row;
+		c.gridx = mCol++;
+		c.gridy = mRow;
         this.add(lTeam2, c);		
 		
-		c.gridx = col;
-		c.gridy = row++;
+		c.gridx = mCol;
+		c.gridy = mRow++;
 		this.add(result, c);		
 		
-		col = 0;
+		mCol = 0;
 	}
 }

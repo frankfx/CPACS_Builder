@@ -6,7 +6,7 @@ import de.presentation.bundesliga.BundesligaView;
 
 public class Main {
 	public static void main(String[] args) {
-		System.out.println("werw");
+		
 		BundesligaModel model = new BundesligaModel();
 		BundesligaView view = new BundesligaView();
 		

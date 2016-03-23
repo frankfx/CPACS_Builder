@@ -1,5 +1,6 @@
 package de.business;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class TipicoModel {
@@ -7,9 +8,9 @@ public class TipicoModel {
 	private String mTeam;
 	private float mWinValue;
 	private float mExpenses;
-	private float mBet;
-	private float mProfit;
-	private LocalDate mNextGame;
+	private int mAttempts;
+	private LocalDate mDate;
+	private boolean mSuccess;
 	
 	public int getTnr() {
 		return mTnr;
@@ -35,27 +36,31 @@ public class TipicoModel {
 	public void setExpenses(float pExpenses) {
 		this.mExpenses = pExpenses;
 	}
-	public float getBet() {
-		return mBet;
+	public int getAttempts() {
+		return mAttempts;
 	}
-	public void setBet(float pBet) {
-		this.mBet = pBet;
+	public void setAttempts(int lAttempts) {
+		this.mAttempts = lAttempts;
 	}
-	public float getProfit() {
-		return mProfit;
+	public LocalDate getDate() {
+		return mDate;
 	}
-	public void setProfit(float pProfit) {
-		this.mProfit = pProfit;
-	}	
-	public LocalDate getNextGame() {
-		return mNextGame;
+	public Date getSQLDate(){
+		return Date.valueOf(mDate);
 	}
-	public void setNextGame(LocalDate pNextGame) {
-		this.mNextGame = pNextGame;
-	}	
+	
+	public void setDate(LocalDate lDate) {
+		this.mDate = lDate;
+	}
+	public boolean getSuccess() {
+		return mSuccess;
+	}
+	public void setSuccess(boolean lSuccess) {
+		this.mSuccess = lSuccess;
+	}
 	
 	@Override
 	public String toString(){
-		return "[" + mTnr + ", " + mTeam + ", " + mWinValue + ", " + mExpenses + ", " + mBet + ", " + mProfit + "]" ;
+		return "[" + mTnr + ", " + mTeam + ", " + mWinValue + ", " + mExpenses + ", " + mAttempts + ", " + mDate + ", " + mSuccess + "]" ;
 	}
 }

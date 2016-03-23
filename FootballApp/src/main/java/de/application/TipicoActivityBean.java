@@ -1,8 +1,10 @@
 package de.application;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -13,7 +15,7 @@ import de.presentation.bundesliga.TipicoBetContainer;
 import de.presentation.popups.Popup;
 
 
-public class TipicoActivityBean {
+public class TipicoActivityBean implements ISubController{
 
 	private final static String SQL_CREATE_TABLE_TIPICO = "create table Tipico (tnr int, team varchar(20), winValue float, expenses float, bet float, profit float, Primary Key(tnr));";
 	private final static String SQL_DROP_TABLE_TIPICO = "drop table Tipico";
@@ -43,8 +45,8 @@ public class TipicoActivityBean {
 		this.addListener();
 	}
 	
-	public void setUpdateListener(BundesligaActivityBean a){
-		this.mBundesligaListener = a;
+	public void setUpdateListener(BundesligaActivityBean pListener){
+		this.mBundesligaListener = pListener;
 	}
 	
 	public boolean createTableTipico(){
@@ -100,8 +102,9 @@ public class TipicoActivityBean {
 	
 	public boolean updateDBWithModel(){
 		return mDB.updateDB("UPDATE Tipico set team='" + mModel.getTeam() + "' , winValue=" + mModel.getWinValue() 
-						+ " , expenses=" + mModel.getExpenses() + " , bet=" + mModel.getBet() 
-						+ " , profit=" + mModel.getProfit() + " where tnr=" + mModel.getTnr() + ";");
+						+ " , expenses=" + mModel.getExpenses() + " , attempts=" + mModel.getAttempts() 
+						+ " , pDate='" + mModel.getSQLDate() + "' , success=" + mModel.getSuccess() 
+						+ " where tnr=" + mModel.getTnr() + ";");
 	}
 	
 	public boolean addToExpenses(int pId, float pSummmand) {
@@ -166,7 +169,7 @@ public class TipicoActivityBean {
 		DefaultTableModel lModel = new DefaultTableModel();
 		
 		
-		String[] columnNames = {"ID", "TEAM", "WINVALUE", "EXPENSES", "BET", "PROFIT", "SUCCESSFUL"};
+		String[] columnNames = {"ID", "TEAM", "WINVALUE", "EXPENSES", "ATTEMPTS", "DATE", "SUCCESSFUL"};
 		
 		lModel.setColumnIdentifiers(columnNames);
 		
@@ -179,11 +182,10 @@ public class TipicoActivityBean {
 				data[0] = mDB.getResultSet().getInt(1);
 				data[1] = mDB.getResultSet().getString(2);
 				data[2] = mDB.getResultSet().getFloat(3);
-				
 				data[3] = mDB.getResultSet().getFloat(4);
-				data[4] = mDB.getResultSet().getFloat(5);
-				data[5] = mDB.getResultSet().getFloat(6);
-				data[6] = true;
+				data[4] = mDB.getResultSet().getInt(5);
+				data[5] = mDB.getResultSet().getDate(6);
+				data[6] = mDB.getResultSet().getBoolean(7);
 				
 				lModel.addRow(data);
 			}
@@ -203,13 +205,13 @@ public class TipicoActivityBean {
 				lModel.setValueAt(mModel.getTeam(), row, 1);
 				lModel.setValueAt(mModel.getWinValue(), row, 2);
 				lModel.setValueAt(mModel.getExpenses(), row, 3);
-				lModel.setValueAt(mModel.getBet(), row, 4);
-				lModel.setValueAt(mModel.getProfit(), row, 5);
+				lModel.setValueAt(mModel.getAttempts(), row, 4);
+				lModel.setValueAt(mModel.getDate(), row, 5);
+				lModel.setValueAt(mModel.getSuccess(), row, 6);
 			}
 		}
-		
-		System.out.println("Not found");
-		//mView.updateTable();		
+
+		mBundesligaListener.actionUpdateConsole("Table updated");
 	}
 	
 	
@@ -227,15 +229,15 @@ public class TipicoActivityBean {
 			Popup.setPopupInputValues(lTnr, mDB.getResultSet().getString(2), 
 					 mDB.getResultSet().getFloat(3), 
 					 mDB.getResultSet().getFloat(4),
-					 mDB.getResultSet().getFloat(5), 
-					 mDB.getResultSet().getFloat(6), false);
+					 mDB.getResultSet().getInt(5), 
+					 mDB.getResultSet().getDate(6).toLocalDate(), 
+					 mDB.getResultSet().getBoolean(7), false);
 
 			boolean validData = startInputPopup();
 				
 			Popup.resetPopupInputValues();		
 						
-			if (validData){
-				updateDBWithModel();
+			if (validData && updateDBWithModel()){
 				updateTable();
 			}
 		} catch (SQLException e) {
@@ -276,17 +278,23 @@ public class TipicoActivityBean {
 		try{
 			TipicoModel lModel = new TipicoModel();
 			
+			System.out.println("1");
 			lModel.setTnr(Integer.parseInt(args[0]));
 			lModel.setTeam(args[1]);
 			lModel.setWinValue(Float.parseFloat(args[2]));
+			System.out.println("2");
 			lModel.setExpenses(Float.parseFloat(args[3]));
-			lModel.setBet(Float.parseFloat(args[4]));
-			lModel.setProfit(Float.parseFloat(args[5]));
-			
+			System.out.println("3" + args[4]);
+			lModel.setAttempts(Integer.parseInt(args[4]));
+			System.out.println("noch ok");
+			lModel.setDate(LocalDate.parse(args[5]));
+			System.out.println("ende");
+			lModel.setSuccess(Boolean.parseBoolean(args[6]));
+
 			this.mModel = lModel;
 			return true;
 		} catch (Exception e){
-			System.out.println(e.getMessage());
+			mBundesligaListener.actionUpdateConsole(e.getMessage());
 			return false;
 		}
 	}	
@@ -308,6 +316,8 @@ public class TipicoActivityBean {
 	public static double computeBetValue(double winValue, double sumOldBet, double odds){
 		return odds > 1.0 ? (winValue + sumOldBet) / (odds-1) : -1;
 	}
+
+
 	
 	
 //			if (main.mDB.connect()){

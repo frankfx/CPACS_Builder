@@ -18,10 +18,12 @@ public class Database {
 	static final String USER = "root";
 	static final String PASS = "130386";
 	
+	// Connection and result set
 	private Connection mConnection = null;
-	private Statement stmt = null;
+	private Statement mStatement = null;
 	private ResultSet mResultSet = null;
-	
+
+	/** Constructor */	
 	public Database() {}
 	
 	/**
@@ -64,15 +66,15 @@ public class Database {
 	
 	
 	/**
-	 * queries the sql statement and updates the ResultSet object
+	 * queries the SQL statement and updates the ResultSet object
 	 *
 	 * @param sql statement to query e.g. "select * from Persons"
 	 * @return true if the query was successful otherwise false
 	 */
 	public boolean query(String sql){
 		try {
-			stmt = mConnection.createStatement();
-			mResultSet = stmt.executeQuery(sql);
+			mStatement = mConnection.createStatement();
+			mResultSet = mStatement.executeQuery(sql);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -88,8 +90,8 @@ public class Database {
 	 */	
 	public boolean updateDB(String sql){
 		try {
-			stmt = mConnection.createStatement();
-			stmt.executeUpdate(sql);
+			mStatement = mConnection.createStatement();
+			mStatement.executeUpdate(sql);
 			System.out.println("update succesful");
 			return true;
 		} catch (SQLException e) {
@@ -199,7 +201,7 @@ public class Database {
 			
 		//	db.updateDB("create table Tipico (tnr int, team varchar(20), winValue decimal, expenses decimal, bet decimal, profit decimal, Primary Key(tnr));");
 			
-			db.updateDB("insert into Tipico(tnr, team, winValue, expenses, bet, profit) values (1, 'HSV', 3.40, 1.0, 1.0, 0.0);");
+		//	db.updateDB("insert into Tipico(tnr, team, winValue, expenses, bet, profit) values (1, 'HSV', 3.40, 1.0, 1.0, 0.0);");
 		//	db.query("select * from Team;");
 			
 			// print the complete result set

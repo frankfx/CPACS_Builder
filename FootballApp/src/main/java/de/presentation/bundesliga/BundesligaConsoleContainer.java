@@ -1,8 +1,8 @@
 package de.presentation.bundesliga;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -14,23 +14,22 @@ public class BundesligaConsoleContainer  extends AbstractPanelContainer {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private GridBagConstraints c;
 	
 	private JTextArea mConsole;
-	private JButton mBtnCancel;
+	private JButton mBtnClear;
 	
 	public BundesligaConsoleContainer() {	
 		// create an default panel
-		initPanel("Console", new GridBagLayout(), Color.WHITE);
-        c = new GridBagConstraints();      
+		initPanel("Console", new BorderLayout(), Color.WHITE);
     }
 
 	@Override
 	public void initView() {
 		mConsole = new JTextArea();
-		mBtnCancel = new JButton("Cancel");
-		this.add(mConsole);
-		this.add(mConsole);
+		mBtnClear = new JButton("Clear");
+		
+		this.add(mConsole, BorderLayout.CENTER);
+		this.add(mBtnClear, BorderLayout.SOUTH);
 	}	
 	
 	public JTextArea getmConsole() {
@@ -45,12 +44,11 @@ public class BundesligaConsoleContainer  extends AbstractPanelContainer {
 		this.mConsole.append(lText);
 	}	
 	
-	public JButton getBtnCancel() {
-		return mBtnCancel;
+	public JButton getBtnClear() {
+		return mBtnClear;
 	}
 
-	public void setBtnCancel(JButton lBtnCancel) {
-		this.mBtnCancel = lBtnCancel;
+	public void setBtnClear(JButton lBtnClear) {
+		this.mBtnClear = lBtnClear;
 	}	
-	
 }
