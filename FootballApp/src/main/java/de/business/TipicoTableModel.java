@@ -127,12 +127,17 @@ public class TipicoTableModel implements TableModel{
 	}
 	
 	public void addRow(TipicoModel pModel){
-		this.list.add(pModel);
+		if(!this.list.contains(pModel))
+			this.list.add(pModel);
+	}
+	
+	public void removeRow(int pRowIndex) {
+		if (pRowIndex >= 0 && pRowIndex < list.size() )
+			this.list.remove(pRowIndex);	
 	}
 	
 	@Override
 	public String toString(){
 		return this.list.toString();
 	}
-
 }

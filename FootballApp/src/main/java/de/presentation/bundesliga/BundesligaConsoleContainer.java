@@ -28,6 +28,10 @@ public class BundesligaConsoleContainer  extends AbstractPanelContainer {
 		mConsole = new JTextArea();
 		mBtnClear = new JButton("Clear");
 		
+//		mConsole.setMaximumSize(new Dimension(30, 100));;
+//		mBtnClear.setPreferredSize(new Dimension(20, 20));
+		
+		
 		this.add(mConsole, BorderLayout.CENTER);
 		this.add(mBtnClear, BorderLayout.SOUTH);
 	}	

@@ -102,8 +102,8 @@ public class Popup {
 	}
 	
 	
-	public static String [] startTipicoPopupBetValue(){
-		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(mTempWinValue, 1, 100, 0.1));
+	public static String [] startTipicoPopupBetValue(float winValue){
+		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(winValue, 1, 100, 0.1));
 		JSpinner lOdds = new JSpinner(new SpinnerNumberModel(3.0, 1, 40, 0.1));
 		
 		Object[] message = {"Odds.", lOdds, "WinValue", lWinValue};
@@ -126,7 +126,7 @@ public class Popup {
 	    lDialog.dispose();
 	    
 		if (n == JOptionPane.OK_OPTION){
-			return new String[]{lOdds.getValue().toString()};
+			return new String[]{lOdds.getValue().toString(), lWinValue.getValue().toString()};
 		} else {
 			return null;
 		}

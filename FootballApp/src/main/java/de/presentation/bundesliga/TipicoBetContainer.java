@@ -24,7 +24,8 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private JButton mBtnBetValue;
 	private JButton mBtnNew;
 	private JButton mBtnModify;	
-	
+	private JButton mBtnDelete;
+
 	public TipicoBetContainer() {	
 		// create an default panel
 		initPanel("Tipico", new GridBagLayout(), Color.WHITE);
@@ -36,6 +37,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		mBtnBetValue = new JButton("Compute");
 		mBtnNew = new JButton("New");
 		mBtnModify = new JButton("Modify");
+		mBtnDelete = new JButton("Delete");
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -67,6 +69,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridx = 2;
 		c.gridy = 1;
 		this.add(mBtnNew, c);
+		c.gridx = 3;
+		c.gridy = 1;
+		this.add(mBtnDelete, c);
 	}
 
 	/**
@@ -76,10 +81,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
     	mTable.invalidate();
     	mTablePane.repaint();		
 	}
+
 	
 	/**
 	 * ========================
-	 * BEGIN GETTER AND SETTER
+	 * BEGIN LISTENER
 	 * ========================
 	 */	
 	public void setButtonNewBetListener(ActionListener l){
@@ -92,8 +98,23 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	
 	public void setButtonBetValueListener(ActionListener l){
 		this.mBtnBetValue.addActionListener(l);
-	}		
+	}	
 	
+	public void setButtonDeleteListener(ActionListener l){
+		this.mBtnDelete.addActionListener(l);
+	}		
+	/**
+	 * ========================
+	 * END LISTENER
+	 * ========================
+	 */	
+	
+	
+	/**
+	 * ========================
+	 * BEGIN GETTER AND SETTER
+	 * ========================
+	 */	
 	public JButton getBtnBetValue() {
 		return mBtnBetValue;
 	}
@@ -110,13 +131,21 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		this.mBtnNew = pBtnNew;
 	}
 
-	public JButton getBtnLoad() {
+	public JButton getBtnModify() {
 		return mBtnModify;
 	}
 
-	public void setmBtnLoad(JButton pBtnLoad) {
-		this.mBtnModify = pBtnLoad;
+	public void setmBtnModify(JButton pBtnModify) {
+		this.mBtnModify = pBtnModify;
 	}
+	
+	public JButton getBtnDelete() {
+		return mBtnDelete;
+	}
+
+	public void setBtnDelete(JButton pBtnDelete) {
+		this.mBtnDelete = pBtnDelete;
+	}	
 	
 	public JTable getTable() {
 		return mTable;

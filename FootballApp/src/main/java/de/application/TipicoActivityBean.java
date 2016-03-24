@@ -37,12 +37,17 @@ public class TipicoActivityBean implements ISubController{
 
 	@Override
 	public void initBean(String [] pCredentials) {
-		if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
-			System.out.println("connection successfull");
-			initTable();
+		if (mDB == null){
+			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
+				System.out.println("connection successfull");
+				initTable();
+			}
+			else{
+				System.out.println("connection refused");
+			}
+		} else {
+			System.out.println("already connected");
 		}
-		else
-			System.out.println("connection refused");
 	}
 	
 	@Override
@@ -156,7 +161,6 @@ public class TipicoActivityBean implements ISubController{
 		});		
 		
 		this.mView.setButtonLadenListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionModify();
@@ -164,32 +168,17 @@ public class TipicoActivityBean implements ISubController{
 		});
 		
 		this.mView.setButtonBetValueListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (mDB != null){
-					int lTnr = getTnrSelectRow();
-	
-					if(lTnr == -1)
-						return;
-					
-					mDB.query("select winValue, expenses from Tipico where tnr=" + lTnr + ";");
-					try {
-						mDB.getResultSet().next();
-						float winValue = mDB.getResultSet().getFloat(1);
-						float expenses = mDB.getResultSet().getFloat(2);
-						
-						String [] arr = Popup.startTipicoPopupBetValue();
-						
-						if(arr != null)
-							mBundesligaListener.actionUpdateConsole(""+computeBetValue(winValue, expenses, Float.parseFloat(arr[0])));
-						else
-							mBundesligaListener.actionUpdateConsole("No row selected");
-						
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-				}
+				actionBetValue();
+			}
+		});
+		
+		this.mView.setButtonDeleteListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.getTableModel().removeRow(mView.getTable().getSelectedRow());
+				mView.updateTable();
 			}
 		});
 	}
@@ -221,24 +210,7 @@ public class TipicoActivityBean implements ISubController{
 		}
 	}
 	
-	
-	public void updateTable(){
-		TipicoTableModel lModel = mView.getTableModel();
-		
-		for(int row=0; row < lModel.getRowCount(); row++){
-			if(Float.parseFloat(lModel.getValueAt(row, 0).toString()) == mModel.getTnr()){
-				lModel.setValueAt(mModel.getTeam(), row, 1);
-				lModel.setValueAt(mModel.getWinValue(), row, 2);
-				lModel.setValueAt(mModel.getExpenses(), row, 3);
-				lModel.setValueAt(mModel.getAttempts(), row, 4);
-				lModel.setValueAt(mModel.getDate(), row, 5);
-				lModel.setValueAt(mModel.getSuccess(), row, 6);
-			}
-		}
 
-		mView.updateTable();
-		mBundesligaListener.actionUpdateConsole("Table updated");
-	}
 	
 	
 	public void actionModify(){
@@ -264,12 +236,51 @@ public class TipicoActivityBean implements ISubController{
 				Popup.resetInputValues();		
 							
 				if (validData && updateDBWithModel()){
-					updateTable();
+					updateTableData();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	public void updateTableData(){
+		TipicoTableModel lModel = mView.getTableModel();
+		
+		for(int row=0; row < lModel.getRowCount(); row++){
+			if(Float.parseFloat(lModel.getValueAt(row, 0).toString()) == mModel.getTnr()){
+				lModel.setValueAt(mModel.getTeam(), row, 1);
+				lModel.setValueAt(mModel.getWinValue(), row, 2);
+				lModel.setValueAt(mModel.getExpenses(), row, 3);
+				lModel.setValueAt(mModel.getAttempts(), row, 4);
+				lModel.setValueAt(mModel.getDate(), row, 5);
+				lModel.setValueAt(mModel.getSuccess(), row, 6);
+			}
+		}
+
+		mView.updateTable();
+		mBundesligaListener.actionUpdateConsole("Table updated");
+	}
+	
+	
+	private void actionBetValue(){
+		TipicoTableModel lTableModel = mView.getTableModel();
+
+		int rowIndex = getTnrSelectRow()-1;
+
+		if(rowIndex == -1)
+			return;
+			
+		float winValue = (float) lTableModel.getValueAt(rowIndex, 2);
+		float expenses = (float) lTableModel.getValueAt(rowIndex, 3);
+				
+		String [] arr = Popup.startTipicoPopupBetValue(winValue);
+			
+		if(arr != null)
+			mBundesligaListener.actionUpdateConsole(""+computeBetValue(Float.parseFloat(arr[1]), expenses, Float.parseFloat(arr[0])));
+		else
+			mBundesligaListener.actionUpdateConsole("No row selected");
 	}
 
 	private int getTnrSelectRow(){

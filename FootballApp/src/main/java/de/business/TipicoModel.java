@@ -65,6 +65,11 @@ public class TipicoModel {
 	}
 	
 	@Override
+	public boolean equals(Object obj) {
+		return this.mTnr == ((TipicoModel)obj).getTnr();
+	};
+	
+	@Override
 	public String toString(){
 		return "[" + mTnr + ", " + mTeam + ", " + mWinValue + ", " + mExpenses + ", " + mAttempts + ", " + mDate + ", " + mSuccess + "]" ;
 	}
