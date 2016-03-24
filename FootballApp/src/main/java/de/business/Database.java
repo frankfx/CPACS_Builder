@@ -11,12 +11,12 @@ import com.mysql.jdbc.ResultSetMetaData;
 public class Database {
 	
 	// JDBC driver name and database url
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost:3306/TestData";
+	//static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	//static final String DB_URL = "jdbc:mysql://localhost:3306/TestData";
 	
 	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "130386";
+	//static final String USER = "root";
+	//static final String PASS = "130386";
 	
 	// Connection and result set
 	private Connection mConnection = null;
@@ -31,12 +31,13 @@ public class Database {
 	 * 
 	 * @return true if the connection was established otherwise false
 	 */	
-	public boolean connect(){
+	public boolean connect(String pHost, String pPort, String pDatabase, String pUser, String pPass){
 		try{
 			// STEP 2: Register JDBC driver (/usr/share/java/mysql)
 			Class.forName("com.mysql.jdbc.Driver");		
 			// STEP 3: Open connection
-			mConnection = DriverManager.getConnection(DB_URL, USER, PASS);		
+			
+			mConnection = DriverManager.getConnection("jdbc:mysql://" + pHost + ":" + pPort + "/TestData", pUser, pPass);		
 			return true;
 		} catch(SQLException e){
 			System.out.println("ERROR: SQL-EXCEPTION");
@@ -196,13 +197,13 @@ public class Database {
 	
 	public static void main(String[] args) throws SQLException {
 		Database db = new Database();
-		if (db.connect()){
+		if (db.connect("localhost", "3306", "TestData", "root", "130386")){
 		//	db.updateDB("drop table Tipico");
 			
 		//	db.updateDB("create table Tipico (tnr int, team varchar(20), winValue decimal, expenses decimal, bet decimal, profit decimal, Primary Key(tnr));");
 			
 		//	db.updateDB("insert into Tipico(tnr, team, winValue, expenses, bet, profit) values (1, 'HSV', 3.40, 1.0, 1.0, 0.0);");
-		//	db.query("select * from Team;");
+		//	db.query("select * from Tipico;");
 			
 			// print the complete result set
 		//	db.printResultSet(3);

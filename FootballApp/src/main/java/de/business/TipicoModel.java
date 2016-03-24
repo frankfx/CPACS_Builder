@@ -52,6 +52,11 @@ public class TipicoModel {
 	public void setDate(LocalDate lDate) {
 		this.mDate = lDate;
 	}
+	
+	public void setDate(Date lDate){
+		this.mDate = lDate.toLocalDate();
+	}
+	
 	public boolean getSuccess() {
 		return mSuccess;
 	}

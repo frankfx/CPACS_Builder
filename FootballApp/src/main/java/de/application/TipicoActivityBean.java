@@ -1,16 +1,14 @@
 package de.application;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
 import de.business.Database;
 import de.business.TipicoModel;
+import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetContainer;
 import de.presentation.popups.Popup;
 
@@ -23,26 +21,47 @@ public class TipicoActivityBean implements ISubController{
 	
 	private PreparedStatement insertBetStmt = null;
 		
-	BundesligaActivityBean mBundesligaListener;
-	
+	private BundesligaActivityBean mBundesligaListener;
 	
 	private Database mDB = null;
 	private TipicoModel mModel;
 	private TipicoBetContainer mView;
 
+	
 	public TipicoActivityBean(TipicoModel pModel, TipicoBetContainer pView) {
 		this.mModel = pModel;
 		this.mView = pView;
 
-		mDB = new Database();
-		if (mDB.connect()){
+		this.addListener();
+	}
+
+	@Override
+	public void initBean(String [] pCredentials) {
+		if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
 			System.out.println("connection successfull");
-		} else {
+			initTable();
+		}
+		else
+			System.out.println("connection refused");
+	}
+	
+	@Override
+	public void updateBean(){
+		if (mDB != null){
+			mDB.disconnect();
 			mDB = null;
 		}
-
-		this.initTable();
-		this.addListener();
+	}
+		
+	public boolean initDB(String pHost, String pPort, String pDatabase, String pUser, String pPass){
+		mDB = new Database();
+		
+		if (mDB.connect(pHost, pPort, pDatabase, pUser, pPass)){
+			return true;
+		} else {
+			mDB = null;
+			return false;
+		}
 	}
 	
 	public void setUpdateListener(BundesligaActivityBean pListener){
@@ -50,14 +69,17 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	public boolean createTableTipico(){
-		return mDB.updateDB(SQL_CREATE_TABLE_TIPICO);
+		return mDB != null ? mDB.updateDB(SQL_CREATE_TABLE_TIPICO) : false;
 	}
 	
 	public boolean dropTableTipico(){
-		return mDB.updateDB(SQL_DROP_TABLE_TIPICO);
+		return mDB != null ? mDB.updateDB(SQL_DROP_TABLE_TIPICO) : false;
 	}
 	
 	public boolean insertRowInTipico(int pId, String pTeam, float pWinValue, float pExpenses, float pBet, float pProfit){
+		if(mDB == null)
+			return false;
+		
 		try {
 			insertBetStmt = mDB.getConnection().prepareStatement(SQL_INSERT_ROW_QUERY);
 			insertBetStmt.setInt(1, pId);
@@ -77,37 +99,39 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	public boolean deleteRowInTipico(int pId){
-		return mDB.updateDB("delete from Tipico where tnr=" + pId);
+		return mDB != null ? mDB.updateDB("delete from Tipico where tnr=" + pId) : false;
 	}
 	
 	public boolean updateTeamInTableTipico(int pId, String pTeam){
-		return mDB.updateDB("UPDATE Tipico set team='" + pTeam + "' where tnr=" + pId);  
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set team='" + pTeam + "' where tnr=" + pId) : false;  
 	}
 
 	public boolean updateWinValueInTableTipico(int pId, float pWinValue){
-		return mDB.updateDB("UPDATE Tipico set winValue=" + pWinValue + " where tnr=" + pId);  
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set winValue=" + pWinValue + " where tnr=" + pId) : false;  
 	}	
 
 	public boolean updateExpensesInTableTipico(int pId, float pExpenses){
-		return mDB.updateDB("UPDATE Tipico set expenses=" + pExpenses + " where tnr=" + pId);  
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set expenses=" + pExpenses + " where tnr=" + pId) : false;  
 	}		
 	
 	public boolean updateBetInTableTipico(int pId, float pbet){
-		return mDB.updateDB("UPDATE Tipico set bet=" + pbet + " where tnr=" + pId);  
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set bet=" + pbet + " where tnr=" + pId) : false;  
 	}	
 	
 	public boolean updateProfitInTableTipico(int pId, float pProfit){
-		return mDB.updateDB("UPDATE Tipico set profit=" + pProfit + " where tnr=" + pId);  
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set profit=" + pProfit + " where tnr=" + pId) : false;  
 	}	
 	
 	public boolean updateDBWithModel(){
-		return mDB.updateDB("UPDATE Tipico set team='" + mModel.getTeam() + "' , winValue=" + mModel.getWinValue() 
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set team='" + mModel.getTeam() + "' , winValue=" + mModel.getWinValue() 
 						+ " , expenses=" + mModel.getExpenses() + " , attempts=" + mModel.getAttempts() 
 						+ " , pDate='" + mModel.getSQLDate() + "' , success=" + mModel.getSuccess() 
-						+ " where tnr=" + mModel.getTnr() + ";");
+						+ " where tnr=" + mModel.getTnr() + ";") : false;
 	}
 	
 	public boolean addToExpenses(int pId, float pSummmand) {
+		if (mDB == null) return false;
+		
 		if(mDB.query("select expenses from Tipico where tnr=" + pId + ";")){
 			try {
 				mDB.getResultSet().next();
@@ -123,6 +147,7 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	private void addListener() {
+		
 		this.mView.setButtonNewBetListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -134,7 +159,7 @@ public class TipicoActivityBean implements ISubController{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actionLoad();
+				actionModify();
 			}
 		});
 		
@@ -142,63 +167,63 @@ public class TipicoActivityBean implements ISubController{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int lTnr = getTnrSelectRow();
-
-				if(lTnr == -1)
-					return;
-				
-				mDB.query("select winValue, expenses from Tipico where tnr=" + lTnr + ";");
-				try {
-					mDB.getResultSet().next();
-					float winValue = mDB.getResultSet().getFloat(1);
-					float expenses = mDB.getResultSet().getFloat(2);
+				if (mDB != null){
+					int lTnr = getTnrSelectRow();
+	
+					if(lTnr == -1)
+						return;
 					
-					String [] arr = Popup.startTipicoPopupBetValue();
-					
-					mBundesligaListener.actionUpdateConsole(""+computeBetValue(winValue, expenses, Float.parseFloat(arr[0])));
-					
-				} catch (SQLException ex) {
-					ex.printStackTrace();
+					mDB.query("select winValue, expenses from Tipico where tnr=" + lTnr + ";");
+					try {
+						mDB.getResultSet().next();
+						float winValue = mDB.getResultSet().getFloat(1);
+						float expenses = mDB.getResultSet().getFloat(2);
+						
+						String [] arr = Popup.startTipicoPopupBetValue();
+						
+						if(arr != null)
+							mBundesligaListener.actionUpdateConsole(""+computeBetValue(winValue, expenses, Float.parseFloat(arr[0])));
+						else
+							mBundesligaListener.actionUpdateConsole("No row selected");
+						
+					} catch (SQLException ex) {
+						ex.printStackTrace();
+					}
 				}
-				
 			}
 		});
 	}
 	
 	public void initTable(){
-		DefaultTableModel lModel = new DefaultTableModel();
-		
-		
-		String[] columnNames = {"ID", "TEAM", "WINVALUE", "EXPENSES", "ATTEMPTS", "DATE", "SUCCESSFUL"};
-		
-		lModel.setColumnIdentifiers(columnNames);
-		
-		Object[] data = new Object[7];
-		
-		mDB.query("select * from Tipico;");
-
-		try {
-			while(mDB.getResultSet().next()){
-				data[0] = mDB.getResultSet().getInt(1);
-				data[1] = mDB.getResultSet().getString(2);
-				data[2] = mDB.getResultSet().getFloat(3);
-				data[3] = mDB.getResultSet().getFloat(4);
-				data[4] = mDB.getResultSet().getInt(5);
-				data[5] = mDB.getResultSet().getDate(6);
-				data[6] = mDB.getResultSet().getBoolean(7);
-				
-				lModel.addRow(data);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		
-		mView.getTable().setModel(lModel);
+		if (mDB != null){
+			mDB.query("select * from Tipico;");
+	
+			try {
+				TipicoModel data;
+				while(mDB.getResultSet().next()){
+					data = new TipicoModel();
+					data.setTnr(mDB.getResultSet().getInt(1));
+					data.setTeam(mDB.getResultSet().getString(2));
+					data.setWinValue(mDB.getResultSet().getFloat(3));
+					data.setExpenses(mDB.getResultSet().getFloat(4));
+					data.setAttempts(mDB.getResultSet().getInt(5));
+					data.setDate(mDB.getResultSet().getDate(6));
+					data.setSuccess(mDB.getResultSet().getBoolean(7));
+					
+					mView.getTableModel().addRow(data);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} 
+			
+			mView.getTable().setModel(mView.getTableModel());
+			mView.getTable().updateUI();
+		}
 	}
 	
 	
 	public void updateTable(){
-		TableModel lModel = mView.getTable().getModel();
+		TipicoTableModel lModel = mView.getTableModel();
 		
 		for(int row=0; row < lModel.getRowCount(); row++){
 			if(Float.parseFloat(lModel.getValueAt(row, 0).toString()) == mModel.getTnr()){
@@ -211,37 +236,39 @@ public class TipicoActivityBean implements ISubController{
 			}
 		}
 
+		mView.updateTable();
 		mBundesligaListener.actionUpdateConsole("Table updated");
 	}
 	
 	
-	public void actionLoad(){
-
-		int lTnr = getTnrSelectRow();
-		
-		if(lTnr == -1)
-			return;
-		
-		mDB.query("select * from Tipico where tnr=" + lTnr + ";");
-		try {
-			mDB.getResultSet().next();
+	public void actionModify(){
+		if(mDB != null){
+			int lTnr = getTnrSelectRow();
 			
-			Popup.setPopupInputValues(lTnr, mDB.getResultSet().getString(2), 
-					 mDB.getResultSet().getFloat(3), 
-					 mDB.getResultSet().getFloat(4),
-					 mDB.getResultSet().getInt(5), 
-					 mDB.getResultSet().getDate(6).toLocalDate(), 
-					 mDB.getResultSet().getBoolean(7), false);
-
-			boolean validData = startInputPopup();
+			if(lTnr == -1)
+				return;
+			
+			mDB.query("select * from Tipico where tnr=" + lTnr + ";");
+			try {
+				mDB.getResultSet().next();
 				
-			Popup.resetPopupInputValues();		
-						
-			if (validData && updateDBWithModel()){
-				updateTable();
+				Popup.setPopupInputValues(lTnr, mDB.getResultSet().getString(2), 
+						 mDB.getResultSet().getFloat(3), 
+						 mDB.getResultSet().getFloat(4),
+						 mDB.getResultSet().getInt(5), 
+						 mDB.getResultSet().getDate(6).toLocalDate(), 
+						 mDB.getResultSet().getBoolean(7), false);
+	
+				boolean validData = startInputPopup();
+					
+				Popup.resetInputValues();		
+							
+				if (validData && updateDBWithModel()){
+					updateTable();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -266,7 +293,7 @@ public class TipicoActivityBean implements ISubController{
 			return false;
 		
 		if (!parseNewTipicoEntry(res)){
-			Popup.startPopupError("Wrong input");
+			Popup.startErrorPopup("Wrong input");
 			return false;
 		}		
 		return true;
@@ -316,7 +343,6 @@ public class TipicoActivityBean implements ISubController{
 	public static double computeBetValue(double winValue, double sumOldBet, double odds){
 		return odds > 1.0 ? (winValue + sumOldBet) / (odds-1) : -1;
 	}
-
 
 	
 	

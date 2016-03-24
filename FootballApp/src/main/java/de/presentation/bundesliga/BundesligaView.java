@@ -8,6 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import de.presentation.ButtonPanelContainer;
 import de.presentation.IDefaultGUI;
@@ -23,6 +26,16 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private BundesligaConsoleContainer mConsolenPanel;
 	private TipicoBetContainer mTipicoPanel;
 	private ButtonPanelContainer mButtonPanel;
+	
+	// Menu items
+	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
+	private JMenuItem menuItemSaveCSV = new JMenuItem("Save CSV");
+	private JMenuItem menuItemDBConnect = new JMenuItem("Connect DB");	
+	private JMenuItem menuItemDBDisConnect = new JMenuItem("Disconnect DB");
+	private JMenuItem menuItemCommitDB = new JMenuItem("Commit DB");	
+	private JMenuItem menuItemPullDB = new JMenuItem("Pull DB");		
+	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
+	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	
 	@Override
 	public void initView() {
@@ -75,18 +88,91 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		getContentPane().add(pane, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
+		
+		createMenuBar();
 	}
 
+	private void createMenuBar(){
+		JMenuBar bar = new JMenuBar();
+		
+		JMenu menuFile = new JMenu("File");
+		JMenu menuConfig = new JMenu("Configure");
+		JMenu menuHelp = new JMenu("Help");
+		
+		menuFile.add(menuItemLoadCSV);
+		menuFile.add(menuItemSaveCSV);
+		menuFile.addSeparator();
+		menuFile.add(menuItemCommitDB);
+		menuFile.add(menuItemPullDB);
+		menuFile.addSeparator();
+		menuFile.add(menuItemExit);
+
+		menuConfig.add(menuItemDBConnect);
+		menuConfig.add(menuItemDBDisConnect);
+		
+		menuHelp.add(menuItemAbout);
+		
+		bar.add(menuFile);
+		bar.add(menuConfig);
+		bar.add(menuHelp);
+		
+		this.setJMenuBar(bar);		
+	}
 	
+	/**
+	 * ========================
+	 * BEGIN LISTENER
+	 * ========================
+	 */	
+    public void setButtonExitListener(ActionListener l){
+        this.mButtonPanel.getBtnExit().addActionListener(l);
+    }	
+	
+    public void setMenuItemLoadCSVListener(ActionListener l){
+    	this.menuItemLoadCSV.addActionListener(l);
+    }  	
+
+    public void setMenuItemSaveCSVListener(ActionListener l){
+    	this.menuItemSaveCSV.addActionListener(l);
+    }    
+    
+    public void setMenuItemCommitDBListener(ActionListener l){
+    	this.menuItemCommitDB.addActionListener(l);
+    }    
+
+    public void setMenuItemPullDBListener(ActionListener l){
+    	this.menuItemPullDB.addActionListener(l);
+    }     
+    
+	public void setMenuItemExitListener(ActionListener l){
+    	this.menuItemExit.addActionListener(l);
+    }  
+
+    public void setMenuItemDBConnectListener(ActionListener l){
+    	this.menuItemDBConnect.addActionListener(l);
+    } 
+
+    public void setMenuItemDBDisconnectListener(ActionListener l){
+    	this.menuItemDBDisConnect.addActionListener(l);
+    }     
+    
+    public void setMenuItemAboutListener(ActionListener l){
+    	this.menuItemAbout.addActionListener(l);
+    }     
+	/**
+	 * ========================
+	 * END LISTENER
+	 * ========================
+	 */	    
+    
+    
+    
+    
 	/**
 	 * ========================
 	 * BEGIN GETTER AND SETTER
 	 * ========================
 	 */
-    public void setButtonExitListener(ActionListener l){
-        this.mButtonPanel.getBtnExit().addActionListener(l);
-    }
-
 	public BundesligaFixtureContainer getFixturePanel() {
 		return mFixturePanel;
 	}

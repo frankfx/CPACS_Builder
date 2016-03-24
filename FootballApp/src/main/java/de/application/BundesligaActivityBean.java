@@ -13,6 +13,7 @@ import de.business.TipicoModel;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
+import de.presentation.popups.Popup;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;
@@ -80,7 +81,76 @@ public class BundesligaActivityBean {
 			}
 		});
 		
-		// Observer pattern to trigger this.actionUpdateConsole from the subcontroller
+		mView.setMenuItemExitListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.dispose();
+			}
+		});
+
+		mView.setMenuItemLoadCSVListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Load CSV");
+			}
+		});
+		
+		mView.setMenuItemSaveCSVListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Save CSV");
+			}
+		});
+		
+		mView.setMenuItemCommitDBListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Commit DB");
+			}
+		});
+		
+		mView.setMenuItemPullDBListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Pull DB");
+			}
+		});
+		
+		/**
+		 * Database connection
+		 */
+		mView.setMenuItemDBConnectListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String [] arr = Popup.startDatabaseConnectionPopup();
+				if(arr != null)
+					mSubController.get(0).initBean(arr);
+			}
+		});
+
+		/**
+		 * Database Disconnection
+		 */
+		mView.setMenuItemDBDisconnectListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mSubController.get(0).updateBean();
+			}
+		});
+		
+		/**
+		 * About frame
+		 */		
+		mView.setMenuItemAboutListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("About");
+			}
+		});
+		
+		/**
+		 * Observer pattern to trigger this.actionUpdateConsole from the subcontroller
+		 */		
 		for(ISubController lController : mSubController)
 			lController.setUpdateListener(this);
 	}	
@@ -100,6 +170,7 @@ public class BundesligaActivityBean {
 			
 			public void run() {
 				mView.initView();
+				//initFixture(26, "bl1", "2015");
 				addSubController(new TipicoActivityBean(new TipicoModel(), mView.getTipicoPanel()));
 				addListener();
 			}

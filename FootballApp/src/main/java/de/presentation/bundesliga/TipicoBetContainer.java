@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
 
 public class TipicoBetContainer extends AbstractPanelContainer {
@@ -18,6 +19,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private static final long serialVersionUID = 1L;
 	
 	private JTable mTable;
+	private TipicoTableModel mTableModel;
 	private JScrollPane mTablePane;	
 	private JButton mBtnBetValue;
 	private JButton mBtnNew;
@@ -42,8 +44,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridwidth = 4;
 		c.weightx=0.1;
 		c.weighty=0.1;		
-		
-		mTable = new JTable();
+
+		mTableModel = new TipicoTableModel();
+		mTable = new JTable(mTableModel);
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         mTablePane = new JScrollPane(mTable);
@@ -113,13 +116,24 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 
 	public void setmBtnLoad(JButton pBtnLoad) {
 		this.mBtnModify = pBtnLoad;
-	}	
+	}
+	
 	public JTable getTable() {
 		return mTable;
 	}
+	
 	public void setTable(JTable pTable) {
 		this.mTable = pTable;
 	}
+	
+	public TipicoTableModel getTableModel() {
+		return mTableModel;
+	}
+
+	public void setTableModel(TipicoTableModel pTableModel) {
+		this.mTableModel = pTableModel;
+	}	
+	
 	/**
 	 * ========================
 	 * END GETTER AND SETTER
