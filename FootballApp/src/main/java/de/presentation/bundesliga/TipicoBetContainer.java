@@ -1,6 +1,7 @@
 package de.presentation.bundesliga;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
@@ -8,9 +9,13 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
+import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
+import de.presentation.JSplitButton;
+import de.utils.PersistenceType;
 
 public class TipicoBetContainer extends AbstractPanelContainer {
 	/**
@@ -25,7 +30,8 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private JButton mBtnNew;
 	private JButton mBtnModify;	
 	private JButton mBtnDelete;
-
+	private JSplitButton mBtnDBSplit;
+	
 	public TipicoBetContainer() {	
 		// create an default panel
 		initPanel("Tipico", new GridBagLayout(), Color.WHITE);
@@ -38,17 +44,37 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		mBtnNew = new JButton("New");
 		mBtnModify = new JButton("Modify");
 		mBtnDelete = new JButton("Delete");
+		mBtnDBSplit = new JSplitButton("DB");
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 4;
+		c.gridwidth = 5;
 		c.weightx=0.1;
 		c.weighty=0.1;		
 
 		mTableModel = new TipicoTableModel();
-		mTable = new JTable(mTableModel);
+		mTable = new JTable(mTableModel){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
+				Component c = super.prepareRenderer(renderer, row, column);
+
+				if (!isRowSelected(row)) {
+					int modelRow = convertRowIndexToModel(row);
+					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
+					
+					if(lModel.getPersistantType().equals(PersistenceType.NEW))
+						c.setBackground(Color.YELLOW);
+					else
+						c.setBackground(getBackground());
+				}
+
+				return c;
+			}
+		};
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         mTablePane = new JScrollPane(mTable);
@@ -72,6 +98,10 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridx = 3;
 		c.gridy = 1;
 		this.add(mBtnDelete, c);
+		c.gridx = 4;
+		c.gridy = 1;		
+		c.weightx = 0.0;
+		this.add(mBtnDBSplit, c);
 	}
 
 	/**
@@ -92,8 +122,12 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		this.mBtnNew.addActionListener(l);
 	}
 	
-	public void setButtonLadenListener(ActionListener l){
+	public void setButtonModifyListener(ActionListener l){
 		this.mBtnModify.addActionListener(l);
+	}	
+
+	public void setButtonLadenListener(ActionListener l){
+
 	}	
 	
 	public void setButtonBetValueListener(ActionListener l){
@@ -102,7 +136,19 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	
 	public void setButtonDeleteListener(ActionListener l){
 		this.mBtnDelete.addActionListener(l);
-	}		
+	}	
+	
+	public void setButtonCommitListerner(ActionListener l){
+		this.mBtnDBSplit.getCommitItem().addActionListener(l);
+	}
+
+	public void setButtonPullListerner(ActionListener l){
+		this.mBtnDBSplit.getPullItem().addActionListener(l);
+	}
+	
+	public void setButtonRevertListerner(ActionListener l){
+		this.mBtnDBSplit.getRevertItem().addActionListener(l);
+	}	
 	/**
 	 * ========================
 	 * END LISTENER

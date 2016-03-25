@@ -3,6 +3,8 @@ package de.business;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import de.utils.PersistenceType;
+
 public class TipicoModel {
 	private int mTnr;
 	private String mTeam;
@@ -11,6 +13,7 @@ public class TipicoModel {
 	private int mAttempts;
 	private LocalDate mDate;
 	private boolean mSuccess;
+	private PersistenceType mPersistantType;
 	
 	public int getTnr() {
 		return mTnr;
@@ -60,8 +63,17 @@ public class TipicoModel {
 	public boolean getSuccess() {
 		return mSuccess;
 	}
+	
 	public void setSuccess(boolean lSuccess) {
 		this.mSuccess = lSuccess;
+	}
+	
+	public PersistenceType getPersistantType() {
+		return mPersistantType;
+	}
+	
+	public void setPersistantType(PersistenceType pPersistantType) {
+		this.mPersistantType = pPersistantType;
 	}
 	
 	@Override

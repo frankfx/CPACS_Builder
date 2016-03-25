@@ -1,8 +1,11 @@
 package de.business;
 
+import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -13,7 +16,9 @@ public class TipicoTableModel implements TableModel{
 	List<TipicoModel> list;
 	// the headers
 	String[] header;
-	
+	// mark rows with colors
+	Map<Integer, Color> mRowColorMap = new HashMap<Integer, Color>();
+    
 	public TipicoTableModel(){
 		this(null, new String[]{"ID", "TEAM", "WINVALUE", "EXPENSES", "ATTEMPTS", "DATE", "SUCCESSFUL"});
 	}
@@ -45,22 +50,7 @@ public class TipicoTableModel implements TableModel{
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		switch (columnIndex) {
-		case 0:
-			return Integer.class;
-		case 1:
-			return String.class;
-		case 2:
-			return Float.class;
-		case 3:
-			return Float.class;
-		case 4:
-			return Integer.class;
-		case 5:
-			return LocalDate.class;
-		default:
-			return Boolean.class;
-		}
+		return getValueAt(0, columnIndex).getClass();		
 	}
 
 	@Override
@@ -135,6 +125,18 @@ public class TipicoTableModel implements TableModel{
 		if (pRowIndex >= 0 && pRowIndex < list.size() )
 			this.list.remove(pRowIndex);	
 	}
+	
+	public TipicoModel getTipicoModelAtRow(int pRowIndex){
+		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
+	}
+	
+	public void setRowColor(int pRow, Color pColor) {
+		mRowColorMap.put(pRow, pColor);
+	}
+
+	public Color getRowColor(int pRow) {
+		return mRowColorMap.get(pRow);
+	}	
 	
 	@Override
 	public String toString(){

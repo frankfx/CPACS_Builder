@@ -1,46 +1,125 @@
 package de.application;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 import de.business.Database;
 import de.business.TipicoModel;
-import de.business.TipicoTableModel;
+
 import de.presentation.bundesliga.TipicoBetContainer;
 import de.presentation.popups.Popup;
+import de.utils.FAMessages;
+import de.utils.PersistenceType;
 
 
 public class TipicoActivityBean implements ISubController{
 
-	private final static String SQL_CREATE_TABLE_TIPICO = "create table Tipico (tnr int, team varchar(20), winValue float, expenses float, bet float, profit float, Primary Key(tnr));";
+	private final static String SQL_CREATE_TABLE_TIPICO = "create table Tipico (tnr int, team varchar(20), winValue float, expenses float, attempts int, pDate date, success boolean, Primary Key(tnr));";
 	private final static String SQL_DROP_TABLE_TIPICO = "drop table Tipico";
-	private final static String SQL_INSERT_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, bet, profit) values (?, ?, ?, ?, ?, ?);";
+	private final static String SQL_INSERT_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, attempts, pDate, success) values (?, ?, ?, ?, ?, ?, ?);";
+	private final static String SQL_UPDATE_ROW_QUERY = "update Tipico set team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=? where tnr=?";
+	private final static String SQL_INSERT_UPDATE_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, attempts, pDate, success) values (?, ?, ?, ?, ?, ?, ?) on duplicate key update team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=?;";
 	
-	private PreparedStatement insertBetStmt = null;
-		
+	private PreparedStatement mInsertBetStmt = null;
 	private BundesligaActivityBean mBundesligaListener;
-	
 	private Database mDB = null;
-	private TipicoModel mModel;
 	private TipicoBetContainer mView;
 
-	
-	public TipicoActivityBean(TipicoModel pModel, TipicoBetContainer pView) {
-		this.mModel = pModel;
+	public TipicoActivityBean(TipicoBetContainer pView) {
 		this.mView = pView;
-
 		this.addListener();
 	}
+	
+ // ========================
+ // START INIT LISTENER
+ // ========================	
+		
+	/**
+	 * sets all listeners from the presentation view
+	 */		
+	private void addListener() {
+		this.mView.setButtonNewBetListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionNew();
+			}
+		});		
+			
+		this.mView.setButtonModifyListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionModify();
+			}
+		});
+			
+		this.mView.setButtonBetValueListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionBetValue();
+			}
+		});
+			
+		this.mView.setButtonDeleteListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.getTableModel().removeRow(getSelectedRow());
+				mView.updateTable();
+			}
+		});
+			
+		this.mView.setButtonCommitListerner(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionCommit();
+			}
+		});
+			
+		this.mView.setButtonPullListerner(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				initTable();
+			}
+		});	
+			
+		this.mView.setButtonRevertListerner(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("revert");
+			}
+		});		
+	}	
+	
+	/**
+	 * creates a listener for the main controller to listen events in the subcontroller
+	 * Is mainly used to update the console in the main controller
+	 */			
+	@Override
+	public void setUpdateListener(BundesligaActivityBean pListener){
+		this.mBundesligaListener = pListener;
+	}
+	
+ // ========================
+ // END INIT LISTENER
+ // ========================	
+	
 
+ // =========================
+ // START DATABASE OPERATIONS
+ // =========================
+		
+	/**
+	 * use initBean to establish the connection to the database
+	 */			
 	@Override
 	public void initBean(String [] pCredentials) {
 		if (mDB == null){
 			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
 				System.out.println("connection successfull");
-				initTable();
 			}
 			else{
 				System.out.println("connection refused");
@@ -48,16 +127,31 @@ public class TipicoActivityBean implements ISubController{
 		} else {
 			System.out.println("already connected");
 		}
-	}
-	
+	} 
+		
+	/**
+	 * use updateBean to disconnect from database
+	 */		
 	@Override
 	public void updateBean(){
 		if (mDB != null){
 			mDB.disconnect();
 			mDB = null;
 		}
-	}
+	}		
 		
+	/**
+	 * initialize database
+	 * 
+	 * @param pHost the host of the connection
+	 * @param pPort the port to connect to database
+	 * @param pDatabase the name of the database
+	 * @param pUser the user name 
+	 * @param pPass the password
+	 * 
+	 * @return true if the connection was successful otherwise false
+	 * 
+	 */		
 	public boolean initDB(String pHost, String pPort, String pDatabase, String pUser, String pPass){
 		mDB = new Database();
 		
@@ -68,121 +162,187 @@ public class TipicoActivityBean implements ISubController{
 			return false;
 		}
 	}
-	
-	public void setUpdateListener(BundesligaActivityBean pListener){
-		this.mBundesligaListener = pListener;
-	}
-	
+
+	/**
+	 * creates the tipico table with all attributes
+	 * 
+	 * @return true if the creation was successful otherwise false
+	 */		
 	public boolean createTableTipico(){
 		return mDB != null ? mDB.updateDB(SQL_CREATE_TABLE_TIPICO) : false;
 	}
-	
+
+	/**
+	 * drops the complete tipico table
+	 * 
+	 * @return true if the table was successful dropped otherwise false
+	 */		
 	public boolean dropTableTipico(){
 		return mDB != null ? mDB.updateDB(SQL_DROP_TABLE_TIPICO) : false;
 	}
 	
-	public boolean insertRowInTipico(int pId, String pTeam, float pWinValue, float pExpenses, float pBet, float pProfit){
-		if(mDB == null)
-			return false;
+	/**
+	 * deletes a row given by a id (tnr) in table tipico
+	 * 
+	 * @param pTnr the unique id of the model
+	 * 
+	 * @return true if the row was successful removed otherwise false
+	 */		
+	public boolean deleteRowInTipico(int pTnr){
+		return mDB != null ? mDB.updateDB("delete from Tipico where tnr=" + pTnr) : false;
+	}	
+
+	/**
+	 * inserts a model (row) to the database
+	 * 
+	 * @param pTipicoModel a model with a new id (tnr)
+	 * 
+	 * @return true if the model was successful inserted otherwise false
+	 */		
+	public boolean insertRowInTipico(TipicoModel pTipicoModel){
+		return this.setModelToTipico(SQL_INSERT_ROW_QUERY, pTipicoModel.getTnr(), pTipicoModel.getTeam(), pTipicoModel.getWinValue(), 
+				pTipicoModel.getExpenses(), pTipicoModel.getAttempts(), pTipicoModel.getDate(), pTipicoModel.getSuccess());
+	}
+
+	/**
+	 * updates a model (row) to the database
+	 * 
+	 * @param pTipicoModel a model with a existing id (tnr) in the database
+	 * 
+	 * @return true if the model was successful updated otherwise false
+	 */			
+	public boolean updateRowInTipico(TipicoModel pTipicoModel){
+		return this.setModelToTipico(SQL_UPDATE_ROW_QUERY, pTipicoModel.getTnr(), pTipicoModel.getTeam(), pTipicoModel.getWinValue(), 
+				pTipicoModel.getExpenses(), pTipicoModel.getAttempts(), pTipicoModel.getDate(), pTipicoModel.getSuccess());
+	}	
+
+	/**
+	 * inserts a model to the database, if the model key doesn't already exist otherwise the existing model will be updated
+	 * 
+	 * @param pTipicoModel the model to insert or update in the database
+	 * 
+	 * @return true if the model was successful inserted/updated otherwise false
+	 */		
+	public boolean insertOrUpdateRowInTipico(TipicoModel pTipicoModel){
+		return this.setModelToTipico(SQL_INSERT_UPDATE_ROW_QUERY, pTipicoModel.getTnr(), pTipicoModel.getTeam(), pTipicoModel.getWinValue(), 
+				pTipicoModel.getExpenses(), pTipicoModel.getAttempts(), pTipicoModel.getDate(), pTipicoModel.getSuccess());
+	}
+	
+	/**
+	 * intern private helper method to insert or update a model to the database 
+	 */		
+	private boolean setModelToTipico(String pSql , int pId, String pTeam, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
+		String lResult;
 		
-		try {
-			insertBetStmt = mDB.getConnection().prepareStatement(SQL_INSERT_ROW_QUERY);
-			insertBetStmt.setInt(1, pId);
-			insertBetStmt.setString(2, pTeam);
-			insertBetStmt.setFloat(3, pWinValue);
-			insertBetStmt.setFloat(4, pExpenses);
-			insertBetStmt.setFloat(5, pBet);
-			insertBetStmt.setFloat(6, pProfit);
-			
-			insertBetStmt.execute();	
-			System.out.println("update successfull");
-			return true;
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			return false;
+		if(mDB == null)
+			lResult = FAMessages.MESSAGE_NODATABASE;
+		else{
+			try {
+				mInsertBetStmt = mDB.getConnection().prepareStatement(pSql);
+
+				mInsertBetStmt.setInt(1, pId);
+				mInsertBetStmt.setString(2, pTeam);
+				mInsertBetStmt.setFloat(3, pWinValue);
+				mInsertBetStmt.setFloat(4, pExpenses);
+				mInsertBetStmt.setInt(5, pAttempts);
+				mInsertBetStmt.setDate(6, Date.valueOf(pDate));
+				mInsertBetStmt.setBoolean(7, pSuccess);
+				mInsertBetStmt.setString(8, pTeam);	
+				mInsertBetStmt.setFloat(9, pWinValue);
+				mInsertBetStmt.setFloat(10, pExpenses);
+				mInsertBetStmt.setInt(11, pAttempts);
+				mInsertBetStmt.setDate(12, Date.valueOf(pDate));
+				mInsertBetStmt.setBoolean(13, pSuccess);
+				
+				System.out.println(mInsertBetStmt.toString());
+				
+				mInsertBetStmt.execute();	
+				System.out.println("update successfull");
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				lResult = e.getMessage();
+			}
 		}
-	}
-	
-	public boolean deleteRowInTipico(int pId){
-		return mDB != null ? mDB.updateDB("delete from Tipico where tnr=" + pId) : false;
-	}
-	
+		System.out.println(lResult);
+		return false;
+	}	
+
+	/**
+	 * updates only the team in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pTeam the team to update in the data
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */		
 	public boolean updateTeamInTableTipico(int pId, String pTeam){
 		return mDB != null ? mDB.updateDB("UPDATE Tipico set team='" + pTeam + "' where tnr=" + pId) : false;  
 	}
 
+	/**
+	 * updates only the winValue in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pWinValue the win value to update in the database
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */		
 	public boolean updateWinValueInTableTipico(int pId, float pWinValue){
 		return mDB != null ? mDB.updateDB("UPDATE Tipico set winValue=" + pWinValue + " where tnr=" + pId) : false;  
 	}	
 
+	/**
+	 * updates only the expenses in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pExpenses the expenses to update in the database
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */			
 	public boolean updateExpensesInTableTipico(int pId, float pExpenses){
 		return mDB != null ? mDB.updateDB("UPDATE Tipico set expenses=" + pExpenses + " where tnr=" + pId) : false;  
 	}		
 	
-	public boolean updateBetInTableTipico(int pId, float pbet){
-		return mDB != null ? mDB.updateDB("UPDATE Tipico set bet=" + pbet + " where tnr=" + pId) : false;  
+	/**
+	 * updates only the attempts in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pAttempts the attempts value to update in the database
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */			
+	public boolean updateAttemptsInTableTipico(int pId, float pAttempts){
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set attempts=" + pAttempts + " where tnr=" + pId) : false;  
 	}	
-	
-	public boolean updateProfitInTableTipico(int pId, float pProfit){
-		return mDB != null ? mDB.updateDB("UPDATE Tipico set profit=" + pProfit + " where tnr=" + pId) : false;  
-	}	
-	
-	public boolean updateDBWithModel(){
-		return mDB != null ? mDB.updateDB("UPDATE Tipico set team='" + mModel.getTeam() + "' , winValue=" + mModel.getWinValue() 
-						+ " , expenses=" + mModel.getExpenses() + " , attempts=" + mModel.getAttempts() 
-						+ " , pDate='" + mModel.getSQLDate() + "' , success=" + mModel.getSuccess() 
-						+ " where tnr=" + mModel.getTnr() + ";") : false;
-	}
-	
-	public boolean addToExpenses(int pId, float pSummmand) {
-		if (mDB == null) return false;
-		
-		if(mDB.query("select expenses from Tipico where tnr=" + pId + ";")){
-			try {
-				mDB.getResultSet().next();
-				float lResult = mDB.getResultSet().getFloat(1);
-				this.updateExpensesInTableTipico(pId, lResult + pSummmand);
-				return true;
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	private void addListener() {
-		
-		this.mView.setButtonNewBetListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actionNew();
-			}
-		});		
-		
-		this.mView.setButtonLadenListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actionModify();
-			}
-		});
-		
-		this.mView.setButtonBetValueListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				actionBetValue();
-			}
-		});
-		
-		this.mView.setButtonDeleteListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mView.getTableModel().removeRow(mView.getTable().getSelectedRow());
-				mView.updateTable();
-			}
-		});
-	}
-	
+
+	/**
+	 * updates only the date in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pDate the date to update in the database
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */		
+	public boolean updateDateInTableTipico(int pId, float pDate){
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set pDate='" + pDate + "' where tnr=" + pId) : false;  
+	}		
+
+	/**
+	 * updates only the success flag in the database
+	 * 
+	 * @param pId the id of the table entry
+	 * @param pSuccess the success flag value to update in the database
+	 *  
+	 * @return true if the update was successful otherwise false
+	 */		
+	public boolean updateSuccessInTableTipico(int pId, float pSuccess){
+		return mDB != null ? mDB.updateDB("UPDATE Tipico set success=" + pSuccess + " where tnr=" + pId) : false;  
+	}		
+
+	/**
+	 * initialized the table with all entries of the database
+	 */		
 	public void initTable(){
 		if (mDB != null){
 			mDB.query("select * from Tipico;");
@@ -198,6 +358,7 @@ public class TipicoActivityBean implements ISubController{
 					data.setAttempts(mDB.getResultSet().getInt(5));
 					data.setDate(mDB.getResultSet().getDate(6));
 					data.setSuccess(mDB.getResultSet().getBoolean(7));
+					data.setPersistantType(PersistenceType.OTHER);
 					
 					mView.getTableModel().addRow(data);
 				}
@@ -208,83 +369,23 @@ public class TipicoActivityBean implements ISubController{
 			mView.getTable().setModel(mView.getTableModel());
 			mView.getTable().updateUI();
 		}
-	}
+	}	
 	
-
-	
-	
-	public void actionModify(){
-		if(mDB != null){
-			int lTnr = getTnrSelectRow();
-			
-			if(lTnr == -1)
-				return;
-			
-			mDB.query("select * from Tipico where tnr=" + lTnr + ";");
-			try {
-				mDB.getResultSet().next();
-				
-				Popup.setPopupInputValues(lTnr, mDB.getResultSet().getString(2), 
-						 mDB.getResultSet().getFloat(3), 
-						 mDB.getResultSet().getFloat(4),
-						 mDB.getResultSet().getInt(5), 
-						 mDB.getResultSet().getDate(6).toLocalDate(), 
-						 mDB.getResultSet().getBoolean(7), false);
-	
-				boolean validData = startInputPopup();
-					
-				Popup.resetInputValues();		
-							
-				if (validData && updateDBWithModel()){
-					updateTableData();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+ // ========================
+ // END DATABASE OPERATIONS
+ // ========================	
 	
 	
-	public void updateTableData(){
-		TipicoTableModel lModel = mView.getTableModel();
-		
-		for(int row=0; row < lModel.getRowCount(); row++){
-			if(Float.parseFloat(lModel.getValueAt(row, 0).toString()) == mModel.getTnr()){
-				lModel.setValueAt(mModel.getTeam(), row, 1);
-				lModel.setValueAt(mModel.getWinValue(), row, 2);
-				lModel.setValueAt(mModel.getExpenses(), row, 3);
-				lModel.setValueAt(mModel.getAttempts(), row, 4);
-				lModel.setValueAt(mModel.getDate(), row, 5);
-				lModel.setValueAt(mModel.getSuccess(), row, 6);
-			}
-		}
-
-		mView.updateTable();
-		mBundesligaListener.actionUpdateConsole("Table updated");
-	}
 	
+ // ============================
+ // START LOCAL TABLE OPERATIONS
+ // ============================		
 	
-	private void actionBetValue(){
-		TipicoTableModel lTableModel = mView.getTableModel();
-
-		int rowIndex = getTnrSelectRow()-1;
-
-		if(rowIndex == -1)
-			return;
-			
-		float winValue = (float) lTableModel.getValueAt(rowIndex, 2);
-		float expenses = (float) lTableModel.getValueAt(rowIndex, 3);
-				
-		String [] arr = Popup.startTipicoPopupBetValue(winValue);
-			
-		if(arr != null)
-			mBundesligaListener.actionUpdateConsole(""+computeBetValue(Float.parseFloat(arr[1]), expenses, Float.parseFloat(arr[0])));
-		else
-			mBundesligaListener.actionUpdateConsole("No row selected");
-	}
-
-	private int getTnrSelectRow(){
-		int lSelectedRow = mView.getTable().getSelectedRow();
+	/**
+	 * get the Tnr of the selected table row
+	 */		
+	public int getTnrOfSelectedTableRow(){
+		int lSelectedRow = getSelectedRow();
 		
 		if(lSelectedRow < 0){
 			Popup.startHintPopup("No row selected");
@@ -294,50 +395,72 @@ public class TipicoActivityBean implements ISubController{
 		return Integer.parseInt(mView.getTable().getModel().getValueAt(lSelectedRow, 0).toString());		
 	}
 	
-	public void actionNew(){
-		startInputPopup();
+	/**
+	 * get index of the selected table row
+	 */		
+	private int getSelectedRow(){
+		int lSelectedRow = mView.getTable().getSelectedRow();
+		
+		if(lSelectedRow < 0){
+			Popup.startHintPopup("No row selected");
+			return -1;
+		}
+			
+		return lSelectedRow;		
 	}
 	
-	private boolean startInputPopup(){
-		String [] res = Popup.startTipicoPopupNew();
-		if (res == null)
+ // ============================
+ // END LOCAL TABLE OPERATIONS
+ // ============================		
+
+		
+	/**
+	 * private helper method to start an input dialog to manipulate the table attributes
+	 */	
+	private boolean startTableInputPopup(TipicoModel pTipicoModel, boolean pIDEnable){
+		String lResult;
+		
+		if (pTipicoModel == null){
+			lResult = FAMessages.MESSAGE_NOVALIDTABLEMODEL;
+		} else{
+			String [] lValues = Popup.startTipicoPopupNew(pTipicoModel, pIDEnable);
+			if (lValues == null || !updateTipicoEntry(pTipicoModel, lValues)){
+				lResult = FAMessages.MESSAGE_NOVALIDFORMULARDATA;
+			} else
+				return true;
+		}
+		
+		Popup.startErrorPopup(lResult);
+		return false;
+	}
+
+	/**
+	 * Function to update a TipicoModel with given arguments
+	 * 
+	 * @param pTipicoModel the data model to update
+	 * @param args the new arguments for the data model
+	 * 
+	 * @return true if the update was successful otherwise false
+	 * 
+	 */	
+	private boolean updateTipicoEntry(TipicoModel pTipicoModel, String [] args){
+		if(args == null || pTipicoModel == null)
 			return false;
 		
-		if (!parseNewTipicoEntry(res)){
-			Popup.startErrorPopup("Wrong input");
-			return false;
-		}		
+		pTipicoModel.setTnr(Integer.parseInt(args[0]));
+		pTipicoModel.setTeam(args[1]);
+		pTipicoModel.setWinValue(Float.parseFloat(args[2]));
+		pTipicoModel.setExpenses(Float.parseFloat(args[3]));
+		pTipicoModel.setAttempts(Integer.parseInt(args[4]));
+		pTipicoModel.setDate(LocalDate.parse(args[5]));
+		pTipicoModel.setSuccess(Boolean.parseBoolean(args[6]));
+		pTipicoModel.setPersistantType(PersistenceType.NEW);
 		return true;
-	}
-	
-	private boolean parseNewTipicoEntry(String [] args){
-		if(args == null)
-			return false;
-		try{
-			TipicoModel lModel = new TipicoModel();
-			
-			System.out.println("1");
-			lModel.setTnr(Integer.parseInt(args[0]));
-			lModel.setTeam(args[1]);
-			lModel.setWinValue(Float.parseFloat(args[2]));
-			System.out.println("2");
-			lModel.setExpenses(Float.parseFloat(args[3]));
-			System.out.println("3" + args[4]);
-			lModel.setAttempts(Integer.parseInt(args[4]));
-			System.out.println("noch ok");
-			lModel.setDate(LocalDate.parse(args[5]));
-			System.out.println("ende");
-			lModel.setSuccess(Boolean.parseBoolean(args[6]));
-
-			this.mModel = lModel;
-			return true;
-		} catch (Exception e){
-			mBundesligaListener.actionUpdateConsole(e.getMessage());
-			return false;
-		}
 	}	
 
 	/**
+	 * This function determines the new bet value
+	 * 
 	 * @param winValue the amount we want to win for one bet
 	 * @param sumOldBet the amount we have lost in previous bets
 	 * @param odds the rate of the game for a given result
@@ -354,40 +477,73 @@ public class TipicoActivityBean implements ISubController{
 	public static double computeBetValue(double winValue, double sumOldBet, double odds){
 		return odds > 1.0 ? (winValue + sumOldBet) / (odds-1) : -1;
 	}
+	
+	
+ // ========================
+ // BEGIN ACTION
+ // ========================
+	
+	/**
+	 * Local table function to create a new entry
+	 */		
+	private void actionNew(){
+		startTableInputPopup(null, false);
+	}
 
+	/**
+	 * Local table function to modify the selected entry
+	 */		
+	private void actionModify(){
+		int lRowIndex = getSelectedRow();
+			
+		if(lRowIndex < 0)
+			return;
+
+		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIndex);
+		
+		if(startTableInputPopup(lModel, false)){
+			mView.getTableModel().setRowColor(lRowIndex, Color.CYAN);
+			mView.updateTable();
+			mBundesligaListener.actionUpdateConsole("Table updated");			
+		}
+		
+	}	
+
+	/**
+	 * Local table function to compute the bet value
+	 */		
+	private void actionBetValue(){
+		String lResult;
+		
+		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( getSelectedRow());		
+		
+		if(lModel == null)
+			lResult = FAMessages.MESSAGE_NOVALIDTABLEMODEL + (getSelectedRow());
+		else{
+			String [] arr = Popup.startTipicoPopupBetValue(lModel.getWinValue());
+			if(arr != null)
+				lResult = ""+computeBetValue(Float.parseFloat(arr[1]), lModel.getExpenses(), Float.parseFloat(arr[0]));
+			else
+				lResult = FAMessages.MESSAGE_NOVALIDFORMULARDATA;
+		}
+		
+		mBundesligaListener.actionUpdateConsole(lResult);
+	}	
 	
+	/**
+	 * Database function to commit to selected row
+	 */	
+	private void actionCommit() {
+		int lStart = getSelectedRow(); 
+		int lEnd = lStart + mView.getTable().getSelectedRowCount();
+		
+		for(int i = lStart; i<lEnd; i++){
+			TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(i);
+			insertOrUpdateRowInTipico(lModel);
+		}
+	}	
 	
-//			if (main.mDB.connect()){
-//			// create table
-//			//main.db.updateDB(SQL_CREATE_TABLE_TIPICO);
-//			
-//			// drop table
-//			//main.db.updateDB(SQL_DROP_TABLE_TIPICO);
-//
-//			// delete row by tnr in table
-//			//main.deleteRowInTipico(2);
-//			
-//			// insert a new row
-//			//main.insertRowInTipico(2, "HSV", 3.40f, 1.0f, 1.0f, 0.0f);
-//			
-//			// update row
-//			//main.updateWinValueInTableTipico(1, 3.4f);
-//			
-//			//main.addToExpenses(2, 3);
-//			
-//			main.updateExpensesInTableTipico(1, 1);
-//			main.updateExpensesInTableTipico(2, 1);
-//			
-//			//select all entries from Tipico
-//			main.mDB.query("select * from Tipico;");
-////
-////			main.db.getResultSet().next();
-////			System.out.println(main.db.getResultSet().getInt(1));
-////			System.out.println(main.db.getResultSet().getString(2));
-////			System.out.println(main.db.getResultSet().getFloat(3));
-//			
-//			// print the complete result set
-//			main.mDB.printResultSet(6);
-//			
-//			main.mDB.disconnect();
+ // ========================
+ // END ACTION
+ // ========================
 }
