@@ -66,7 +66,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 					int modelRow = convertRowIndexToModel(row);
 					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
 					
-					if(lModel.getPersistantType().equals(PersistenceType.NEW))
+					if(lModel.getPersistenceType().equals(PersistenceType.NEW))
 						c.setBackground(Color.YELLOW);
 					else
 						c.setBackground(getBackground());
@@ -108,7 +108,8 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	 * Updates the Tipico JTable
 	 */		
 	public void updateTable(){
-    	mTable.invalidate();
+		mTable.revalidate();
+    	//mTable.invalidate();
     	mTablePane.repaint();		
 	}
 

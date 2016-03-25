@@ -45,7 +45,7 @@ public class BundesligaConsoleContainer  extends AbstractPanelContainer {
 	}
 
 	public void appendConsole(String lText) {
-		this.mConsole.append(lText);
+		this.mConsole.append(lText+"\n");
 	}	
 	
 	public JButton getBtnClear() {

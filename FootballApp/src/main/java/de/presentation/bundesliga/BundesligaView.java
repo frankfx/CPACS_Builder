@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import de.presentation.ButtonPanelContainer;
 import de.presentation.IDefaultGUI;

@@ -159,7 +159,7 @@ public class BundesligaActivityBean {
 	 * Action Events
 	 */		
 	public void actionUpdateConsole(String lMessage){
-		mView.getConsolenPanel().setConsole(lMessage);
+		mView.getConsolenPanel().appendConsole(lMessage);
 	}	
 	
 	/**

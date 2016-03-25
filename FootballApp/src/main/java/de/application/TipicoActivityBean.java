@@ -1,6 +1,5 @@
 package de.application;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -117,16 +116,17 @@ public class TipicoActivityBean implements ISubController{
 	 */			
 	@Override
 	public void initBean(String [] pCredentials) {
-		if (mDB == null){
-			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
-				System.out.println("connection successfull");
-			}
-			else{
-				System.out.println("connection refused");
-			}
-		} else {
-			System.out.println("already connected");
-		}
+		String lResult;
+		
+		if (mDB == null)
+			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4]))
+				lResult = "connection successfull";
+			else
+				lResult = "connection refused";
+		else 
+			lResult = "already connected";
+
+		mBundesligaListener.actionUpdateConsole(lResult);
 	} 
 		
 	/**
@@ -254,17 +254,14 @@ public class TipicoActivityBean implements ISubController{
 				mInsertBetStmt.setDate(12, Date.valueOf(pDate));
 				mInsertBetStmt.setBoolean(13, pSuccess);
 				
-				System.out.println(mInsertBetStmt.toString());
-				
 				mInsertBetStmt.execute();	
-				System.out.println("update successfull");
+				mBundesligaListener.actionUpdateConsole("update successfull");
 				return true;
 			} catch (SQLException e) {
-				e.printStackTrace();
 				lResult = e.getMessage();
 			}
 		}
-		System.out.println(lResult);
+		mBundesligaListener.actionUpdateConsole(lResult);
 		return false;
 	}	
 
@@ -358,7 +355,7 @@ public class TipicoActivityBean implements ISubController{
 					data.setAttempts(mDB.getResultSet().getInt(5));
 					data.setDate(mDB.getResultSet().getDate(6));
 					data.setSuccess(mDB.getResultSet().getBoolean(7));
-					data.setPersistantType(PersistenceType.OTHER);
+					data.setPersistenceType(PersistenceType.OTHER);
 					
 					mView.getTableModel().addRow(data);
 				}
@@ -454,7 +451,7 @@ public class TipicoActivityBean implements ISubController{
 		pTipicoModel.setAttempts(Integer.parseInt(args[4]));
 		pTipicoModel.setDate(LocalDate.parse(args[5]));
 		pTipicoModel.setSuccess(Boolean.parseBoolean(args[6]));
-		pTipicoModel.setPersistantType(PersistenceType.NEW);
+		pTipicoModel.setPersistenceType(PersistenceType.NEW);
 		return true;
 	}	
 
@@ -487,7 +484,12 @@ public class TipicoActivityBean implements ISubController{
 	 * Local table function to create a new entry
 	 */		
 	private void actionNew(){
-		startTableInputPopup(null, false);
+		TipicoModel lModel = new TipicoModel();
+		lModel.setTnr(mView.getTableModel().generateValidID());
+		startTableInputPopup(lModel, true);
+		
+		mView.getTableModel().addRow(lModel);
+		mView.updateTable();
 	}
 
 	/**
@@ -502,7 +504,6 @@ public class TipicoActivityBean implements ISubController{
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIndex);
 		
 		if(startTableInputPopup(lModel, false)){
-			mView.getTableModel().setRowColor(lRowIndex, Color.CYAN);
 			mView.updateTable();
 			mBundesligaListener.actionUpdateConsole("Table updated");			
 		}
@@ -515,10 +516,11 @@ public class TipicoActivityBean implements ISubController{
 	private void actionBetValue(){
 		String lResult;
 		
-		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( getSelectedRow());		
+		int lRow = getSelectedRow();
+		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( lRow);		
 		
 		if(lModel == null)
-			lResult = FAMessages.MESSAGE_NOVALIDTABLEMODEL + (getSelectedRow());
+			lResult = FAMessages.MESSAGE_NOVALIDTABLEMODEL + (lRow);
 		else{
 			String [] arr = Popup.startTipicoPopupBetValue(lModel.getWinValue());
 			if(arr != null)

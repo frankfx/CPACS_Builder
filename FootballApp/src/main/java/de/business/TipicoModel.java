@@ -13,7 +13,26 @@ public class TipicoModel {
 	private int mAttempts;
 	private LocalDate mDate;
 	private boolean mSuccess;
-	private PersistenceType mPersistantType;
+	private PersistenceType mPersistenceType;
+
+	public TipicoModel() {
+		this(100, "Default", 0.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+	}
+	
+	public TipicoModel(int pTnr, String pTeam, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
+		this(pTnr, pTeam, pWinValue, pExpenses, pAttempts, pDate, pSuccess, PersistenceType.NEW);
+	}
+	
+	public TipicoModel(int pTnr, String pTeam, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
+		this.mTnr = pTnr;
+		this.mTeam = pTeam;
+		this.mWinValue = pWinValue;
+		this.mExpenses = pExpenses;
+		this.mAttempts = pAttempts;
+		this.mDate = pDate;
+		this.mSuccess = pSuccess;
+		this.mPersistenceType = pPersistenceType;
+	}
 	
 	public int getTnr() {
 		return mTnr;
@@ -68,12 +87,12 @@ public class TipicoModel {
 		this.mSuccess = lSuccess;
 	}
 	
-	public PersistenceType getPersistantType() {
-		return mPersistantType;
+	public PersistenceType getPersistenceType() {
+		return mPersistenceType;
 	}
 	
-	public void setPersistantType(PersistenceType pPersistantType) {
-		this.mPersistantType = pPersistantType;
+	public void setPersistenceType(PersistenceType pPersistenceType) {
+		this.mPersistenceType = pPersistenceType;
 	}
 	
 	@Override

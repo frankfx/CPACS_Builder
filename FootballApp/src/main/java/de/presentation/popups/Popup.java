@@ -15,23 +15,13 @@ import de.business.TipicoModel;
 import de.utils.SpinnerTemporalModel;
 
 public class Popup {
-
-//	static int mTempID = 1;
-//	static String mTempTeam = "";
-//	static float mTempWinValue = 3.4f;	
-//	static float mTempExpenses = 3.4f;	
-//	static int mTempAttempts = 1;	
-//	static LocalDate mTempDate = LocalDate.now(); //new Date(1900, 1, 1);
-//	static boolean mTempSuccess = false;
-//	static boolean mIDEnalbe = true;
 	
 	public static String [] startTipicoPopupNew(TipicoModel pTipicoModel, boolean pIDEnable){
-
 		JSpinner lID = new JSpinner(new SpinnerNumberModel(pTipicoModel.getTnr(), 1, 100, 1));
-		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(pTipicoModel.getWinValue(), 1, 100, 0.1));
-		JSpinner lExpenses = new JSpinner(new SpinnerNumberModel(pTipicoModel.getExpenses(), 1, 1000, 1.1));
-		JSpinner lAttempts = new JSpinner(new SpinnerNumberModel(pTipicoModel.getAttempts(), 1, 100, 1));
-		JSpinner lDate = new JSpinner(new SpinnerTemporalModel<LocalDate>(pTipicoModel.getDate(), LocalDate.of(2016, 01, 01), LocalDate.of(2017, 01, 01), ChronoUnit.DAYS));
+		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(pTipicoModel.getWinValue(), 0, 100, 0.1));
+		JSpinner lExpenses = new JSpinner(new SpinnerNumberModel(pTipicoModel.getExpenses(), 0, 1000, 1.1));
+		JSpinner lAttempts = new JSpinner(new SpinnerNumberModel(pTipicoModel.getAttempts(), 0, 100, 1));
+		JSpinner lDate = new JSpinner(new SpinnerTemporalModel<LocalDate>(pTipicoModel.getDate(), LocalDate.of(2016, 01, 01), LocalDate.of(2020, 01, 01), ChronoUnit.DAYS));
 
 		JTextField lTeam = new JTextField(pTipicoModel.getTeam());
 		

@@ -1,11 +1,8 @@
 package de.business;
 
-import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -16,8 +13,6 @@ public class TipicoTableModel implements TableModel{
 	List<TipicoModel> list;
 	// the headers
 	String[] header;
-	// mark rows with colors
-	Map<Integer, Color> mRowColorMap = new HashMap<Integer, Color>();
     
 	public TipicoTableModel(){
 		this(null, new String[]{"ID", "TEAM", "WINVALUE", "EXPENSES", "ATTEMPTS", "DATE", "SUCCESSFUL"});
@@ -130,12 +125,22 @@ public class TipicoTableModel implements TableModel{
 		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
 	}
 	
-	public void setRowColor(int pRow, Color pColor) {
-		mRowColorMap.put(pRow, pColor);
+	public int generateValidID(){
+		return rec_generateValidID(list.size()+1);
 	}
-
-	public Color getRowColor(int pRow) {
-		return mRowColorMap.get(pRow);
+	
+	private int rec_generateValidID(int id){
+		if(isIDValid(id))
+			return id;
+		else
+			return rec_generateValidID(id+1);
+	}	
+	
+	public boolean isIDValid(int id){
+		for(TipicoModel item : list)
+			if(item.getTnr() == id)
+				return false;
+		return true;
 	}	
 	
 	@Override
