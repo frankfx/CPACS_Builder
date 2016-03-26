@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.presentation</groupId>
-  <artifactId>OpenGL</artifactId>
+  <groupId>de</groupId>
+  <artifactId>FootballApp</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>OpenGL</name>
+  <name>FootballApp</name>
 
   <build>
     <plugins>
@@ -24,7 +24,7 @@
               </descriptorRefs>
               <archive>
                 <manifest>
-                  <mainClass>de.presentation.Gl3Sample</mainClass>
+                  <mainClass>de.Main</mainClass>
                 </manifest>
               </archive>
             </configuration>
@@ -41,19 +41,10 @@
 		  <scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>org.jogamp.gluegen</groupId>
-            <artifactId>gluegen-rt-main</artifactId>
-            <version>2.3.2</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
         </dependency>
-        <dependency>
-            <groupId>org.jogamp.jogl</groupId>
-            <artifactId>jogl-all-main</artifactId>
-            <version>2.3.2</version>
-        </dependency>
-		<dependency>
-		  <groupId>de.parsing</groupId>
-		  <artifactId>ShapeXI</artifactId>
-		  <version>1.0-SNAPSHOT</version>
-		</dependency>  
+
   </dependencies>
 </project>

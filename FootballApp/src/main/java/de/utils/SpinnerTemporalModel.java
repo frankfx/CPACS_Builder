@@ -24,7 +24,11 @@ import javax.swing.AbstractSpinnerModel;
 public class SpinnerTemporalModel<T extends Temporal & TemporalAdjuster & Comparable>
     extends AbstractSpinnerModel {
 
-  private T value;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+private T value;
   private T min;
   private T max;
   private ChronoUnit step;
