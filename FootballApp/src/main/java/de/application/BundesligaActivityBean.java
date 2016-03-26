@@ -169,7 +169,7 @@ public class BundesligaActivityBean {
 			
 			public void run() {
 				mView.initView();
-				//initFixture(26, "bl1", "2015");
+				initFixture(26, "bl1", "2015");
 				addSubController(new TipicoActivityBean(mView.getTipicoPanel()));
 				addListener();
 			}

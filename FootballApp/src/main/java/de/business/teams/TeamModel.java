@@ -1,11 +1,11 @@
 package de.business.teams;
 
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import java.awt.Toolkit;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import de.utils.RessourceService;
 
 public class TeamModel {
 	private String mName;
@@ -55,30 +55,22 @@ public class TeamModel {
 	}
 	
 	/** Returns an ImageIcon, or null if the path was invalid. */
-	private ImageIcon createImageIcon(File pFile, String pDescription) {
-		Image lDimg = null;
-		try {
-		    lDimg = ImageIO.read(pFile).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}	
+	private ImageIcon createImageIcon(Image pFile, String pDescription) {
+		Image lDimg = pFile;
+//		try {
+//		    lDimg = ImageIO.read(pFile).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+//		} catch (IOException e) {
+//		    e.printStackTrace();
+//		}	
 		return new ImageIcon(lDimg, pDescription);
 	}	
 	
-	private File getIconPath(String pFilename){
-        StringBuilder sb =new StringBuilder();
-        sb.append(System.getProperty("user.dir"));
-        sb.append(File.separator);
-        sb.append("src");
-        sb.append(File.separator);
-        sb.append("main");
-        sb.append(File.separator);
-        sb.append("resources");
-        sb.append(File.separator);
-        sb.append("images");
-        sb.append(File.separator);
-        sb.append(pFilename);
-        return new File(sb.toString());
+	private Image getIconPath(String pFilename){
+		
+//		final URL url = Thread.currentThread().getContextClassLoader().getResource( "images" + File.separator + pFilename);
+//	    return Toolkit.getDefaultToolkit().getImage(url).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		
+		return Toolkit.getDefaultToolkit().getImage(RessourceService.getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 	}
 	
 	public String toString(){

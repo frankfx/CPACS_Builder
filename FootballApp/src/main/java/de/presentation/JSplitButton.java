@@ -2,11 +2,6 @@ package de.presentation;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import de.utils.RessourceService;
@@ -30,14 +25,8 @@ public class JSplitButton extends JButton {
         setHorizontalAlignment(SwingConstants.RIGHT);
         setIconTextGap(-getText().length()*18);
 
-        BufferedImage lBuffImg;
-		try {
-			lBuffImg = ImageIO.read(new File(RessourceService.IMGAGE_ICON_ARROW_DOWN));
-	        ImageIcon lIcon = new ImageIcon(lBuffImg.getScaledInstance(13, 15, Image.SCALE_SMOOTH), "Arrow down");
-	        this.setIcon(lIcon);
-		} catch (IOException e) {
-			System.out.println("Could not set arrow icon: " + e.getMessage());
-		}
+        this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RessourceService.IMGAGE_ICON_ARROW_DOWN)
+				.getScaledInstance(13, 15, Image.SCALE_SMOOTH), "ARROW DOWN"));
 
 		addListener();
 	}
