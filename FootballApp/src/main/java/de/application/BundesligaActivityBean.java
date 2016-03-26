@@ -174,7 +174,7 @@ public class BundesligaActivityBean {
 	}	
 	
 	public void actionRequestCompleteMatchday(){
-		int lMatchday = (int)mView.getConsolenPanel().getComboMatchday().getSelectedItem();
+		int lMatchday = (Integer)mView.getConsolenPanel().getComboMatchday().getSelectedItem();
 		String lLeague = mView.getConsolenPanel().getComboLeague().getSelectedItem().toString();
 		String lSeason = mView.getConsolenPanel().getComboSeason().getSelectedItem().toString();
 		
