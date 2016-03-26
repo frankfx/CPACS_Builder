@@ -195,6 +195,10 @@ public class Database {
 		this.mResultSet = lResultSet;
 	}	
 	
+	public boolean isConnected(){
+		return this.mConnection != null;
+	}
+	
 	public static void main(String[] args) throws SQLException {
 		Database db = new Database();
 		if (db.connect("localhost", "3306", "TestData", "root", "130386")){

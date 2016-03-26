@@ -21,6 +21,8 @@ public class JSplitButton extends JButton {
 	private JMenuItem mCommitItem = new JMenuItem("commit");
 	private JMenuItem mPullItem = new JMenuItem("pull");
 	private JMenuItem mRevertItem = new JMenuItem("revert");
+	private JMenuItem mDBBrowserItem = new JMenuItem("database browser");
+	
 	
 	public JSplitButton(String pTitle) {
 		super(pTitle);
@@ -56,6 +58,7 @@ public class JSplitButton extends JButton {
 		lPopupMenu.add(mCommitItem);
 		lPopupMenu.add(mPullItem);
 		lPopupMenu.add(mRevertItem);
+		lPopupMenu.add(mDBBrowserItem);
 		
 		return lPopupMenu;
 	}
@@ -82,5 +85,13 @@ public class JSplitButton extends JButton {
 
 	public void setRevertItem(JMenuItem pRevertItem) {
 		this.mRevertItem = pRevertItem;
+	}
+
+	public JMenuItem getDBBrowserItem() {
+		return mDBBrowserItem;
+	}
+
+	public void setDBBrowserItem(JMenuItem pDBBrowser) {
+		this.mDBBrowserItem = pDBBrowser;
 	}	
 }

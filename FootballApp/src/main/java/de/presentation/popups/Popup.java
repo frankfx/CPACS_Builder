@@ -2,11 +2,15 @@ package de.presentation.popups;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -100,11 +104,48 @@ public class Popup {
 		
 		Object[] message = {"Odds.", lOdds, "WinValue", lWinValue};
 
+		int n = runPopup(message, "bet value recommendation");
+	    
+		if (n == JOptionPane.OK_OPTION){
+			return new String[]{lOdds.getValue().toString(), lWinValue.getValue().toString()};
+		} else {
+			return null;
+		}
+	}
+
+	
+
+	public static void startDatabaseBrowser(List<TipicoModel> pTipicos){
+		DefaultListModel<TipicoModel> lListModel = new DefaultListModel<TipicoModel>();
+		
+		for(TipicoModel tm : pTipicos)
+			lListModel.addElement(tm);
+		
+		JList<TipicoModel> lList = new JList<TipicoModel>(lListModel);
+		
+		JScrollPane fruitListScrollPane = new JScrollPane(lList);
+		
+		Object[] message = {"List", fruitListScrollPane};
+		
+		runPopup(message, "database browser");
+		
+	}
+	
+	public static void startHintPopup(String pMessage){
+		JOptionPane.showMessageDialog(null, pMessage, "HINT", JOptionPane.WARNING_MESSAGE);
+	}
+	
+	public static void startErrorPopup(String pMessage){
+		JOptionPane.showMessageDialog(null, pMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	
+	private static int runPopup(Object[] message, String pTitle) {
 		JOptionPane pane = new JOptionPane( message,
 				JOptionPane.PLAIN_MESSAGE, 
 				JOptionPane.OK_CANCEL_OPTION);		
 		
-		JDialog lDialog = pane.createDialog(null, "bet value recommendation");
+		JDialog lDialog = pane.createDialog(null, pTitle);
 		lDialog.setVisible(true);
 		
 		Object selectedValue = pane.getValue();
@@ -116,19 +157,6 @@ public class Popup {
 	        n = Integer.parseInt(selectedValue.toString());				
 
 	    lDialog.dispose();
-	    
-		if (n == JOptionPane.OK_OPTION){
-			return new String[]{lOdds.getValue().toString(), lWinValue.getValue().toString()};
-		} else {
-			return null;
-		}
+		return n;
 	}	
-
-	public static void startHintPopup(String pMessage){
-		JOptionPane.showMessageDialog(null, pMessage, "HINT", JOptionPane.WARNING_MESSAGE);
-	}
-	
-	public static void startErrorPopup(String pMessage){
-		JOptionPane.showMessageDialog(null, pMessage, "ERROR", JOptionPane.ERROR_MESSAGE);
-	}
 }

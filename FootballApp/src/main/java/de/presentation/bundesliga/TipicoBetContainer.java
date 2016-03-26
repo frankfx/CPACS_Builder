@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
@@ -77,6 +78,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		};
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
+        
+        TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
+        mTable.setRowSorter(sorter);
+        
+        
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
 	    
@@ -150,6 +156,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	public void setButtonRevertListerner(ActionListener l){
 		this.mBtnDBSplit.getRevertItem().addActionListener(l);
 	}	
+	
+	public void setButtonDBBrowserListener(ActionListener l){
+		this.mBtnDBSplit.getDBBrowserItem().addActionListener(l);
+	}
+	
 	/**
 	 * ========================
 	 * END LISTENER

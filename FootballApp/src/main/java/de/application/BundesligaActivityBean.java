@@ -9,7 +9,6 @@ import java.util.Map;
 import de.business.BundesligaModel;
 import de.business.Match;
 import de.business.LigaWService;
-import de.business.TipicoModel;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;

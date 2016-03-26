@@ -147,4 +147,8 @@ public class TipicoTableModel implements TableModel{
 	public String toString(){
 		return this.list.toString();
 	}
+	
+	public List<TipicoModel> getAsList(){
+		return list;
+	}
 }
