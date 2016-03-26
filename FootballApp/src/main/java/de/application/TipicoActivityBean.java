@@ -68,8 +68,7 @@ public class TipicoActivityBean implements ISubController{
 		this.mView.setButtonDeleteListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mView.getTableModel().removeRow(getSelectedRow());
-				mView.updateTable();
+				actionDelete();
 			}
 		});
 			
@@ -502,10 +501,16 @@ public class TipicoActivityBean implements ISubController{
 		TipicoModel lModel = new TipicoModel();
 		lModel.setTnr(mView.getTableModel().generateValidID());
 		
+		System.out.println("out of if");
+		
 		if(startTableInputPopup(lModel, true)){
+			
+			System.out.println("in if : " + lModel);
 			mView.getTableModel().addRow(lModel);
 			mView.updateTable();
 		}
+		
+		System.out.println(mView.getTableModel().getAsList());
 	}
 
 	/**
@@ -561,6 +566,20 @@ public class TipicoActivityBean implements ISubController{
 				lModel.setPersistenceType(PersistenceType.OTHER);
 		}
 	}	
+
+	/**
+	 * Database function to delete to selected row
+	 */		
+	private void actionDelete(){
+		int row = getSelectedRow();
+		
+		mView.getTableModel().removeRow(row);
+		
+		if(mView.getTable().getRowCount() == 0)
+			mView.getTable().getSelectionModel().clearSelection();
+		
+		mView.updateTable();		
+	}
 
 	/**
 	 * Database function to show the db browser

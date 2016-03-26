@@ -62,7 +62,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
 				Component c = super.prepareRenderer(renderer, row, column);
-
+				
 				if (!isRowSelected(row)) {
 					int modelRow = convertRowIndexToModel(row);
 					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
@@ -79,8 +79,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         
-        TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
-        mTable.setRowSorter(sorter);
+//        TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
+//        mTable.setRowSorter(sorter);
+//        
         
         
         mTablePane = new JScrollPane(mTable);

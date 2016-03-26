@@ -45,7 +45,24 @@ public class TipicoTableModel implements TableModel{
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return getValueAt(0, columnIndex).getClass();		
+		switch (columnIndex) {
+		case 0:
+			return Integer.class;
+		case 1:
+			return String.class;
+		case 2:
+			return Float.class;
+		case 3:
+			return Float.class;
+		case 4:
+			return Integer.class;
+		case 5:
+			return LocalDate.class;
+		case 6:
+			return Boolean.class;
+		default:
+			return Object.class;
+		}
 	}
 
 	@Override
@@ -75,8 +92,9 @@ public class TipicoTableModel implements TableModel{
 			return list.get(rowIndex).getDate();
 		case 6:
 			return list.get(rowIndex).getSuccess();
+		default:
+			return null;
 		}		
-		return null;		
 	}
 
 	@Override
