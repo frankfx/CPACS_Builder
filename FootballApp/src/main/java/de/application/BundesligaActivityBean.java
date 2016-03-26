@@ -63,10 +63,15 @@ public class BundesligaActivityBean {
 		
 		Map<TeamIDEnum, TeamModel> map = mModel.getTeams();
 
-		for(Match lMatch : lMatches)
-			mView.getFixturePanel().createFixture(map.get(TeamIDEnum.getType(lMatch.getTeam1())), 
-					map.get(TeamIDEnum.getType(lMatch.getTeam2())), 
-					lMatch.getScore1(), lMatch.getScore2());		
+		int i = 0;
+		for(Match lMatch : lMatches){
+			if (lMatch != null){
+				mView.getFixturePanel().createFixture(
+						map.get(TeamIDEnum.getType(lMatch.getTeam1())), 
+						map.get(TeamIDEnum.getType(lMatch.getTeam2())), 
+						lMatch.getScore1(), lMatch.getScore2(), i++);				
+			}
+		}
 	}
 	
 	/**
@@ -77,6 +82,13 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mView.dispose();
+			}
+		});
+		
+		mView.setButtonRequestListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionRequestCompleteMatchday();
 			}
 		});
 		
@@ -161,6 +173,14 @@ public class BundesligaActivityBean {
 		mView.getConsolenPanel().appendConsole(lMessage);
 	}	
 	
+	public void actionRequestCompleteMatchday(){
+		int lMatchday = (int)mView.getConsolenPanel().getComboMatchday().getSelectedItem();
+		String lLeague = mView.getConsolenPanel().getComboLeague().getSelectedItem().toString();
+		String lSeason = mView.getConsolenPanel().getComboSeason().getSelectedItem().toString();
+		
+		initFixture(lMatchday, lLeague, lSeason);
+	}
+	
 	/**
 	 * Start App
 	 */		
@@ -169,7 +189,6 @@ public class BundesligaActivityBean {
 			
 			public void run() {
 				mView.initView();
-				initFixture(26, "bl1", "2015");
 				addSubController(new TipicoActivityBean(mView.getTipicoPanel()));
 				addListener();
 			}

@@ -7,6 +7,10 @@ public class Match {
 	private int mScore1;
 	private int mScore2;
 
+	public Match(){
+		
+	}
+	
 	public Match(int pId, String pTeam1, String pTeam2, int pScore1, int pScore2){
 		mId = pId;
 		mTeam1 = pTeam1;

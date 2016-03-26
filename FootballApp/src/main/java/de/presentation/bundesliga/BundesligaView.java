@@ -127,6 +127,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     public void setButtonExitListener(ActionListener l){
         this.mButtonPanel.getBtnExit().addActionListener(l);
     }	
+    
+    public void setButtonRequestListener(ActionListener l){
+        this.mConsolenPanel.getBtnRequest().addActionListener(l);
+    }    
 	
     public void setMenuItemLoadCSVListener(ActionListener l){
     	this.menuItemLoadCSV.addActionListener(l);
@@ -158,7 +162,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     
     public void setMenuItemAboutListener(ActionListener l){
     	this.menuItemAbout.addActionListener(l);
-    }     
+    }    
+    
 	/**
 	 * ========================
 	 * END LISTENER
