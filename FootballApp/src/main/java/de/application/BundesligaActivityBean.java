@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.python.core.Py;
+import org.python.core.PyFunction;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.core.PySystemState;
+import org.python.util.PythonInterpreter;
+
 import de.business.BundesligaModel;
 import de.business.Match;
 import de.business.LigaWService;
@@ -13,6 +20,7 @@ import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.Popup;
+import de.utils.RessourceService;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;
@@ -123,7 +131,7 @@ public class BundesligaActivityBean {
 		mView.setMenuItemPullDBListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Pull DB");
+				actionRunPython();
 			}
 		});
 		
@@ -179,6 +187,21 @@ public class BundesligaActivityBean {
 		String lSeason = mView.getConsolenPanel().getComboSeason().getSelectedItem().toString();
 		
 		initFixture(lMatchday, lLeague, lSeason);
+	}
+	
+	public void actionRunPython(){
+		PythonInterpreter lPython = new PythonInterpreter();
+		lPython.execfile(RessourceService.SCRIPT_PYTHON_SOCCERWAY.getFile());
+		
+        PyFunction pyFuntion = (PyFunction) lPython.get("getTeamData", PyFunction.class);
+        PyObject result = pyFuntion.__call__(new PyString("994"), new PyString("home"));		
+		
+        String [] str = result.toString().split("],");
+        
+        for (String s : str)
+        	System.out.println(s);
+		
+		lPython.close();
 	}
 	
 	/**

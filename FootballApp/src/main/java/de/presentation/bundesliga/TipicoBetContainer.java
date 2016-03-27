@@ -81,8 +81,6 @@ public class TipicoBetContainer extends AbstractPanelContainer {
         
 //        TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
 //        mTable.setRowSorter(sorter);
-//        
-        
         
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);

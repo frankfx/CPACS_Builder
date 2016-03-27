@@ -1,8 +1,8 @@
 package de.business.teams;
 
 public enum TeamIDEnum {
-	BVB("Borussia Dortmund"), FCB("Bayern München"), LEV("Bayer 04 Leverkusen"), Hertha("Hertha BSC"), BMG("Borussia Mönchengladbach"), 
-	S04("FC Schalke 04"), FSV("1. FSV Mainz 05"), VFL("VfL Wolfsburg"), FCK("1. FC Köln"), Ingol("FC Ingolstadt 04"), 
+	BVB("Borussia Dortmund"), FCB("Bayern"), LEV("Bayer 04 Leverkusen"), Hertha("Hertha BSC"), BMG("Borussia M"), 
+	S04("FC Schalke 04"), FSV("1. FSV Mainz 05"), VFL("VfL Wolfsburg"), FCK("1. FC K"), Ingol("FC Ingolstadt 04"), 
 	VFB("VfB Stuttgart"), HSV("Hamburger SV"), FCA("FC Augsburg"), D89("SV Darmstadt 98"), SVW("Werder Bremen"), 
 	EINTRACHT("Eintracht Frankfurt"), TSG("TSG 1899 Hoffenheim"), H96("Hannover 96"), EMTPY("Empty");
 
@@ -17,13 +17,13 @@ public enum TeamIDEnum {
 			return TeamIDEnum.EMTPY;
 		else if(str.equals(BVB.name))
 			return TeamIDEnum.BVB;
-		else if(str.equals(FCB.name))
+		else if(str.contains(FCB.name)) // use "contains" because the web service uses an Umlaut instead of ue in Bayern Muenchen 
 			return TeamIDEnum.FCB;
 		else if(str.equals(LEV.name))
 			return TeamIDEnum.LEV;
 		else if(str.equals(Hertha.name))
 			return TeamIDEnum.Hertha;
-		else if(str.equals(BMG.name))
+		else if(str.contains(BMG.name)) // use "contains" because the web service uses an Umlaut instead of oe in M�nchengladbach
 			return TeamIDEnum.BMG;
 		else if(str.equals(S04.name))
 			return TeamIDEnum.S04;
@@ -31,7 +31,7 @@ public enum TeamIDEnum {
 			return TeamIDEnum.FSV;		
 		else if(str.equals(VFL.name))
 			return TeamIDEnum.VFL;
-		else if(str.equals(FCK.name))
+		else if(str.contains(FCK.name)) // use "contains" because the web service uses an Umlaut instead of oe in Koeln
 			return TeamIDEnum.FCK;
 		else if(str.equals(Ingol.name))
 			return TeamIDEnum.Ingol;		

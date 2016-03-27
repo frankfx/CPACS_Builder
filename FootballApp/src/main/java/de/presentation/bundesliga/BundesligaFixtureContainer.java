@@ -36,8 +36,10 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
 	 * match-Array example : [team1_0, team2_0, result_0, ... , team1_8, team2_8, result_8]
 	 */
 	public void createFixture (TeamModel pTeam1, TeamModel pTeam2, int pGoal1, int pGoal2, int pGameId) {
-		if(pTeam1 == null || pTeam2 == null)
-			return;
+		if(pTeam1 == null || pTeam2 == null){
+			pTeam1 = pTeam1 != null ? pTeam1 : new TeamModel("Null");
+			pTeam2 = pTeam2 != null ? pTeam2 : new TeamModel("Null");
+		}
 		
 		if(mMatch[3*pGameId] == null)
 			mMatch[3*pGameId] = new JLabel();
