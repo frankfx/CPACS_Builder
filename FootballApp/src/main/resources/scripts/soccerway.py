@@ -23,6 +23,7 @@ def getTeamData(teamId, dataType):
 	l = []
 
 	for val in list(dat) :
+		#return list(val)
 		l.append(list(val))	
 	
 	return l

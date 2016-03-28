@@ -26,6 +26,7 @@ public class BundesligaActivityBean {
 	private BundesligaModel mModel;
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
+	private PythonInterpreter mPython;
 	
 	/**
 	 * Controller 
@@ -89,14 +90,28 @@ public class BundesligaActivityBean {
 		mView.setButtonExitListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mView.dispose();
+				actionClose();
 			}
 		});
+
+		mView.setButtonClearListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.getConsolenPanel().clearConsole();
+			}
+		});		
 		
 		mView.setButtonRequestListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionRequestCompleteMatchday();
+			}
+		});
+		
+		mView.setButtonRequestTeamListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionTeamDataPythonRequest();
 			}
 		});
 		
@@ -131,7 +146,7 @@ public class BundesligaActivityBean {
 		mView.setMenuItemPullDBListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actionRunPython();
+				//actionRunPython();
 			}
 		});
 		
@@ -189,19 +204,39 @@ public class BundesligaActivityBean {
 		initFixture(lMatchday, lLeague, lSeason);
 	}
 	
-	public void actionRunPython(){
-		PythonInterpreter lPython = new PythonInterpreter();
-		lPython.execfile(RessourceService.SCRIPT_PYTHON_SOCCERWAY.getFile());
+	public void actionTeamDataPythonRequest(){
+		if (mPython == null)
+			this.mPython = new PythonInterpreter();
 		
-        PyFunction pyFuntion = (PyFunction) lPython.get("getTeamData", PyFunction.class);
-        PyObject result = pyFuntion.__call__(new PyString("994"), new PyString("home"));		
-		
-        String [] str = result.toString().split("],");
+		mPython.execfile(RessourceService.SCRIPT_PYTHON_SOCCERWAY.getFile());
+        PyFunction pyFuntion = (PyFunction) mPython.get("getTeamData", PyFunction.class);
         
-        for (String s : str)
-        	System.out.println(s);
+        String lId = ((TeamIDEnum) mView.getConsolenPanel().getComboTeamID().getSelectedItem()).getID();
+        String lMatchType = mView.getConsolenPanel().getComboMatchType().getSelectedItem().toString();
+        
+        PyObject result = pyFuntion.__call__(new PyString(lId), new PyString(lMatchType));		
 		
-		lPython.close();
+        String[][] lData = (String[][]) result.__tojava__(String[][].class);
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < lData.length; i++) {
+        	sb.append("[");
+        	for (int j = 0; j < lData[i].length -1 ; j++){
+        		sb.append(lData[i][j]);
+        		sb.append(", ");
+        	}
+        	sb.append(lData[i][lData[i].length-1]);
+        	sb.append("]");
+        	mView.getConsolenPanel().appendConsole(sb.toString());
+        	sb.setLength(0);
+        }
+	}
+	
+	public void actionClose(){
+		mView.dispose();
+		if (mPython != null)
+			mPython.close();	
 	}
 	
 	/**

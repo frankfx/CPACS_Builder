@@ -131,6 +131,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     public void setButtonRequestListener(ActionListener l){
         this.mConsolenPanel.getBtnRequest().addActionListener(l);
     }    
+
+    public void setButtonClearListener(ActionListener l){
+        this.mConsolenPanel.getBtnClear().addActionListener(l);
+    }    
+
+    public void setButtonRequestTeamListener(ActionListener l){
+    	this.mConsolenPanel.getBtnTeamRequest().addActionListener(l);
+    }
 	
     public void setMenuItemLoadCSVListener(ActionListener l){
     	this.menuItemLoadCSV.addActionListener(l);

@@ -1,20 +1,28 @@
 package de.business.teams;
 
 public enum TeamIDEnum {
-	BVB("Borussia Dortmund"), FCB("Bayern"), LEV("Bayer 04 Leverkusen"), Hertha("Hertha BSC"), BMG("Borussia M"), 
+	BVB("Borussia Dortmund", "964"), FCB("Bayern", "961"), LEV("Bayer 04 Leverkusen", "963"), Hertha("Hertha BSC"), BMG("Borussia M"), 
 	S04("FC Schalke 04"), FSV("1. FSV Mainz 05"), VFL("VfL Wolfsburg"), FCK("1. FC K"), Ingol("FC Ingolstadt 04"), 
-	VFB("VfB Stuttgart"), HSV("Hamburger SV"), FCA("FC Augsburg"), D89("SV Darmstadt 98"), SVW("Werder Bremen"), 
-	EINTRACHT("Eintracht Frankfurt"), TSG("TSG 1899 Hoffenheim"), H96("Hannover 96"), EMTPY("Empty");
-
+	VFB("VfB Stuttgart"), HSV("Hamburger SV", "967"), FCA("FC Augsburg"), D89("SV Darmstadt 98"), SVW("Werder Bremen"), 
+	EINTRACHT("Eintracht Frankfurt"), TSG("TSG 1899 Hoffenheim"), H96("Hannover 96"), ZWICKAU("FSV Zwickau", "2370"),
+	ESSEN("Rot Weiss Essen", "994"), VFR("VFR Aalen", "1002"), EMPTY("Empty");
+	
+	// soccerway id	
+	String id = "";
 	String name = "";
 	
-	private TeamIDEnum(String name){
-		this.name = name;
+	private TeamIDEnum(String pName, String pId){
+		this.name = pName;
+		this.id = pId;
+	}
+	
+	private TeamIDEnum(String pName){
+		this(pName, "");
 	}
 	
 	public static TeamIDEnum getType(String str){
 		if (str == null)
-			return TeamIDEnum.EMTPY;
+			return TeamIDEnum.EMPTY;
 		else if(str.equals(BVB.name))
 			return TeamIDEnum.BVB;
 		else if(str.contains(FCB.name)) // use "contains" because the web service uses an Umlaut instead of ue in Bayern Muenchen 
@@ -51,6 +59,15 @@ public enum TeamIDEnum {
 			return TeamIDEnum.TSG;
 		else if(str.equals(H96.name))
 			return TeamIDEnum.H96;
-		else return TeamIDEnum.EMTPY;
+		else return TeamIDEnum.EMPTY;
 	}	
+	
+	@Override
+	public String toString(){
+		return this.name();
+	}
+	
+	public String getID(){
+		return this.id;
+	}
 }
