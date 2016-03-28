@@ -37,7 +37,7 @@ public class Database {
 			Class.forName("com.mysql.jdbc.Driver");		
 			// STEP 3: Open connection
 			
-			mConnection = DriverManager.getConnection("jdbc:mysql://" + pHost + ":" + pPort + "/TestData", pUser, pPass);		
+			mConnection = DriverManager.getConnection("jdbc:mysql://" + pHost + ":" + pPort + "/" + pDatabase , pUser, pPass);		
 			return true;
 		} catch(SQLException e){
 			System.out.println("ERROR: SQL-EXCEPTION");
@@ -217,6 +217,11 @@ public class Database {
 			
 			// print the first row 
 		//	System.out.println(db.getNextResult(db.getNumberOfColums()));
+			
+//			Database: testdb_tipico
+//			Username: frankfx
+//			Email: Rinifx@gmail.com
+//			"85.10.205.173:3306"
 			
 			db.disconnect();
 		}

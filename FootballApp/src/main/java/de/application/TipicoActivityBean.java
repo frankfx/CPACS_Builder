@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import javax.swing.JOptionPane;
+
 import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
@@ -19,7 +21,7 @@ import de.utils.PersistenceType;
 public class TipicoActivityBean implements ISubController{
 
 	private final static String SQL_CREATE_TABLE_TIPICO = "create table Tipico (tnr int, team varchar(20), winValue float, expenses float, attempts int, pDate date, success boolean, Primary Key(tnr));";
-	private final static String SQL_DROP_TABLE_TIPICO = "drop table Tipico";
+	private final static String SQL_DROP_TABLE_TIPICO = "drop table if exists Tipico";
 	private final static String SQL_INSERT_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, attempts, pDate, success) values (?, ?, ?, ?, ?, ?, ?);";
 	private final static String SQL_UPDATE_ROW_QUERY = "update Tipico set team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=? where tnr=?";
 	private final static String SQL_INSERT_UPDATE_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, attempts, pDate, success) values (?, ?, ?, ?, ?, ?, ?) on duplicate key update team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=?;";
@@ -82,14 +84,21 @@ public class TipicoActivityBean implements ISubController{
 		this.mView.setButtonPullListerner(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initTable();
+				actionInitTable();
 			}
 		});	
-			
+
+		this.mView.setButtonRemoveListerner(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionRemove();
+			}
+		});			
+		
 		this.mView.setButtonRevertListerner(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("revert");
+				actionDropCreateTable();
 			}
 		});		
 		
@@ -348,7 +357,7 @@ public class TipicoActivityBean implements ISubController{
 	/**
 	 * initialized the table with all entries of the database
 	 */		
-	public void initTable(){
+	public void actionInitTable(){
 		if(readFromDatabaseToTableModel(mView.getTableModel()))
 			mView.getTable().updateUI();
 	}	
@@ -508,6 +517,24 @@ public class TipicoActivityBean implements ISubController{
 	}
 
 	/**
+	 * Local function to delete to selected row
+	 */		
+	private void actionDelete(){
+		int lStart = getSelectedRow(); 
+		int lEnd = lStart + mView.getTable().getSelectedRowCount();				
+
+		for(int i = lStart; i<lEnd; i++){
+			mView.getTableModel().removeRow(lStart);
+		}		
+		
+//		if(mView.getTable().getRowCount() == 0)
+//			mView.getTable().getSelectionModel().clearSelection();
+
+		mView.updateTable();		
+	}	
+	
+	
+	/**
 	 * Local table function to modify the selected entry
 	 */		
 	private void actionModify(){
@@ -562,20 +589,6 @@ public class TipicoActivityBean implements ISubController{
 	}	
 
 	/**
-	 * Database function to delete to selected row
-	 */		
-	private void actionDelete(){
-		int row = getSelectedRow();
-		
-		mView.getTableModel().removeRow(row);
-		
-		if(mView.getTable().getRowCount() == 0)
-			mView.getTable().getSelectionModel().clearSelection();
-		
-		mView.updateTable();		
-	}
-
-	/**
 	 * Database function to show the db browser
 	 */		
 	private void actionDBBrowser(){
@@ -585,6 +598,44 @@ public class TipicoActivityBean implements ISubController{
 			Popup.startDatabaseBrowser(lModel.getAsList());
 		} else
 			Popup.startHintPopup(FAMessages.MESSAGE_NO_DATABASE);
+	}
+
+	/**
+	 * Database function to remove item from database
+	 */		
+	private void actionRemove(){
+		int lStart = getSelectedRow(); 
+		int lEnd = lStart + mView.getTable().getSelectedRowCount();		
+		
+		for(int i = lStart; i<lEnd; i++){
+			TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(i);
+			
+			if (!lModel.getPersistenceType().equals(PersistenceType.NEW)){
+
+				if (JOptionPane.showConfirmDialog(null, "Remove from Database ... are you sure?", "WARNING",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				    // yes option
+					if(deleteRowInTipico(lModel.getTnr()))
+						lModel.setPersistenceType(PersistenceType.NEW);
+				}
+			}
+		}		
+	}
+
+	/**
+	 * Database function drop and recreate tipico table
+	 */		
+	private void actionDropCreateTable(){
+		if (JOptionPane.showConfirmDialog(null, "Drop and recreate table tipico ... are you sure?", "WARNING",
+		        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		    // yes option
+			if(dropTableTipico())
+				createTableTipico();
+		}		
+		
+		
+		
+		
 	}
 	
  // ========================

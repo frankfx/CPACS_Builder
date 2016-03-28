@@ -5,12 +5,12 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableRowSorter;
 
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
@@ -67,7 +67,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 					int modelRow = convertRowIndexToModel(row);
 					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
 					
-					if(lModel.getPersistenceType().equals(PersistenceType.NEW))
+					if(!lModel.getDate().isAfter(LocalDate.now())){
+						c.setBackground(Color.MAGENTA);
+					} else if(lModel.getPersistenceType().equals(PersistenceType.NEW))
 						c.setBackground(Color.YELLOW);
 					else
 						c.setBackground(getBackground());
@@ -151,6 +153,10 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	public void setButtonPullListerner(ActionListener l){
 		this.mBtnDBSplit.getPullItem().addActionListener(l);
 	}
+
+	public void setButtonRemoveListerner(ActionListener l){
+		this.mBtnDBSplit.getRemoveItem().addActionListener(l);
+	}	
 	
 	public void setButtonRevertListerner(ActionListener l){
 		this.mBtnDBSplit.getRevertItem().addActionListener(l);

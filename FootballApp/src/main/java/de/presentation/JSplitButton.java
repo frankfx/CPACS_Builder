@@ -15,6 +15,7 @@ public class JSplitButton extends JButton {
 
 	private JMenuItem mCommitItem = new JMenuItem("commit");
 	private JMenuItem mPullItem = new JMenuItem("pull");
+	private JMenuItem mRemoveItem = new JMenuItem("remove");
 	private JMenuItem mRevertItem = new JMenuItem("revert");
 	private JMenuItem mDBBrowserItem = new JMenuItem("database browser");
 	
@@ -46,7 +47,10 @@ public class JSplitButton extends JButton {
 
 		lPopupMenu.add(mCommitItem);
 		lPopupMenu.add(mPullItem);
+		lPopupMenu.addSeparator();
+		lPopupMenu.add(mRemoveItem);
 		lPopupMenu.add(mRevertItem);
+		lPopupMenu.addSeparator();
 		lPopupMenu.add(mDBBrowserItem);
 		
 		return lPopupMenu;
@@ -68,6 +72,14 @@ public class JSplitButton extends JButton {
 		this.mPullItem = pPullItem;
 	}
 
+	public JMenuItem getRemoveItem() {
+		return mRemoveItem;
+	}
+
+	public void setmRemoveItem(JMenuItem pRemoveItem) {
+		this.mRemoveItem = pRemoveItem;
+	}	
+	
 	public JMenuItem getRevertItem() {
 		return mRevertItem;
 	}

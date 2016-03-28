@@ -1,5 +1,7 @@
 package de.presentation.popups;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -61,15 +63,37 @@ public class Popup {
 		}
 	}
 
-	
 	public static String [] startDatabaseConnectionPopup(){
-		JTextField lHostname = new JTextField("localhost");
-		JTextField lDatabase = new JTextField("TestData");
-		JSpinner lPort = new JSpinner(new SpinnerNumberModel(3306, 1, 9999, 1));
-		JTextField lUser = new JTextField("root");
-		JPasswordField lPass = new JPasswordField("130386");
+		final JTextField lHostname = new JTextField();
+		final JTextField lDatabase = new JTextField();
+		final JSpinner lPort = new JSpinner(new SpinnerNumberModel(3306, 1, 9999, 1));
+		final JTextField lUser = new JTextField();
+		final JPasswordField lPass = new JPasswordField();
 		
-		Object[] mInput = {"Host", lHostname, "Port", lPort, "Database", lDatabase, 
+		final JComboBox<String> lTemp = new JComboBox<String>();
+		lTemp.addItem(null);
+		lTemp.addItem("localhost");
+		lTemp.addItem("db4free");
+		
+		lTemp.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(! (lTemp.getSelectedItem() == null)){
+					if (lTemp.getSelectedItem().toString().equals("localhost")) {
+						lHostname.setText("localhost");
+						lDatabase.setText("TestData");
+						lUser.setText("root");
+					} else if(lTemp.getSelectedItem().toString().equals("db4free")){
+						lHostname.setText("85.10.205.173");
+						lDatabase.setText("testdb_tipico");
+						lUser.setText("frankfx");
+					}
+				}
+			}
+		});
+		
+		Object[] mInput = {"Connections", lTemp, "Host", lHostname, "Port", lPort, "Database", lDatabase, 
 				"User", lUser, "Password", lPass};
 
 		JOptionPane pane = new JOptionPane( mInput,
