@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JList;
@@ -125,13 +126,14 @@ public class Popup {
 	public static String [] startTipicoPopupBetValue(float winValue){
 		JSpinner lWinValue = new JSpinner(new SpinnerNumberModel(winValue, 1, 100, 0.1));
 		JSpinner lOdds = new JSpinner(new SpinnerNumberModel(3.0, 1, 40, 0.1));
+		JCheckBox lSubmitBet = new JCheckBox("submit bet value!");
 		
-		Object[] message = {"Odds.", lOdds, "WinValue", lWinValue};
+		Object[] message = {"", lSubmitBet,  "Odds.", lOdds, "WinValue", lWinValue};
 
 		int n = runPopup(message, "bet value recommendation");
 	    
 		if (n == JOptionPane.OK_OPTION){
-			return new String[]{lOdds.getValue().toString(), lWinValue.getValue().toString()};
+			return new String[]{lOdds.getValue().toString(), lWinValue.getValue().toString(), lSubmitBet.isSelected()+""};
 		} else {
 			return null;
 		}

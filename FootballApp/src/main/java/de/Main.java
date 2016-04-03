@@ -14,8 +14,6 @@ public class Main {
 		BundesligaModel model = new BundesligaModel();
 		BundesligaView view = new BundesligaView();
 		
-		System.out.println("rest");
-		
 		BundesligaActivityBean controller = new BundesligaActivityBean(model, view);
 		controller.runApp();
 	}

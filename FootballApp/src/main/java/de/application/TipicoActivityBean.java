@@ -494,8 +494,8 @@ public class TipicoActivityBean implements ISubController{
 	 *  		newBet = (winValue + sumOldBet) / (odds-1)
 	 * 
 	 */
-	public static double computeBetValue(double winValue, double sumOldBet, double odds){
-		return odds > 1.0 ? (winValue + sumOldBet) / (odds-1) : -1;
+	public static float computeBetValue(float winValue, float sumOldBet, float odds){
+		return odds > 1.0f ? (winValue + sumOldBet) / (odds-1) : -1f;
 	}
 	
 	
@@ -565,8 +565,14 @@ public class TipicoActivityBean implements ISubController{
 			lResult = FAMessages.MESSAGE_NO_VALID_TABLE_MODEL + (lRow);
 		else{
 			String [] arr = Popup.startTipicoPopupBetValue(lModel.getWinValue());
-			if(arr != null)
-				lResult = ""+computeBetValue(Float.parseFloat(arr[1]), lModel.getExpenses(), Float.parseFloat(arr[0]));
+			if(arr != null){
+				float a = computeBetValue(Float.parseFloat(arr[1]), lModel.getExpenses(), Float.parseFloat(arr[0]));
+				if(Boolean.parseBoolean(arr[2])){
+					lModel.setExpenses(a + lModel.getExpenses());
+				}
+				lResult = ""+a;
+			}
+				
 			else
 				lResult = FAMessages.MESSAGE_NO_VALID_FORMULAR_DATA;
 		}
