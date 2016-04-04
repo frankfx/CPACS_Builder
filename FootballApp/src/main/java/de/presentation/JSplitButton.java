@@ -1,10 +1,20 @@
 package de.presentation;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import de.utils.RessourceService;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
+
+import data.Tes;
+import test.rene.Pul;
+
+
 
 public class JSplitButton extends JButton {
 
@@ -26,7 +36,7 @@ public class JSplitButton extends JButton {
         setHorizontalAlignment(SwingConstants.RIGHT);
         setIconTextGap(-getText().length()*18);
 
-        this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(RessourceService.IMGAGE_ICON_ARROW_DOWN)
+        this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(Tes.getInstance().IMGAGE_ICON_ARROW_DOWN)
 				.getScaledInstance(13, 15, Image.SCALE_SMOOTH), "ARROW DOWN"));
 
 		addListener();

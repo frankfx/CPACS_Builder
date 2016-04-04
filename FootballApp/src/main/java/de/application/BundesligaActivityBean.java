@@ -2,6 +2,7 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
+import data.Tes;
 import de.business.BundesligaModel;
 import de.business.Match;
 import de.business.LigaWService;
@@ -20,7 +22,6 @@ import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.Popup;
-import de.utils.RessourceService;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;
@@ -208,8 +209,18 @@ public class BundesligaActivityBean {
 		if (mPython == null)
 			this.mPython = new PythonInterpreter();
 		
-		mPython.execfile(RessourceService.SCRIPT_PYTHON_SOCCERWAY.getFile());
-        PyFunction pyFuntion = (PyFunction) mPython.get("getTeamData", PyFunction.class);
+		String t = Tes.getInstance().SCRIPT_PYTHON_SOCCERWAY.getFile();
+		
+		System.out.println(t + ", " +  new File(t).exists());
+		
+		System.out.println("Hier1 : " + t);
+		
+		mPython.execfile(t);
+		
+		System.out.println("Hier2 : " +t);
+		
+		
+		PyFunction pyFuntion = (PyFunction) mPython.get("getTeamData", PyFunction.class);
         
         String lId = ((TeamIDEnum) mView.getConsolenPanel().getComboTeamID().getSelectedItem()).getID();
         String lMatchType = mView.getConsolenPanel().getComboMatchType().getSelectedItem().toString();

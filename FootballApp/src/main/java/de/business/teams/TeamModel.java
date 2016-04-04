@@ -2,10 +2,11 @@ package de.business.teams;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 
-import de.utils.RessourceService;
+import data.Tes;
 
 public class TeamModel {
 	private String mName;
@@ -70,7 +71,18 @@ public class TeamModel {
 //		final URL url = Thread.currentThread().getContextClassLoader().getResource( "images" + File.separator + pFilename);
 //	    return Toolkit.getDefaultToolkit().getImage(url).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 		
-		return Toolkit.getDefaultToolkit().getImage(RessourceService.getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+//		String t = RessourceService.getRessourceImages(pFilename).getFile();
+		
+//		System.out.println(t + ", " +  new File(t).exists());
+		
+//		System.out.println("Hier1 : " + RessourceService.getRessourceImages(pFilename));
+		
+//		System.out.println(Toolkit.getDefaultToolkit().getImage(RessourceService.getRessourceImages(pFilename)));
+		
+		System.out.println(pFilename);
+		System.out.println(Tes.getInstance().getRessourceImages(pFilename));
+		
+		return Toolkit.getDefaultToolkit().getImage(Tes.getInstance().getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 	}
 	
 	public String toString(){
