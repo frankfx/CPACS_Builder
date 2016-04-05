@@ -67,7 +67,9 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 					int modelRow = convertRowIndexToModel(row);
 					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
 					
-					if(!lModel.getDate().isAfter(LocalDate.now())){
+					if(lModel.getSuccess()){
+						c.setBackground(Color.GREEN);
+					} else if(!lModel.getDate().isAfter(LocalDate.now())){
 						c.setBackground(Color.MAGENTA);
 					} else if(lModel.getPersistenceType().equals(PersistenceType.NEW))
 						c.setBackground(Color.YELLOW);

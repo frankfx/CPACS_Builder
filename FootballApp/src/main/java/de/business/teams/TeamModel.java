@@ -2,11 +2,10 @@ package de.business.teams;
 
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 
-import data.Tes;
+import de.utils.Tes;
 
 public class TeamModel {
 	private String mName;

@@ -11,9 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
-import data.Tes;
-import test.rene.Pul;
-
+import de.utils.Tes;
 
 
 public class JSplitButton extends JButton {

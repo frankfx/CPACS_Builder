@@ -169,4 +169,15 @@ public class TipicoTableModel implements TableModel{
 	public List<TipicoModel> getAsList(){
 		return list;
 	}
+	
+	public float getBalance(){
+		float lResult = 0.0f;
+		for(int i = 0; i<list.size(); i++){
+			if(list.get(i).getSuccess())
+				lResult += list.get(i).getWinValue();
+			else
+				lResult -= list.get(i).getExpenses();
+		}
+		return lResult;
+	}
 }

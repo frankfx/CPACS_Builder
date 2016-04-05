@@ -358,8 +358,9 @@ public class TipicoActivityBean implements ISubController{
 	 * initialized the table with all entries of the database
 	 */		
 	public void actionInitTable(){
-		if(readFromDatabaseToTableModel(mView.getTableModel()))
+		if(readFromDatabaseToTableModel(mView.getTableModel())){
 			mView.getTable().updateUI();
+		}
 	}	
 	
 	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel){
@@ -381,6 +382,7 @@ public class TipicoActivityBean implements ISubController{
 					
 					pModel.addRow(data);
 				}
+				mBundesligaListener.actionUpdateBalance(getBalance());
 				return true;
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -512,7 +514,7 @@ public class TipicoActivityBean implements ISubController{
 		
 		if(startTableInputPopup(lModel, true)){
 			mView.getTableModel().addRow(lModel);
-			mView.updateTable();
+			updateTable();
 		}
 	}
 
@@ -530,7 +532,7 @@ public class TipicoActivityBean implements ISubController{
 //		if(mView.getTable().getRowCount() == 0)
 //			mView.getTable().getSelectionModel().clearSelection();
 
-		mView.updateTable();		
+		updateTable();		
 	}	
 	
 	
@@ -546,7 +548,7 @@ public class TipicoActivityBean implements ISubController{
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIndex);
 		
 		if(startTableInputPopup(lModel, false)){
-			mView.updateTable();
+			updateTable();
 			mBundesligaListener.actionUpdateConsole("Table updated");			
 		}
 		
@@ -638,13 +640,25 @@ public class TipicoActivityBean implements ISubController{
 			if(dropTableTipico())
 				createTableTipico();
 		}		
-		
-		
-		
-		
 	}
 	
  // ========================
  // END ACTION
+ // ========================
+ 
+	
+ // ========================
+ // BEGIN FUNCTION
+ // ========================
+	public float getBalance(){
+		return mView.getTableModel().getBalance();
+	}
+	
+	public void updateTable(){
+		this.mView.updateTable();
+		mBundesligaListener.actionUpdateBalance(getBalance());
+	}
+ // ========================
+ // END FUNCTION
  // ========================
 }

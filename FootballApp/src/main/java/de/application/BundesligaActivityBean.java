@@ -14,7 +14,6 @@ import org.python.core.PyString;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import data.Tes;
 import de.business.BundesligaModel;
 import de.business.Match;
 import de.business.LigaWService;
@@ -22,6 +21,7 @@ import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.Popup;
+import de.utils.Tes;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;
@@ -196,6 +196,11 @@ public class BundesligaActivityBean {
 	public void actionUpdateConsole(String lMessage){
 		mView.getConsolenPanel().appendConsole(lMessage);
 	}	
+	
+	public void actionUpdateBalance(float pBalance){
+		float lBalance = 41.1f;
+		mView.getStatisticPanel().setBalanceValue(lBalance + pBalance);
+	}
 	
 	public void actionRequestCompleteMatchday(){
 		int lMatchday = (Integer)mView.getConsolenPanel().getComboMatchday().getSelectedItem();
