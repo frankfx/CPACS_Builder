@@ -3,6 +3,7 @@
 import urllib2
 import json
 import re
+import sys
 
 ## First, run following code in the console:
 #chcp 65001
@@ -99,3 +100,8 @@ def getData(teamId, matchType):
 		data[matchType] = parseJson(jsonStr)
             
 	return data[matchType]
+	
+	
+# PRINTING
+
+print getTeamData(sys.argv[1], sys.argv[2])

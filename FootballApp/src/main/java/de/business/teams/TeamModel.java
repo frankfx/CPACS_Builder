@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
-import de.utils.Tes;
+import de.utils.ResourceService;
 
 public class TeamModel {
 	private String mName;
@@ -79,9 +79,9 @@ public class TeamModel {
 //		System.out.println(Toolkit.getDefaultToolkit().getImage(RessourceService.getRessourceImages(pFilename)));
 		
 		System.out.println(pFilename);
-		System.out.println(Tes.getInstance().getRessourceImages(pFilename));
+		System.out.println(ResourceService.getInstance().getRessourceImages(pFilename));
 		
-		return Toolkit.getDefaultToolkit().getImage(Tes.getInstance().getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		return Toolkit.getDefaultToolkit().getImage(ResourceService.getInstance().getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 	}
 	
 	public String toString(){

@@ -382,7 +382,7 @@ public class TipicoActivityBean implements ISubController{
 					
 					pModel.addRow(data);
 				}
-				mBundesligaListener.actionUpdateBalance(getBalance());
+				mBundesligaListener.actionUpdateStatistics(getBalance());
 				return true;
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -656,7 +656,7 @@ public class TipicoActivityBean implements ISubController{
 	
 	public void updateTable(){
 		this.mView.updateTable();
-		mBundesligaListener.actionUpdateBalance(getBalance());
+		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}
  // ========================
  // END FUNCTION

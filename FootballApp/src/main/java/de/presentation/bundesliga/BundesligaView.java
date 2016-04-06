@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.event.ChangeListener;
 
 import de.presentation.ButtonPanelContainer;
 import de.presentation.IDefaultGUI;
@@ -143,7 +144,11 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     public void setButtonRequestTeamListener(ActionListener l){
     	this.mConsolenPanel.getBtnTeamRequest().addActionListener(l);
     }
-	
+
+    public void setProgressbarListener(ChangeListener l){
+    	this.mStatisticPanel.getProgressBar().addChangeListener(l);
+    }    
+    
     public void setMenuItemLoadCSVListener(ActionListener l){
     	this.menuItemLoadCSV.addActionListener(l);
     }  	

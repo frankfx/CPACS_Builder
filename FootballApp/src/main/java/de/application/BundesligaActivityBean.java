@@ -2,17 +2,15 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.python.core.Py;
-import org.python.core.PyFunction;
-import org.python.core.PyObject;
-import org.python.core.PyString;
-import org.python.core.PySystemState;
-import org.python.util.PythonInterpreter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import de.business.BundesligaModel;
 import de.business.Match;
@@ -21,13 +19,15 @@ import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.Popup;
-import de.utils.Tes;
+import de.utils.ResourceService;
 
 public class BundesligaActivityBean {
+
+	private final float TIPICO_BALANCE = 41.1f;
+	
 	private BundesligaModel mModel;
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
-	private PythonInterpreter mPython;
 	
 	/**
 	 * Controller 
@@ -116,6 +116,14 @@ public class BundesligaActivityBean {
 			}
 		});
 		
+		mView.setProgressbarListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				System.out.println("progress bar changed");
+			}
+		});
+		
+		
 		mView.setMenuItemExitListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -197,9 +205,14 @@ public class BundesligaActivityBean {
 		mView.getConsolenPanel().appendConsole(lMessage);
 	}	
 	
-	public void actionUpdateBalance(float pBalance){
-		float lBalance = 41.1f;
-		mView.getStatisticPanel().setBalanceValue(lBalance + pBalance);
+	public void actionUpdateStatistics(float pBalance){
+		mView.getStatisticPanel().setBalanceValue(TIPICO_BALANCE + pBalance);
+		
+		int n = (int) (mView.getStatisticPanel().getProgressBar().getValue() + mView.getStatisticPanel().getBalanceValue()) / 10;
+		
+		System.out.println(n);
+		
+		mView.getStatisticPanel().getProgressBar().setValue(n);
 	}
 	
 	public void actionRequestCompleteMatchday(){
@@ -209,50 +222,28 @@ public class BundesligaActivityBean {
 		
 		initFixture(lMatchday, lLeague, lSeason);
 	}
-	
+
 	public void actionTeamDataPythonRequest(){
-		if (mPython == null)
-			this.mPython = new PythonInterpreter();
-		
-		String t = Tes.getInstance().SCRIPT_PYTHON_SOCCERWAY.getFile();
-		
-		System.out.println(t + ", " +  new File(t).exists());
-		
-		System.out.println("Hier1 : " + t);
-		
-		mPython.execfile(t);
-		
-		System.out.println("Hier2 : " +t);
-		
-		
-		PyFunction pyFuntion = (PyFunction) mPython.get("getTeamData", PyFunction.class);
-        
         String lId = ((TeamIDEnum) mView.getConsolenPanel().getComboTeamID().getSelectedItem()).getID();
-        String lMatchType = mView.getConsolenPanel().getComboMatchType().getSelectedItem().toString();
+        String lMatchType = mView.getConsolenPanel().getComboMatchType().getSelectedItem().toString();	
+		String lResult = null;
         
-        PyObject result = pyFuntion.__call__(new PyString(lId), new PyString(lMatchType));		
+		ProcessBuilder pb = new ProcessBuilder("python", ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY.getFile(), lId, lMatchType);
 		
-        String[][] lData = (String[][]) result.__tojava__(String[][].class);
-        
-        StringBuilder sb = new StringBuilder();
-        
-        for (int i = 0; i < lData.length; i++) {
-        	sb.append("[");
-        	for (int j = 0; j < lData[i].length -1 ; j++){
-        		sb.append(lData[i][j]);
-        		sb.append(", ");
-        	}
-        	sb.append(lData[i][lData[i].length-1]);
-        	sb.append("]");
-        	mView.getConsolenPanel().appendConsole(sb.toString());
-        	sb.setLength(0);
-        }
+		try {
+			Process p = pb.start();
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			lResult = in.readLine();
+			lResult = lResult.substring(1, lResult.length()-1).replace("], [", "\n");
+		} catch (IOException e){
+			lResult = "Error while python call: " + e.getMessage();
+		}
+		
+		mView.getConsolenPanel().appendConsole(lResult);
 	}
 	
 	public void actionClose(){
 		mView.dispose();
-		if (mPython != null)
-			mPython.close();	
 	}
 	
 	/**
