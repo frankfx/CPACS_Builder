@@ -44,7 +44,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		setTitle("1. Bundesliga View");
 		createGUIElements();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setMinimumSize(new Dimension(400, 300));
+		setMinimumSize(new Dimension(600, 500));
 		pack();
 		setVisible(true);
 	}
@@ -86,6 +86,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 		c.gridx = 0;
 		c.gridy = 1;
+		c.weighty = 0.0;
 		pane.add(mStatisticPanel,c);
 		
 		c.gridx = 1;		
@@ -134,7 +135,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     }	
     
     public void setButtonRequestListener(ActionListener l){
-        this.mConsolenPanel.getBtnRequest().addActionListener(l);
+        this.mFixturePanel.getBtnRequest().addActionListener(l);
     }    
 
     public void setButtonClearListener(ActionListener l){
@@ -142,7 +143,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     }    
 
     public void setButtonRequestTeamListener(ActionListener l){
-    	this.mConsolenPanel.getBtnTeamRequest().addActionListener(l);
+    	this.mStatisticPanel.getBtnTeamRequest().addActionListener(l);
     }
 
     public void setProgressbarListener(ChangeListener l){

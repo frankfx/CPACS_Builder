@@ -3,9 +3,12 @@ package de.presentation.bundesliga;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.GridLayout;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import de.business.teams.TeamModel;
 import de.presentation.AbstractPanelContainer;
@@ -16,18 +19,70 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
 	 */
 	private static final long serialVersionUID = 1L;
 	private GridBagConstraints c;
-	private int mRow = 0;
-	private int mCol = 0;
 	private JLabel [] mMatch = new JLabel[27];
 	
+	private JPanel mMatchPanel;
+	private JButton mBtnRequest;
+	private JComboBox<String> mComboLeague;
+	private JComboBox<String> mComboSeason;
+	private JComboBox<Integer> mComboMatchday;	
+	
+	
 	public BundesligaFixtureContainer() {	
+		c = new GridBagConstraints(); 
 		// create an default panel
 		initPanel("Fixtures", new GridBagLayout(), Color.WHITE);
-        c = new GridBagConstraints();   
     }
 
 	@Override
-	public void initView() {}	
+	public void initView() {
+		mMatchPanel = new JPanel();
+		mMatchPanel.setBackground(Color.WHITE);
+		mMatchPanel.setLayout(new GridLayout(9, 3));
+		
+		mBtnRequest = new JButton("Request");
+		
+		mComboLeague = new JComboBox<String>();
+		mComboSeason = new JComboBox<String>();
+		mComboMatchday = new JComboBox<Integer>();
+		
+		mComboLeague.addItem("bl1");
+		mComboSeason.addItem("2015");
+		mComboSeason.addItem("2016");
+		for(int i = 1; i < 35; i++)
+			mComboMatchday.addItem(i);
+		
+		mComboMatchday.setSelectedIndex(18);
+		
+		// ===================================
+		// layout
+		// ===================================
+        c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.1;
+		c.weighty = 0.1;
+		this.add(mMatchPanel, c);
+		
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weighty = 0.0;
+		this.add(mComboMatchday, c);
+		
+		c.gridx = 1;
+		this.add(mComboLeague, c);
+
+		c.gridx = 2;
+		this.add(mComboSeason, c);	
+		
+		c.gridx = 0;
+		c.gridy = 2;
+		c.gridwidth = 3;
+        this.add(mBtnRequest, c);		
+	}	
 	
 	/**  
 	 * Creates an Fixture, or null if the path was invalid.
@@ -60,20 +115,40 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
 		
 		mMatch[3*pGameId+2].setText(pGoal1+":"+pGoal2);
 		
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 10, 0, 0);
-		c.gridx = mCol++;
-		c.gridy = mRow;
-		this.add(mMatch[3*pGameId], c);		
-		
-		c.gridx = mCol++;
-		c.gridy = mRow;
-        this.add(mMatch[3*pGameId+1], c);		
-		
-		c.gridx = mCol;
-		c.gridy = mRow++;
-		this.add(mMatch[3*pGameId+2], c);		
-		
-		mCol = 0;
+		this.mMatchPanel.add(mMatch[3*pGameId]);		
+        this.mMatchPanel.add(mMatch[3*pGameId+1]);		
+		this.mMatchPanel.add(mMatch[3*pGameId+2]);		
 	}
+	
+	public JButton getBtnRequest() {
+		return mBtnRequest;
+	}
+
+	public void setBtnRequest(JButton pBtnRequest) {
+		this.mBtnRequest = pBtnRequest;
+	}
+
+	public JComboBox<String> getComboLeague() {
+		return mComboLeague;
+	}
+
+	public void setComboLeague(JComboBox<String> pComboLeague) {
+		this.mComboLeague = pComboLeague;
+	}
+
+	public JComboBox<String> getComboSeason() {
+		return mComboSeason;
+	}
+
+	public void setComboSeason(JComboBox<String> pComboSeason) {
+		this.mComboSeason = pComboSeason;
+	}
+
+	public JComboBox<Integer> getComboMatchday() {
+		return mComboMatchday;
+	}
+
+	public void setComboMatchday(JComboBox<Integer> pComboMatchday) {
+		this.mComboMatchday = pComboMatchday;
+	}	
 }
