@@ -19,6 +19,7 @@ import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.Popup;
+import de.utils.ParserService;
 import de.utils.ResourceService;
 
 public class BundesligaActivityBean {
@@ -206,11 +207,7 @@ public class BundesligaActivityBean {
 
 	public void actionUpdateStatistics(float pBalance) {
 		mView.getStatisticPanel().setBalanceValue(TIPICO_BALANCE + pBalance);
-
 		int n = (int) (mView.getStatisticPanel().getProgressBar().getValue() + mView.getStatisticPanel().getBalanceValue()) / 10;
-
-		System.out.println(n);
-
 		mView.getStatisticPanel().getProgressBar().setValue(n);
 	}
 
@@ -233,12 +230,13 @@ public class BundesligaActivityBean {
 			Process p = pb.start();
 			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			lResult = in.readLine();
-			lResult = lResult.substring(1, lResult.length() - 1).replace("], [", "\n");
-		} catch (IOException e) {
-			lResult = "Error while python call: " + e.getMessage();
-		}
 
-		mView.getConsolenPanel().appendConsole(lResult);
+			for (String s : ParserService.getInstance().parseListString(lResult))
+				mView.getConsolenPanel().appendConsole(s);
+
+		} catch (IOException e) {
+			mView.getConsolenPanel().appendConsole("Error while python call: " + e.getMessage());
+		}
 	}
 
 	public void actionClose() {

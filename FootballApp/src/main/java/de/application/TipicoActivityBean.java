@@ -408,7 +408,7 @@ public class TipicoActivityBean implements ISubController{
 		int lSelectedRow = getSelectedRow();
 		
 		if(lSelectedRow < 0){
-			Popup.startHintPopup("No row selected");
+			Popup.startHintPopup(FAMessages.MESSAGE_NO_ROW_SELECTED);
 			return -1;
 		}
 			
@@ -422,11 +422,11 @@ public class TipicoActivityBean implements ISubController{
 		int lSelectedRow = mView.getTable().getSelectedRow();
 
 		if(lSelectedRow < 0){
-			Popup.startHintPopup("No row selected");
+			Popup.startHintPopup(FAMessages.MESSAGE_NO_ROW_SELECTED);
 			return -1;
 		}
-			
-		return lSelectedRow;		
+
+		return mView.getTable().convertRowIndexToModel(lSelectedRow);
 	}
 	
  // ============================

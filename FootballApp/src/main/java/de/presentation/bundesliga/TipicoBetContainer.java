@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
@@ -67,12 +68,12 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 					int modelRow = convertRowIndexToModel(row);
 					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
 					
-					if(lModel.getSuccess()){
-						c.setBackground(Color.GREEN);
-					} else if(!lModel.getDate().isAfter(LocalDate.now())){
-						c.setBackground(Color.MAGENTA);
-					} else if(lModel.getPersistenceType().equals(PersistenceType.NEW))
+					if (lModel.getPersistenceType().equals(PersistenceType.NEW))
 						c.setBackground(Color.YELLOW);
+					else if (lModel.getSuccess())
+						c.setBackground(Color.GREEN);
+					else if (LocalDate.now().isAfter(lModel.getDate()))
+						c.setBackground(Color.MAGENTA);
 					else
 						c.setBackground(getBackground());
 				}
@@ -83,8 +84,8 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         
-//        TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
-//        mTable.setRowSorter(sorter);
+		TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
+		mTable.setRowSorter(sorter);
         
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
@@ -117,9 +118,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	 * Updates the Tipico JTable
 	 */		
 	public void updateTable(){
-		mTable.revalidate();
+		mTableModel.fireTableDataChanged();
+
+		//mTable.revalidate();
     	//mTable.invalidate();
-    	mTablePane.repaint();		
+    	//mTablePane.repaint();		
 	}
 
 	

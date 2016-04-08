@@ -4,11 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
-public class TipicoTableModel implements TableModel{
+public class TipicoTableModel extends AbstractTableModel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	// storing the objects in list
 	List<TipicoModel> list;
 	// the headers
@@ -117,18 +120,6 @@ public class TipicoTableModel implements TableModel{
 		}		
 	}
 
-	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void addRow(TipicoModel pModel){
 		if(!this.list.contains(pModel))
 			this.list.add(pModel);
