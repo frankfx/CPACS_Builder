@@ -1,7 +1,6 @@
 package de.presentation;
 
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -34,8 +33,9 @@ public class JSplitButton extends JButton {
         setHorizontalAlignment(SwingConstants.RIGHT);
         setIconTextGap(-getText().length()*18);
 
-        this.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(ResourceService.getInstance().IMGAGE_ICON_ARROW_DOWN)
-				.getScaledInstance(13, 15, Image.SCALE_SMOOTH), "ARROW DOWN"));
+		Image lImg = ResourceService.getInstance().IMGAGE_ICON_ARROW_DOWN.getScaledInstance(13, 15, Image.SCALE_SMOOTH);
+
+		this.setIcon(new ImageIcon(lImg, "ARROW DOWN"));
 
 		addListener();
 	}

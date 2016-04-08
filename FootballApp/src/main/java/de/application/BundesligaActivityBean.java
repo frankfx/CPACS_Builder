@@ -224,10 +224,11 @@ public class BundesligaActivityBean {
 		String lMatchType = mView.getStatisticPanel().getComboMatchType().getSelectedItem().toString();
 		String lResult = null;
 
-		ProcessBuilder pb = new ProcessBuilder("python", ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY.getFile(), lId, lMatchType);
+		ProcessBuilder pb = new ProcessBuilder("python", ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY, lId, lMatchType);
 
 		try {
 			Process p = pb.start();
+
 			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			lResult = in.readLine();
 

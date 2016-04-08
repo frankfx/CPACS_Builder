@@ -1,11 +1,11 @@
 package de.business.teams;
 
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
-import de.utils.ResourceService;
 
 public class TeamModel {
 	private String mName;
@@ -19,7 +19,7 @@ public class TeamModel {
 
 	public TeamModel(String pName, String pIcon) {
 		this(pName);
-		mIcon = createImageIcon(getIconPath(pIcon), pName);
+		mIcon = new ImageIcon(getIconPath("images/" + pIcon), pName);
 	}	
 
 	public String getName() {
@@ -54,34 +54,17 @@ public class TeamModel {
 		this.mId = pId;
 	}
 	
-	/** Returns an ImageIcon, or null if the path was invalid. */
-	private ImageIcon createImageIcon(Image pFile, String pDescription) {
-		Image lDimg = pFile;
-//		try {
-//		    lDimg = ImageIO.read(pFile).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-//		} catch (IOException e) {
-//		    e.printStackTrace();
-//		}	
-		return new ImageIcon(lDimg, pDescription);
-	}	
-	
 	private Image getIconPath(String pFilename){
-		
-//		final URL url = Thread.currentThread().getContextClassLoader().getResource( "images" + File.separator + pFilename);
-//	    return Toolkit.getDefaultToolkit().getImage(url).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-		
-//		String t = RessourceService.getRessourceImages(pFilename).getFile();
-		
-//		System.out.println(t + ", " +  new File(t).exists());
-		
-//		System.out.println("Hier1 : " + RessourceService.getRessourceImages(pFilename));
-		
-//		System.out.println(Toolkit.getDefaultToolkit().getImage(RessourceService.getRessourceImages(pFilename)));
-		
-		System.out.println(pFilename);
-		System.out.println(ResourceService.getInstance().getRessourceImages(pFilename));
-		
-		return Toolkit.getDefaultToolkit().getImage(ResourceService.getInstance().getRessourceImages(pFilename)).getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		try {
+			System.out.println(pFilename);
+			// Get current classloader
+			ClassLoader cl = this.getClass().getClassLoader();
+			BufferedImage image = ImageIO.read(cl.getResourceAsStream(pFilename));
+			return image.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public String toString(){
