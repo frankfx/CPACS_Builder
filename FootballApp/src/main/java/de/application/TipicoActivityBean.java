@@ -359,7 +359,7 @@ public class TipicoActivityBean implements ISubController{
 	 */		
 	public void actionInitTable(){
 		if(readFromDatabaseToTableModel(mView.getTableModel())){
-			mView.getTable().updateUI();
+			mView.getTableModel().fireTableDataChanged();
 		}
 	}	
 	

@@ -254,6 +254,10 @@ public class BundesligaActivityBean {
 				mView.initView();
 				addSubController(new TipicoActivityBean(mView.getTipicoPanel()));
 				addListener();
+
+				//BEGIN FAST DATABASE ACCESS ONLY FOR TESTING
+				mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
+				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
 		});
 	}

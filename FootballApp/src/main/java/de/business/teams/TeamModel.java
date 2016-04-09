@@ -56,7 +56,6 @@ public class TeamModel {
 	
 	private Image getIconPath(String pFilename){
 		try {
-			System.out.println(pFilename);
 			// Get current classloader
 			ClassLoader cl = this.getClass().getClassLoader();
 			BufferedImage image = ImageIO.read(cl.getResourceAsStream(pFilename));
