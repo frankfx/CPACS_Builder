@@ -1,0 +1,8 @@
+Java hosting
+https://www.openshift.com/pricing/plan-comparison.html
+
+Forum
+https://www.quora.com/Free-web-hosting-for-Java+MySQL-websites
+
+Avoid OpenShift Application Idling
+http://ceejaycee.net/2015/09/avoid-openshift-application-idling/
