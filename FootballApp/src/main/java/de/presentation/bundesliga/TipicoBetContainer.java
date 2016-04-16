@@ -5,11 +5,16 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -33,6 +38,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private JButton mBtnModify;	
 	private JButton mBtnDelete;
 	private JSplitButton mBtnDBSplit;
+	private JMenuItem mMenuClearSelection = new JMenuItem("clear selection");
 	
 	public TipicoBetContainer() {	
 		// create an default panel
@@ -57,30 +63,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.weighty=0.1;		
 
 		mTableModel = new TipicoTableModel();
-		mTable = new JTable(mTableModel){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
-				Component c = super.prepareRenderer(renderer, row, column);
-				
-				if (!isRowSelected(row)) {
-					int modelRow = convertRowIndexToModel(row);
-					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
-					
-					if (lModel.getPersistenceType().equals(PersistenceType.NEW))
-						c.setBackground(Color.YELLOW);
-					else if (lModel.getSuccess())
-						c.setBackground(Color.GREEN);
-					else if (LocalDate.now().isAfter(lModel.getDate()))
-						c.setBackground(Color.MAGENTA);
-					else
-						c.setBackground(getBackground());
-				}
-
-				return c;
-			}
-		};
+		mTable = createNewJTable();
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         
@@ -112,6 +95,63 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 		c.gridy = 1;		
 		c.weightx = 0.0;
 		this.add(mBtnDBSplit, c);
+	}
+
+	/*
+	 * Method to create a JTable with colored rows and a context menu
+	 */
+	private JTable createNewJTable() {
+		// initialize JTable and set background rendering
+		final JTable lTable = new JTable(mTableModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
+				Component c = super.prepareRenderer(renderer, row, column);
+				
+				if (!isRowSelected(row)) {
+					int modelRow = convertRowIndexToModel(row);
+					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
+					
+					if (lModel.getPersistenceType().equals(PersistenceType.NEW))
+						c.setBackground(Color.YELLOW);
+					else if (lModel.getSuccess())
+						c.setBackground(Color.GREEN);
+					else if (LocalDate.now().isAfter(lModel.getDate()))
+						c.setBackground(Color.MAGENTA);
+					else
+						c.setBackground(getBackground());
+				}
+
+				return c;
+			}
+		};
+		
+		// set mouse listener for context menu
+		lTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+				int r = lTable.rowAtPoint(e.getPoint());
+
+				if (r >= 0 && r < lTable.getRowCount()) {
+					lTable.setRowSelectionInterval(r, r);
+				} else {
+					lTable.clearSelection();
+				}
+
+				int rowindex = lTable.getSelectedRow();
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+					if (rowindex >= 0 && e.getComponent() instanceof JTable) {
+						JPopupMenu popup = createPopUp();
+						popup.show(e.getComponent(), e.getX(), e.getY());
+					}
+				}
+			}
+		});
+
+		return lTable;
 	}
 
 	/**
@@ -170,7 +210,10 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	public void setButtonDBBrowserListener(ActionListener l){
 		this.mBtnDBSplit.getDBBrowserItem().addActionListener(l);
 	}
-	
+
+	public void setMenuClearSelectionListener(ActionListener l) {
+		this.mMenuClearSelection.addActionListener(l);
+	}
 	/**
 	 * ========================
 	 * END LISTENER
@@ -236,4 +279,12 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	 * END GETTER AND SETTER
 	 * ========================
 	 */
+
+	public JPopupMenu createPopUp() {
+		JPopupMenu lPopup = new JPopupMenu("Test");
+		lPopup.add(mMenuClearSelection);
+
+		// Add submenu to popup menu
+		return lPopup;
+	}
 }

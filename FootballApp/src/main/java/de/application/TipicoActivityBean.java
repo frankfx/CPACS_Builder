@@ -13,7 +13,8 @@ import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetContainer;
-import de.presentation.popups.Popup;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.utils.FAMessages;
 import de.utils.PersistenceType;
 
@@ -106,6 +107,13 @@ public class TipicoActivityBean implements ISubController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionDBBrowser();
+			}
+		});
+
+		this.mView.setMenuClearSelectionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.getTable().getSelectionModel().clearSelection();
 			}
 		});
 	}	
@@ -408,7 +416,7 @@ public class TipicoActivityBean implements ISubController{
 		int lSelectedRow = getSelectedRow();
 		
 		if(lSelectedRow < 0){
-			Popup.startHintPopup(FAMessages.MESSAGE_NO_ROW_SELECTED);
+			PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_ROW_SELECTED);
 			return -1;
 		}
 			
@@ -422,7 +430,7 @@ public class TipicoActivityBean implements ISubController{
 		int lSelectedRow = mView.getTable().getSelectedRow();
 
 		if(lSelectedRow < 0){
-			Popup.startHintPopup(FAMessages.MESSAGE_NO_ROW_SELECTED);
+			PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_ROW_SELECTED);
 			return -1;
 		}
 
@@ -443,7 +451,7 @@ public class TipicoActivityBean implements ISubController{
 		if (pTipicoModel == null){
 			lResult = FAMessages.MESSAGE_NO_VALID_TABLE_MODEL + -1;
 		} else{
-			String [] lValues = Popup.startTipicoPopupNew(pTipicoModel, pIDEnable);
+			String[] lValues = PopupFactory.getPopup(PopupType.NEW_TIPICO_POPUP, new Object[] { pTipicoModel, pIDEnable }).requestInputData();
 			if (lValues == null){
 				return false;
 			} else if(!updateTipicoEntry(pTipicoModel, lValues)){
@@ -452,7 +460,7 @@ public class TipicoActivityBean implements ISubController{
 				return true;
 		}
 		
-		Popup.startErrorPopup(lResult);
+		PopupFactory.getPopup(PopupType.ERROR, lResult);
 		return false;
 	}
 
@@ -563,20 +571,21 @@ public class TipicoActivityBean implements ISubController{
 		int lRow = getSelectedRow();
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( lRow);		
 		
-		if(lModel == null)
-			lResult = FAMessages.MESSAGE_NO_VALID_TABLE_MODEL + (lRow);
-		else{
-			String [] arr = Popup.startTipicoPopupBetValue(lModel.getWinValue());
-			if(arr != null){
-				float a = computeBetValue(Float.parseFloat(arr[1]), lModel.getExpenses(), Float.parseFloat(arr[0]));
-				if(Boolean.parseBoolean(arr[2])){
-					lModel.setExpenses(a + lModel.getExpenses());
-				}
-				lResult = ""+a;
+		float lWinValue = lModel != null ? lModel.getWinValue() : 1.0f;
+		float lExpenses = lModel != null ? lModel.getExpenses() : 0.0f;
+			
+		String[] arr = PopupFactory.getPopup(PopupType.START_TIPICO_BETVALUE_POPUP, new Object[] { lWinValue, lExpenses, lModel != null }).requestInputData();
+
+		if (arr != null) {
+			float a = computeBetValue(Float.parseFloat(arr[1]), Float.parseFloat(arr[2]), Float.parseFloat(arr[0]));
+			if (Boolean.parseBoolean(arr[3])) {
+				lModel.setWinValue(Float.parseFloat(arr[1]));
+				lModel.setExpenses(a + lModel.getExpenses());
+				lModel.setDate(LocalDate.now());
 			}
-				
-			else
-				lResult = FAMessages.MESSAGE_NO_VALID_FORMULAR_DATA;
+			lResult = "" + a;
+		} else {
+			lResult = FAMessages.MESSAGE_NO_VALID_FORMULAR_DATA;
 		}
 		
 		mBundesligaListener.actionUpdateConsole(lResult);
@@ -603,9 +612,10 @@ public class TipicoActivityBean implements ISubController{
 		TipicoTableModel lModel = new TipicoTableModel();
 		
 		if(readFromDatabaseToTableModel(lModel)){
-			Popup.startDatabaseBrowser(lModel.getAsList());
+			PopupFactory.getPopup(PopupType.START_DATABASE_BROWSER_POPUP, lModel.getAsArray());
+			//Popups.startDatabaseBrowser(lModel.getAsList());
 		} else
-			Popup.startHintPopup(FAMessages.MESSAGE_NO_DATABASE);
+			PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_DATABASE);
 	}
 
 	/**

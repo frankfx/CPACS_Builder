@@ -18,7 +18,8 @@ import de.business.Match;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
-import de.presentation.popups.Popup;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.utils.ParserService;
 import de.utils.ResourceService;
 
@@ -165,7 +166,7 @@ public class BundesligaActivityBean {
 		mView.setMenuItemDBConnectListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] arr = Popup.startDatabaseConnectionPopup();
+				String[] arr = PopupFactory.getPopup(PopupType.START_DATABASE_CONNECTION_POPUP, null).requestInputData();
 				if (arr != null)
 					mSubController.get(0).initBean(arr);
 			}

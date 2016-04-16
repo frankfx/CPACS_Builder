@@ -161,6 +161,12 @@ public class TipicoTableModel extends AbstractTableModel {
 		return list;
 	}
 	
+	public TipicoModel[] getAsArray() {
+		TipicoModel[] arr = new TipicoModel[list.size()];
+
+		return list.toArray(arr);
+	}
+
 	public float getBalance(){
 		float lResult = 0.0f;
 		for(int i = 0; i<list.size(); i++){
