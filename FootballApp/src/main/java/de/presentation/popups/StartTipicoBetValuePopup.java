@@ -12,7 +12,7 @@ public class StartTipicoBetValuePopup implements IPopup {
 	JCheckBox lCheckSubmitBet;
 
 	public StartTipicoBetValuePopup(Object[] pParams) {
-		lSpinWinValue = new JSpinner(new SpinnerNumberModel(((Float) pParams[0]).floatValue(), 1, 100, 0.1));
+		lSpinWinValue = new JSpinner(new SpinnerNumberModel((float) pParams[0], 1, 100, 0.1));
 		lSpinOdds = new JSpinner(new SpinnerNumberModel(3.0, 1, 40, 0.1));
 		lSpinExpenses = new JSpinner(new SpinnerNumberModel(((Float) pParams[1]).floatValue(), 0, 100, 0.1));
 		lCheckSubmitBet = new JCheckBox("submit bet value!");
