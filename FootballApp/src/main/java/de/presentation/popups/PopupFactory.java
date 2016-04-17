@@ -2,6 +2,12 @@ package de.presentation.popups;
 
 import javax.swing.JOptionPane;
 
+import de.presentation.popups.popupViews.NewTipicoPopup;
+import de.presentation.popups.popupViews.StartDatabaseBrowserPopup;
+import de.presentation.popups.popupViews.StartDatabaseConnectionPopup;
+import de.presentation.popups.popupViews.StartTipicoBetValuePopup;
+import de.presentation.popups.popupViews.TableConfigPopup;
+
 public class PopupFactory {
 	
 	public static IPopup getPopup(PopupType pPopupType, Object pParams) {
@@ -20,6 +26,8 @@ public class PopupFactory {
 			return new StartDatabaseConnectionPopup(pParams);
 		} else if (pPopupType.equals(PopupType.START_DATABASE_BROWSER_POPUP)) {
 			return new StartDatabaseBrowserPopup(pParams);
+		} else if (pPopupType.equals(PopupType.START_TABLE_CONFIG_POPUP)) {
+			return new TableConfigPopup(pParams);
 		} else if (pPopupType.equals(PopupType.HINT)) {
 			startHintPopup(pParams[0].toString());
 		} else if (pPopupType.equals(PopupType.ERROR)) {

@@ -134,8 +134,16 @@ public class TipicoTableModel extends AbstractTableModel {
 		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
 	}
 	
-	public int generateValidID(){
-		return rec_generateValidID(list.size()+1);
+	public int generateValidID(List<Integer> pIDsFromDB) {
+		int lMaxTnr;
+
+		if (pIDsFromDB != null && !pIDsFromDB.isEmpty()) {
+			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> i).max().getAsInt();
+		} else {
+			lMaxTnr = list.size() + 1;
+		}
+
+		return rec_generateValidID(lMaxTnr);
 	}
 	
 	private int rec_generateValidID(int id){

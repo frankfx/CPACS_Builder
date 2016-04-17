@@ -2,17 +2,22 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
-import de.presentation.bundesliga.TipicoBetContainer;
+import de.presentation.bundesliga.TipicoBetView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.utils.FAMessages;
@@ -27,14 +32,15 @@ public class TipicoActivityBean implements ISubController{
 	private final static String SQL_UPDATE_ROW_QUERY = "update Tipico set team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=? where tnr=?";
 	private final static String SQL_INSERT_UPDATE_ROW_QUERY = "insert into Tipico(tnr, team, winValue, expenses, attempts, pDate, success) values (?, ?, ?, ?, ?, ?, ?) on duplicate key update team=? , winValue=? , expenses=? , attempts=? , pDate=? , success=?;";
 	private final static String SQL_SELECT_ALL_FROM_TIPICO_QUERY = "select * from Tipico;";
+	private final static String SQL_SELECT_TNR_FROM_TIPICO_QUERY = "select tnr from Tipico;";
 	
 	
 	private PreparedStatement mInsertBetStmt = null;
 	private BundesligaActivityBean mBundesligaListener;
 	private Database mDB = null;
-	private TipicoBetContainer mView;
+	private TipicoBetView mView;
 
-	public TipicoActivityBean(TipicoBetContainer pView) {
+	public TipicoActivityBean(TipicoBetView pView) {
 		this.mView = pView;
 		this.addListener();
 	}
@@ -116,7 +122,16 @@ public class TipicoActivityBean implements ISubController{
 				mView.getTable().getSelectionModel().clearSelection();
 			}
 		});
-	}	
+
+		this.mView.setFilterPopupListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					actionFilterTableData();
+				}
+			}
+		});
+	}
 	
 	/**
 	 * creates a listener for the main controller to listen events in the subcontroller
@@ -371,6 +386,23 @@ public class TipicoActivityBean implements ISubController{
 		}
 	}	
 	
+	private List<Integer> getTipicoNumbersFromDB() {
+		List<Integer> list = new ArrayList<Integer>();
+		
+		if(mDB!=null&&mDB.isConnected()){
+			mDB.query(SQL_SELECT_TNR_FROM_TIPICO_QUERY);
+			
+			try {
+				while (mDB.getResultSet().next()) {
+					list.add(mDB.getResultSet().getInt(1));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
 	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel){
 		if (mDB != null && mDB.isConnected()){
 			mDB.query(SQL_SELECT_ALL_FROM_TIPICO_QUERY);
@@ -513,12 +545,16 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN ACTION
  // ========================
 	
+	private void actionFilterTableData() {
+		String[] arr = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+	}
+
 	/**
 	 * Local table function to create a new entry
 	 */		
 	private void actionNew(){
 		TipicoModel lModel = new TipicoModel();
-		lModel.setTnr(mView.getTableModel().generateValidID());
+		lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
 		
 		if(startTableInputPopup(lModel, true)){
 			mView.getTableModel().addRow(lModel);
@@ -582,6 +618,7 @@ public class TipicoActivityBean implements ISubController{
 				lModel.setWinValue(Float.parseFloat(arr[1]));
 				lModel.setExpenses(a + lModel.getExpenses());
 				lModel.setDate(LocalDate.now());
+				lModel.setPersistenceType(PersistenceType.NEW);
 			}
 			lResult = "" + a;
 		} else {

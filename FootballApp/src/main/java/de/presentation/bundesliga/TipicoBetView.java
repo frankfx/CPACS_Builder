@@ -24,7 +24,7 @@ import de.presentation.AbstractPanelContainer;
 import de.presentation.JSplitButton;
 import de.utils.PersistenceType;
 
-public class TipicoBetContainer extends AbstractPanelContainer {
+public class TipicoBetView extends AbstractPanelContainer {
 	/**
 	 * 
 	 */
@@ -40,7 +40,7 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	private JSplitButton mBtnDBSplit;
 	private JMenuItem mMenuClearSelection = new JMenuItem("clear selection");
 	
-	public TipicoBetContainer() {	
+	public TipicoBetView() {	
 		// create an default panel
 		initPanel("Tipico", new GridBagLayout(), Color.WHITE);
     }
@@ -132,17 +132,17 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 
-				int r = lTable.rowAtPoint(e.getPoint());
-
-				if (r >= 0 && r < lTable.getRowCount()) {
-					lTable.setRowSelectionInterval(r, r);
-				} else {
-					lTable.clearSelection();
-				}
-
-				int rowindex = lTable.getSelectedRow();
-
 				if (SwingUtilities.isRightMouseButton(e)) {
+					int r = lTable.rowAtPoint(e.getPoint());
+
+					if (r >= 0 && r < lTable.getRowCount()) {
+						lTable.setRowSelectionInterval(r, r);
+					} else {
+						lTable.clearSelection();
+					}
+
+					int rowindex = lTable.getSelectedRow();
+
 					if (rowindex >= 0 && e.getComponent() instanceof JTable) {
 						JPopupMenu popup = createPopUp();
 						popup.show(e.getComponent(), e.getX(), e.getY());
@@ -214,6 +214,11 @@ public class TipicoBetContainer extends AbstractPanelContainer {
 	public void setMenuClearSelectionListener(ActionListener l) {
 		this.mMenuClearSelection.addActionListener(l);
 	}
+
+	public void setFilterPopupListener(MouseAdapter l) {
+		this.mTable.getTableHeader().addMouseListener(l);
+	}
+	
 	/**
 	 * ========================
 	 * END LISTENER

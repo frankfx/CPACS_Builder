@@ -1,4 +1,4 @@
-package de.presentation.popups;
+package de.presentation.popups.popupViews;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -10,6 +10,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+
+import de.presentation.popups.IPopup;
 
 public class StartDatabaseConnectionPopup implements IPopup {
 

@@ -1,4 +1,4 @@
-package de.presentation.popups;
+package de.presentation.popups.popupViews;
 
 import java.util.Arrays;
 
@@ -7,6 +7,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import de.business.TipicoModel;
+import de.presentation.popups.DefaultPopup;
+import de.presentation.popups.IPopup;
 
 public class StartDatabaseBrowserPopup implements IPopup {
 

@@ -1,4 +1,4 @@
-package de.presentation.popups;
+package de.presentation.popups.popupViews;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 import de.business.TipicoModel;
+import de.presentation.popups.IPopup;
 import de.utils.SpinnerTemporalModel;
 
 public class NewTipicoPopup implements IPopup {
@@ -27,7 +28,7 @@ public class NewTipicoPopup implements IPopup {
 	public NewTipicoPopup(Object [] pParams){
 		
 		TipicoModel lTipicoModel = (TipicoModel) pParams[0];
-		mIDEnable = ((Boolean) pParams[1]).booleanValue();
+		mIDEnable = (boolean) pParams[1];
 		
 		lSpinID = new JSpinner(new SpinnerNumberModel(lTipicoModel.getTnr(), 1, 100, 1));
 		lSpinWinValue = new JSpinner(new SpinnerNumberModel(lTipicoModel.getWinValue(), 0, 100, 0.1));

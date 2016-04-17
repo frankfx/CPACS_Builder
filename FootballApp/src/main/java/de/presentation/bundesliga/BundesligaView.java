@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSplitPane;
 import javax.swing.event.ChangeListener;
 
 import de.presentation.ButtonPanelContainer;
@@ -25,10 +26,12 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 	private BundesligaFixtureContainer mFixturePanel;
 	private BundesligaConsoleContainer mConsolenPanel;
-	private TipicoBetContainer mTipicoPanel;
+	private TipicoBetView mTipicoPanel;
 	private StatisticContainer mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
 	
+	private JSplitPane mSplitPane;
+
 	// Menu items
 	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
 	private JMenuItem menuItemSaveCSV = new JMenuItem("Save CSV");
@@ -71,7 +74,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mFixturePanel = new BundesligaFixtureContainer();
 		mConsolenPanel = new BundesligaConsoleContainer();
 		mStatisticPanel = new StatisticContainer();
-		mTipicoPanel = new TipicoBetContainer();
+		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		c.fill = GridBagConstraints.BOTH;	
@@ -81,17 +84,17 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		c.weighty = 0.1;
 		pane.add(mConsolenPanel, c);
 
-		c.gridx = 1;
-		pane.add(mFixturePanel, c);
-
-		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = 0.0;
-		pane.add(mStatisticPanel,c);
-		
-		c.gridx = 1;		
-		pane.add(mTipicoPanel, c);
-		
+		pane.add(mStatisticPanel, c);
+
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridheight = 2;
+
+		mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
+
+		pane.add(mSplitPane, c);
+
 		getContentPane().add(pane, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 		
@@ -220,11 +223,11 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		this.mStatisticPanel = pStatisticPanel;
 	}
 
-	public TipicoBetContainer getTipicoPanel() {
+	public TipicoBetView getTipicoPanel() {
 		return mTipicoPanel;
 	}
 
-	public void setTipicoPanel(TipicoBetContainer lTipicoPanel) {
+	public void setTipicoPanel(TipicoBetView lTipicoPanel) {
 		this.mTipicoPanel = lTipicoPanel;
 	}
 
