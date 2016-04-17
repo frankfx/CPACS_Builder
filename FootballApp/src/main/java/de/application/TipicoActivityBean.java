@@ -18,6 +18,7 @@ import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
+import de.presentation.filter.CriteriaExpenses;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.utils.FAMessages;
@@ -546,7 +547,18 @@ public class TipicoActivityBean implements ISubController{
  // ========================
 	
 	private void actionFilterTableData() {
-		String[] arr = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+		List<TipicoModel> lList = mView.getTableModel().getAsList();
+
+		List<TipicoModel> lResult = new CriteriaExpenses().matchedCriteria(lList);
+		
+		lList.removeAll(lList);
+
+		for (int i = 0; i < lResult.size(); i++) {
+			mView.getTableModel().addRow(lResult.get(i));
+		}
+
+		//	String[] arr = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+
 	}
 
 	/**

@@ -14,6 +14,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	// storing the objects in list
 	List<TipicoModel> list;
+
 	// the headers
 	String[] header;
     
@@ -167,6 +168,10 @@ public class TipicoTableModel extends AbstractTableModel {
 	
 	public List<TipicoModel> getAsList(){
 		return list;
+	}
+
+	public void setList(List<TipicoModel> list) {
+		this.list = list;
 	}
 	
 	public TipicoModel[] getAsArray() {
