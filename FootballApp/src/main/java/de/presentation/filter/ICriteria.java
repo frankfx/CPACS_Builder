@@ -4,6 +4,6 @@ import java.util.List;
 
 import de.business.TipicoModel;
 
-public interface Criteria {
+public interface ICriteria {
 	public List<TipicoModel> matchedCriteria(List<TipicoModel> tipicoModel);
 }

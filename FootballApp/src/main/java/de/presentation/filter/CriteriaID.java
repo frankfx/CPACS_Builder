@@ -6,12 +6,12 @@ import java.util.List;
 import de.business.TipicoModel;
 import de.utils.math.ExpressionType;
 
-public class CriteriaExpenses implements ICriteria {
+public class CriteriaID implements ICriteria {
 
 	private float mThreshold = 5.0f;
 	private ExpressionType mOperator;
 
-	public CriteriaExpenses(float pThreshold, ExpressionType pOperator) {
+	public CriteriaID(float pThreshold, ExpressionType pOperator) {
 		mThreshold = pThreshold;
 		mOperator = pOperator;
 	}
@@ -23,11 +23,11 @@ public class CriteriaExpenses implements ICriteria {
 		for (TipicoModel lModel : pModelList) {
 			switch (mOperator) {
 			case LOWER:
-				if (lModel.getExpenses() < mThreshold)
+				if (lModel.getTnr() < mThreshold)
 					lResult.add(lModel);
 				break;
 			case GREATER:
-				if (lModel.getExpenses() > mThreshold)
+				if (lModel.getTnr() > mThreshold)
 					lResult.add(lModel);
 				break;
 			default:

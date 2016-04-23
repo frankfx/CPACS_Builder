@@ -14,7 +14,9 @@ public class TableConfigPopup implements IPopup {
 	@Override
 	public String[] requestInputData() {
 
-		JTextField lRegex = new JTextField("(id,<,5) and (attempts,<,4) or (team,=,M*)");
+		//		JTextField lRegex = new JTextField("((id,<,5) and (attempts,<,4) or (team,=,M*))");
+		JTextField lRegex = new JTextField("(((EXPENSES;<;1) AND (WINVALUE;<;1)) AND (ID;<;5))");
+
 		Object[] message = { "Filter regex: ", lRegex };
 
 		int n = DefaultPopup.runPopup(message, "filter dialoge");

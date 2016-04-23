@@ -18,11 +18,20 @@ import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
+import de.presentation.filter.AndCriteria;
 import de.presentation.filter.CriteriaExpenses;
+import de.presentation.filter.CriteriaID;
+import de.presentation.filter.CriteriaWinValue;
+import de.presentation.filter.ICriteria;
+import de.presentation.filter.OrCriteria;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.utils.FAMessages;
 import de.utils.PersistenceType;
+import de.utils.math.ExpressionType;
+import de.utils.math.IExpression;
+import de.utils.math.Node;
+import de.utils.math.Parser;
 
 
 public class TipicoActivityBean implements ISubController{
@@ -546,19 +555,45 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN ACTION
  // ========================
 	
-	private void actionFilterTableData() {
-		List<TipicoModel> lList = mView.getTableModel().getAsList();
+	private ICriteria createFilteredList(Node<IExpression> pNode) {
+		if (pNode == null)
+			return null;
 
-		List<TipicoModel> lResult = new CriteriaExpenses().matchedCriteria(lList);
-		
-		lList.removeAll(lList);
+		ExpressionType exp = ExpressionType.getType(pNode.getData());
 
-		for (int i = 0; i < lResult.size(); i++) {
-			mView.getTableModel().addRow(lResult.get(i));
+		switch (exp) {
+		case AND:
+			return new AndCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
+		case OR:
+			return new OrCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
+		case VALUE:
+			String[] mExpression = pNode.getData().split(";");
+			if (mExpression[0].equalsIgnoreCase(ExpressionType.EXPENSES.toString())) {
+				return new CriteriaExpenses(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.WINVALUE.toString())) {
+				return new CriteriaWinValue(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.ID.toString())) {
+				return new CriteriaID(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+			}
+		default:
+			return null;
 		}
+	}
 
-		//	String[] arr = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+	private void actionFilterTableData() {
+		String[] lExpression = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+		
+		if (lExpression != null) {
+			List<TipicoModel> lList = mView.getTableModel().getAsList();
+			
+			Node<IExpression> root = new Parser(lExpression[0]).getExpressionTree();
+			List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
+			lList.removeAll(lList);
 
+			for (int i = 0; i < lResult.size(); i++) {
+				mView.getTableModel().addRow(lResult.get(i));
+			}
+		}
 	}
 
 	/**
