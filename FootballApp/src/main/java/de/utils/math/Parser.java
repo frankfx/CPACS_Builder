@@ -10,7 +10,7 @@ public class Parser {
 	public Parser(String pExpression) {
 		try {
 			mStack = new Stack<Character>();
-			mExpression = this.buildTree(pExpression);
+			mExpression = this.buildTree(pExpression.replace(" ", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -18,8 +18,7 @@ public class Parser {
 
 	private Node<IExpression> buildTree(String pExpression) throws Exception {
 
-		String lExpression = pExpression.trim();
-		lExpression = lExpression.substring(1, lExpression.length() - 1);
+		String lExpression = pExpression.substring(1, pExpression.length() - 1);
 
 		int lStart = -1, lEnd = -1;
 		boolean isValueExp = true;
@@ -42,14 +41,14 @@ public class Parser {
 
 			if (mStack.isEmpty()) {
 				if (isValueExp) {
-					return new Node<IExpression>(null, null, lExpression.trim());
+					return new Node<IExpression>(null, null, lExpression);
 				} else {
 					lStart = i + 1;
 					lEnd = lExpression.indexOf('(', lStart);
 					return new Node<IExpression>(
 							buildTree(lExpression.substring(0, lStart)),
 							buildTree(lExpression.substring(lEnd)),
-							lExpression.substring(lStart, lEnd).trim());
+							lExpression.substring(lStart, lEnd));
 
 				}
 			}
