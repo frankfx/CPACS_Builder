@@ -584,14 +584,19 @@ public class TipicoActivityBean implements ISubController{
 		String[] lExpression = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
 		
 		if (lExpression != null) {
-			List<TipicoModel> lList = mView.getTableModel().getAsList();
-			
-			Node<IExpression> root = new Parser(lExpression[0]).getExpressionTree();
-			List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
-			lList.removeAll(lList);
+			boolean isFilterEnabled = Boolean.valueOf(lExpression[0]);
 
-			for (int i = 0; i < lResult.size(); i++) {
-				mView.getTableModel().addRow(lResult.get(i));
+			if (isFilterEnabled) {
+
+				List<TipicoModel> lList = mView.getTableModel().getAsList();
+
+				Node<IExpression> root = new Parser(lExpression[1]).getExpressionTree();
+				List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
+				lList.removeAll(lList);
+
+				for (int i = 0; i < lResult.size(); i++) {
+					mView.getTableModel().addRow(lResult.get(i));
+				}
 			}
 		}
 	}

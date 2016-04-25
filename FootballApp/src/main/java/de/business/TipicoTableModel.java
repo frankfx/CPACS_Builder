@@ -14,6 +14,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	// storing the objects in list
 	List<TipicoModel> list;
+	List<TipicoModel> mFilterList;
 
 	// the headers
 	String[] header;
@@ -178,6 +179,14 @@ public class TipicoTableModel extends AbstractTableModel {
 		TipicoModel[] arr = new TipicoModel[list.size()];
 
 		return list.toArray(arr);
+	}
+
+	public List<TipicoModel> getFilterList() {
+		return mFilterList;
+	}
+
+	public void setFilterList(List<TipicoModel> pFilterList) {
+		this.mFilterList = new ArrayList<TipicoModel>(pFilterList);
 	}
 
 	public float getBalance(){

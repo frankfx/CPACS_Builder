@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="493" leftMargin="51" rightMargin="51" topMargin="51" bottomMargin="51" uuid="291108b5-1d57-4b4c-8d93-f4acee901c4b">
-	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.zoom" value="1.4641000000000066"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="183"/>
 	<parameter name="name" class="java.lang.String">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -21,16 +21,16 @@
 		<variableExpression><![CDATA[new BigDecimal(NumberFormat.getInstance(Locale.GERMANY).parse($F{offenerBetrag}).doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
 	</variable>
-	<variable name="RueckVon" class="java.util.Date" resetType="Group" resetGroup="Forderungsarg" calculation="Lowest">
+	<variable name="RueckVon" class="java.util.Date" calculation="Lowest">
 		<variableExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").parse($F{rueckstandVon})]]></variableExpression>
 	</variable>
-	<variable name="RueckBis" class="java.util.Date" resetType="Group" resetGroup="Forderungsarg" calculation="Highest">
+	<variable name="RueckBis" class="java.util.Date" calculation="Highest">
 		<variableExpression><![CDATA[new SimpleDateFormat("dd.MM.yyyy").parse($F{rueckstandBis})]]></variableExpression>
 	</variable>
-	<variable name="GBetrag" class="java.math.BigDecimal" resetType="Group" resetGroup="Forderungsarg" calculation="Sum">
+	<variable name="OBetrag" class="java.math.BigDecimal" resetType="Group" resetGroup="Forderungsarg" calculation="Sum">
 		<variableExpression><![CDATA[new BigDecimal(NumberFormat.getInstance(Locale.GERMANY).parse($F{offenerBetrag}).doubleValue())]]></variableExpression>
 	</variable>
-	<variable name="OBetrag" class="java.math.BigDecimal" resetType="Group" resetGroup="Forderungsarg" calculation="Sum">
+	<variable name="Betrag" class="java.math.BigDecimal" resetType="Group" resetGroup="Forderungsarg" calculation="Sum">
 		<variableExpression><![CDATA[new BigDecimal(NumberFormat.getInstance(Locale.GERMANY).parse($F{betrag}).doubleValue())]]></variableExpression>
 	</variable>
 	<group name="Forderungsarg">
@@ -79,24 +79,36 @@ EUR]]></text>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="60">
-				<textField pattern="dd.MM.yyyy">
-					<reportElement x="0" y="1" width="95" height="20" uuid="071f9c4d-514c-483a-b9f1-1c9ef745ae9e"/>
-					<textFieldExpression><![CDATA[$V{RueckVon}]]></textFieldExpression>
-				</textField>
-				<textField pattern="dd.MM.yyyy">
-					<reportElement x="95" y="0" width="95" height="20" uuid="a81d6b79-3493-4ccd-8882-59889db62e99"/>
-					<textFieldExpression><![CDATA[$V{RueckBis}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00 €">
-					<reportElement x="190" y="0" width="156" height="20" uuid="e2ed2ad8-450e-4682-a3d7-e515093a19d0"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$V{GBetrag}]]></textFieldExpression>
-				</textField>
-				<textField pattern="#,##0.00 €">
-					<reportElement x="346" y="0" width="147" height="20" uuid="0732a858-61e0-4d19-93c6-4219b0704d19"/>
+			<band height="41">
+				<textField evaluationTime="Group" evaluationGroup="Forderungsarg" pattern="#,##0.00 €">
+					<reportElement x="346" y="1" width="148" height="20" uuid="77970a76-800c-496c-a022-bf828d051ae3"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+					</box>
 					<textElement textAlignment="Right"/>
 					<textFieldExpression><![CDATA[$V{OBetrag}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="Forderungsarg" pattern="dd.MM.yyyy">
+					<reportElement x="0" y="1" width="95" height="20" uuid="77970a76-800c-496c-a022-bf828d051ae3"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$V{RueckVon}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="Forderungsarg" pattern="dd.MM.yyyy">
+					<reportElement x="95" y="1" width="95" height="20" uuid="77970a76-800c-496c-a022-bf828d051ae3"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$V{RueckBis}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="Forderungsarg" pattern="#,##0.00 €">
+					<reportElement x="190" y="1" width="156" height="20" uuid="77970a76-800c-496c-a022-bf828d051ae3"/>
+					<box>
+						<topPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{Betrag}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>

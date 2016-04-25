@@ -1,5 +1,6 @@
 package de.presentation.popups.popupViews;
 
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -15,14 +16,15 @@ public class TableConfigPopup implements IPopup {
 	public String[] requestInputData() {
 
 		//		JTextField lRegex = new JTextField("((id,<,5) and (attempts,<,4) or (team,=,M*))");
-		JTextField lRegex = new JTextField("(((EXPENSES;<;1) AND (WINVALUE;<;1)) AND (ID;<;5))");
+		JCheckBox lCheckFilter = new JCheckBox("Activate Filter");
+		JTextField lRegex = new JTextField("(((EXPENSES;>;10) AND (WINVALUE;<;1)) AND (ID;<;10))");
 
-		Object[] message = { "Filter regex: ", lRegex };
+		Object[] message = { "", lCheckFilter, "Filter regex: ", lRegex };
 
 		int n = DefaultPopup.runPopup(message, "filter dialoge");
 
 		if (n == JOptionPane.OK_OPTION) {
-			return new String[] { lRegex.getText() };
+			return new String[] { lCheckFilter.isSelected() + "", lRegex.getText() };
 		} else {
 			return null;
 		}
