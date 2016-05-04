@@ -2,11 +2,12 @@ package de.presentation.popups;
 
 import javax.swing.JOptionPane;
 
-import de.presentation.popups.popupViews.NewTipicoPopup;
-import de.presentation.popups.popupViews.StartDatabaseBrowserPopup;
-import de.presentation.popups.popupViews.StartDatabaseConnectionPopup;
-import de.presentation.popups.popupViews.StartTipicoBetValuePopup;
-import de.presentation.popups.popupViews.TableConfigPopup;
+import de.presentation.popups.popupViews.DatabaseBrowserPopup;
+import de.presentation.popups.popupViews.DatabaseConnectionPopup;
+import de.presentation.popups.popupViews.DatabasePullDetailPopup;
+import de.presentation.popups.popupViews.TableFilterPopup;
+import de.presentation.popups.popupViews.TipicoBetValuePopup;
+import de.presentation.popups.popupViews.TipicoNewPopup;
 
 public class PopupFactory {
 	
@@ -16,25 +17,26 @@ public class PopupFactory {
 
 	// use getPopup to get object of type popup
 	public static IPopup getPopup(PopupType pPopupType, Object[] pParams) {
-		if (pPopupType == null) {
-			return null;
-		} else if (pPopupType.equals(PopupType.NEW_TIPICO_POPUP)) {
-			return new NewTipicoPopup(pParams);
-		} else if (pPopupType.equals(PopupType.START_TIPICO_BETVALUE_POPUP)) {
-			return new StartTipicoBetValuePopup(pParams);
-		} else if (pPopupType.equals(PopupType.START_DATABASE_CONNECTION_POPUP)) {
-			return new StartDatabaseConnectionPopup(pParams);
-		} else if (pPopupType.equals(PopupType.START_DATABASE_BROWSER_POPUP)) {
-			return new StartDatabaseBrowserPopup(pParams);
-		} else if (pPopupType.equals(PopupType.START_TABLE_CONFIG_POPUP)) {
-			return new TableConfigPopup(pParams);
-		} else if (pPopupType.equals(PopupType.HINT)) {
+		switch (pPopupType) {
+		case TIPICO_NEW_POPUP:
+			return new TipicoNewPopup(pParams);
+		case TIPICO_BETVALUE_POPUP:
+			return new TipicoBetValuePopup(pParams);
+		case TIPICO_TABLE_FILTER_POPUP:
+			return new TableFilterPopup(pParams);
+		case DATABASE_CONNECTION_POPUP:
+			return new DatabaseConnectionPopup(pParams);
+		case DATABASE_BROWSER_POPUP:
+			return new DatabaseBrowserPopup(pParams);
+		case DATABASE_PULLDETAIL_POPUP:
+			return new DatabasePullDetailPopup(pParams);
+		case HINT:
 			startHintPopup(pParams[0].toString());
-		} else if (pPopupType.equals(PopupType.ERROR)) {
+		case ERROR:
 			startErrorPopup(pParams[0].toString());
-		} 
-		
-		return null;
+		default:
+			return null;
+		}
 	}
 
 	public static void startHintPopup(String pMessage) {

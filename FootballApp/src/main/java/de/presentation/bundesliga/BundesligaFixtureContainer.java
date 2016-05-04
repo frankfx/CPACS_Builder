@@ -1,6 +1,7 @@
 package de.presentation.bundesliga;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -82,6 +83,8 @@ public class BundesligaFixtureContainer extends AbstractPanelContainer {
 		c.gridy = 2;
 		c.gridwidth = 3;
         this.add(mBtnRequest, c);		
+
+		this.setMinimumSize(new Dimension(100, 200));
 	}	
 	
 	/**  

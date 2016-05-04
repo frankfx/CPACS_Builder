@@ -7,13 +7,12 @@ public enum TeamIDEnum {
 	EINTRACHT("Eintracht Frankfurt"), TSG("TSG 1899 Hoffenheim"), H96("Hannover 96"), ZWICKAU("FSV Zwickau", "2370"),
 	ESSEN("Rot Weiss Essen", "994"), VFR("VFR Aalen", "1002"), EMPTY("Empty");
 	
-	// soccerway id	
-	String id = "";
+	String soccerway_id = "";
 	String name = "";
 	
 	private TeamIDEnum(String pName, String pId){
 		this.name = pName;
-		this.id = pId;
+		this.soccerway_id = pId;
 	}
 	
 	private TeamIDEnum(String pName){
@@ -31,7 +30,7 @@ public enum TeamIDEnum {
 			return TeamIDEnum.LEV;
 		else if(str.equals(Hertha.name))
 			return TeamIDEnum.Hertha;
-		else if(str.contains(BMG.name)) // use "contains" because the web service uses an Umlaut instead of oe in Mönchengladbach
+		else if (str.contains(BMG.name)) // use "contains" because the web service uses an Umlaut instead of oe in Moenchengladbach
 			return TeamIDEnum.BMG;
 		else if(str.equals(S04.name))
 			return TeamIDEnum.S04;
@@ -68,6 +67,6 @@ public enum TeamIDEnum {
 	}
 	
 	public String getID(){
-		return this.id;
+		return this.soccerway_id;
 	}
 }

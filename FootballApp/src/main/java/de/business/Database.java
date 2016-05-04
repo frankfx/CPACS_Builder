@@ -16,7 +16,7 @@ public class Database {
 	
 	// Database credentials
 	//static final String USER = "root";
-	//static final String PASS = "130386";
+	//static final String PASS = "Ines";
 	
 	// Connection and result set
 	private Connection mConnection = null;
@@ -36,8 +36,9 @@ public class Database {
 			// STEP 2: Register JDBC driver (/usr/share/java/mysql)
 			Class.forName("com.mysql.jdbc.Driver");		
 			// STEP 3: Open connection
-			
 			mConnection = DriverManager.getConnection("jdbc:mysql://" + pHost + ":" + pPort + "/" + pDatabase , pUser, pPass);		
+			// create an empty sql statement for the queries
+			mStatement = mConnection.createStatement();
 			return true;
 		} catch(SQLException e){
 			System.out.println("ERROR: SQL-EXCEPTION");
@@ -74,7 +75,6 @@ public class Database {
 	 */
 	public boolean query(String sql){
 		try {
-			mStatement = mConnection.createStatement();
 			mResultSet = mStatement.executeQuery(sql);
 			return true;
 		} catch (SQLException e) {
@@ -91,7 +91,6 @@ public class Database {
 	 */	
 	public boolean updateDB(String sql){
 		try {
-			mStatement = mConnection.createStatement();
 			mStatement.executeUpdate(sql);
 			System.out.println("update succesful");
 			return true;

@@ -36,21 +36,18 @@ public class BundesligaConsoleContainer extends AbstractPanelContainer {
 		JScrollPane scroll = new JScrollPane(mConsole);
 		scroll.setBounds(10, 11, 455, 249); // <-- THIS		
 
-		c.gridx = 0;
-		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
-		c.weighty = 0.1;
+		c.weightx = 0.1;
 		c.weighty = 0.1;
 		this.add(scroll, c);
 
 		c.gridy = 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.1;
 		c.weighty = 0.0;
 		this.add(mBtnClear, c);
 		
 		this.setPreferredSize(new Dimension(450, 250));
-		this.setMinimumSize(new Dimension(300,100));
+		this.setMinimumSize(new Dimension(300, 100));
 	}
 
 	public JTextArea getConsole() {

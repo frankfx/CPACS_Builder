@@ -84,7 +84,7 @@ public class StatisticContainer extends AbstractPanelContainer {
 		this.add(mDate,c);			
 		
 		c.gridy = 4;		
-		this.add(new JLabel("Progress to 1000 €"), c);
+		this.add(new JLabel("Progress to 1000,-"), c);
 		
 		c.gridy = 5;
 		c.fill = GridBagConstraints.BOTH;

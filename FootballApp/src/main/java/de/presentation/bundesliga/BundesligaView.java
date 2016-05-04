@@ -7,11 +7,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeListener;
 
 import de.presentation.ButtonPanelContainer;
@@ -30,7 +32,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private StatisticContainer mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
 	
-	private JSplitPane mSplitPane;
+	private JSplitPane mSplitPaneRightHorizontal;
+	private JSplitPane mSplitPaneLeftHorizontal;
 
 	// Menu items
 	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
@@ -39,11 +42,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemDBDisConnect = new JMenuItem("Disconnect DB");
 	private JMenuItem menuItemCommitDB = new JMenuItem("Commit DB");	
 	private JMenuItem menuItemPullDB = new JMenuItem("Pull DB");		
+	private JMenuItem menuItemPrint = new JMenuItem("Print");
 	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	
 	@Override
 	public void initView() {
+		UIManager.getDefaults().put("SplitPane.border", BorderFactory.createEmptyBorder());
 		setTitle("1. Bundesliga View");
 		createGUIElements();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,23 +82,15 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
-		c.fill = GridBagConstraints.BOTH;	
-		c.gridx = 0;
-		c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0.1;
 		c.weighty = 0.1;
-		pane.add(mConsolenPanel, c);
-
-		c.gridy = 1;
-		pane.add(mStatisticPanel, c);
+		mSplitPaneLeftHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mConsolenPanel, mStatisticPanel);
+		pane.add(mSplitPaneLeftHorizontal, c);
 
 		c.gridx = 1;
-		c.gridy = 0;
-		c.gridheight = 2;
-
-		mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
-
-		pane.add(mSplitPane, c);
+		mSplitPaneRightHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
+		pane.add(mSplitPaneRightHorizontal, c);
 
 		getContentPane().add(pane, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
@@ -101,7 +98,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		createMenuBar();
 	}
 
-	private void createMenuBar(){
+	private void createMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
 		JMenu menuFile = new JMenu("File");
@@ -113,6 +110,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuFile.addSeparator();
 		menuFile.add(menuItemCommitDB);
 		menuFile.add(menuItemPullDB);
+		menuFile.addSeparator();
+		menuFile.add(menuItemPrint);
 		menuFile.addSeparator();
 		menuFile.add(menuItemExit);
 
@@ -184,6 +183,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     public void setMenuItemAboutListener(ActionListener l){
     	this.menuItemAbout.addActionListener(l);
     }    
+
+	public void setMenuItemPrintListener(ActionListener l) {
+		this.menuItemPrint.addActionListener(l);
+	}
     
 	/**
 	 * ========================

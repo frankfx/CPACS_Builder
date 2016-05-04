@@ -26,6 +26,7 @@ import de.presentation.filter.ICriteria;
 import de.presentation.filter.OrCriteria;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.printing.TipicoPrintService;
 import de.utils.FAMessages;
 import de.utils.PersistenceType;
 import de.utils.math.ExpressionType;
@@ -63,6 +64,7 @@ public class TipicoActivityBean implements ISubController{
 	 * sets all listeners from the presentation view
 	 */		
 	private void addListener() {
+
 		this.mView.setButtonNewBetListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -104,6 +106,13 @@ public class TipicoActivityBean implements ISubController{
 				actionInitTable();
 			}
 		});	
+
+		this.mView.setButtonPullDetailListerner(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionPullDetailChild();
+			}
+		});
 
 		this.mView.setButtonRemoveListerner(new ActionListener() {
 			@Override
@@ -391,11 +400,18 @@ public class TipicoActivityBean implements ISubController{
 	 * initialized the table with all entries of the database
 	 */		
 	public void actionInitTable(){
-		if(readFromDatabaseToTableModel(mView.getTableModel())){
+		if (readFromDatabaseToTableModel(mView.getTableModel(), SQL_SELECT_ALL_FROM_TIPICO_QUERY)) {
 			mView.getTableModel().fireTableDataChanged();
 		}
 	}	
 	
+	public void actionPullDetailChild() {
+		String[] arr = PopupFactory.getPopup(PopupType.DATABASE_PULLDETAIL_POPUP, null).requestInputData();
+		if (readFromDatabaseToTableModel(mView.getTableModel(), arr[0])) {
+			mView.getTableModel().fireTableDataChanged();
+		}
+	}
+
 	private List<Integer> getTipicoNumbersFromDB() {
 		List<Integer> list = new ArrayList<Integer>();
 		
@@ -413,9 +429,9 @@ public class TipicoActivityBean implements ISubController{
 		return list;
 	}
 
-	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel){
+	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel, String pSQL) {
 		if (mDB != null && mDB.isConnected()){
-			mDB.query(SQL_SELECT_ALL_FROM_TIPICO_QUERY);
+			mDB.query(pSQL);
 	
 			try {
 				TipicoModel data;
@@ -493,7 +509,7 @@ public class TipicoActivityBean implements ISubController{
 		if (pTipicoModel == null){
 			lResult = FAMessages.MESSAGE_NO_VALID_TABLE_MODEL + -1;
 		} else{
-			String[] lValues = PopupFactory.getPopup(PopupType.NEW_TIPICO_POPUP, new Object[] { pTipicoModel, pIDEnable }).requestInputData();
+			String[] lValues = PopupFactory.getPopup(PopupType.TIPICO_NEW_POPUP, new Object[] { pTipicoModel, pIDEnable }).requestInputData();
 			if (lValues == null){
 				return false;
 			} else if(!updateTipicoEntry(pTipicoModel, lValues)){
@@ -530,27 +546,6 @@ public class TipicoActivityBean implements ISubController{
 		return true;
 	}	
 
-	/**
-	 * This function determines the new bet value
-	 * 
-	 * @param winValue the amount we want to win for one bet
-	 * @param sumOldBet the amount we have lost in previous bets
-	 * @param odds the rate of the game for a given result
-	 * 
-	 * @return the new bet value to win a specific amount and the whole stake (sum of this and all previous bets)
-	 * 
-	 * Formula: winValue + sumOldBet + newBet = newBet * odds	
-	 *  		winValue + sumOldBet = newBet * odds - newBet
-	 *  		winValue + sumOldBet = newBet * (odds-1)
-	 *  		
-	 *  		newBet = (winValue + sumOldBet) / (odds-1)
-	 * 
-	 */
-	public static float computeBetValue(float winValue, float sumOldBet, float odds){
-		return odds > 1.0f ? (winValue + sumOldBet) / (odds-1) : -1f;
-	}
-	
-	
  // ========================
  // BEGIN ACTION
  // ========================
@@ -581,7 +576,7 @@ public class TipicoActivityBean implements ISubController{
 	}
 
 	private void actionFilterTableData() {
-		String[] lExpression = PopupFactory.getPopup(PopupType.START_TABLE_CONFIG_POPUP, null).requestInputData();
+		String[] lExpression = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null).requestInputData();
 		
 		if (lExpression != null) {
 			boolean isFilterEnabled = Boolean.valueOf(lExpression[0]);
@@ -659,20 +654,21 @@ public class TipicoActivityBean implements ISubController{
 		int lRow = getSelectedRow();
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( lRow);		
 		
-		float lWinValue = lModel != null ? lModel.getWinValue() : 1.0f;
-		float lExpenses = lModel != null ? lModel.getExpenses() : 0.0f;
-			
-		String[] arr = PopupFactory.getPopup(PopupType.START_TIPICO_BETVALUE_POPUP, new Object[] { lWinValue, lExpenses, lModel != null }).requestInputData();
+		if (lModel == null) {
+			lModel = new TipicoModel();
+			lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
+			mView.getTableModel().addRow(lModel);
+		}
+		
+		String[] arr = PopupFactory.getPopup(PopupType.TIPICO_BETVALUE_POPUP, new Object[] { lModel.getWinValue(), lModel.getExpenses() }).requestInputData();
 
 		if (arr != null) {
-			float a = computeBetValue(Float.parseFloat(arr[1]), Float.parseFloat(arr[2]), Float.parseFloat(arr[0]));
-			if (Boolean.parseBoolean(arr[3])) {
-				lModel.setWinValue(Float.parseFloat(arr[1]));
-				lModel.setExpenses(a + lModel.getExpenses());
-				lModel.setDate(LocalDate.now());
-				lModel.setPersistenceType(PersistenceType.NEW);
-			}
-			lResult = "" + a;
+			lModel.setWinValue(Float.parseFloat(arr[0]));
+			lModel.setExpenses(Float.parseFloat(arr[1]) + lModel.getExpenses());
+			lModel.setDate(LocalDate.now());
+			lModel.setPersistenceType(PersistenceType.NEW);
+			lResult = FAMessages.MESSAGE_SUCCESS;
+			this.updateTable();
 		} else {
 			lResult = FAMessages.MESSAGE_NO_VALID_FORMULAR_DATA;
 		}
@@ -700,8 +696,8 @@ public class TipicoActivityBean implements ISubController{
 	private void actionDBBrowser(){
 		TipicoTableModel lModel = new TipicoTableModel();
 		
-		if(readFromDatabaseToTableModel(lModel)){
-			PopupFactory.getPopup(PopupType.START_DATABASE_BROWSER_POPUP, lModel.getAsArray());
+		if (readFromDatabaseToTableModel(lModel, SQL_SELECT_ALL_FROM_TIPICO_QUERY)) {
+			PopupFactory.getPopup(PopupType.DATABASE_BROWSER_POPUP, lModel.getAsArray());
 			//Popups.startDatabaseBrowser(lModel.getAsList());
 		} else
 			PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_DATABASE);
@@ -746,6 +742,11 @@ public class TipicoActivityBean implements ISubController{
  // ========================
  
 	
+	@Override
+	public void print() {
+		TipicoPrintService.printTipicoTableModel(mView.getTableModel().getAsList());
+	}
+
  // ========================
  // BEGIN FUNCTION
  // ========================

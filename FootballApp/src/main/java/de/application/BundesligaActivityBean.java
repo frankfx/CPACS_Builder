@@ -160,13 +160,21 @@ public class BundesligaActivityBean {
 			}
 		});
 
+		this.mView.setMenuItemPrintListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (ISubController s : mSubController)
+					s.print();
+			}
+		});
+
 		/**
 		 * Database connection
 		 */
 		mView.setMenuItemDBConnectListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] arr = PopupFactory.getPopup(PopupType.START_DATABASE_CONNECTION_POPUP, null).requestInputData();
+				String[] arr = PopupFactory.getPopup(PopupType.DATABASE_CONNECTION_POPUP, null).requestInputData();
 				if (arr != null)
 					mSubController.get(0).initBean(arr);
 			}

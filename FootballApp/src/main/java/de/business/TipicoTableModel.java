@@ -140,7 +140,7 @@ public class TipicoTableModel extends AbstractTableModel {
 		int lMaxTnr;
 
 		if (pIDsFromDB != null && !pIDsFromDB.isEmpty()) {
-			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> i).max().getAsInt();
+			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> i).max().getAsInt() + 1;
 		} else {
 			lMaxTnr = list.size() + 1;
 		}
@@ -176,9 +176,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	}
 	
 	public TipicoModel[] getAsArray() {
-		TipicoModel[] arr = new TipicoModel[list.size()];
-
-		return list.toArray(arr);
+		return list.toArray(new TipicoModel[list.size()]);
 	}
 
 	public List<TipicoModel> getFilterList() {

@@ -45,10 +45,6 @@ public class LigaWService {
 		int i = 0;
 		for (Matchdata dat : mSportsdataSoap.getMatchdataByGroupLeagueSaison(lMatchday, lLeague, lYear).getMatchdata()){
 			if(dat != null){
-				lMatches[i] = new Match();
-				lMatches[i].setTeam1(dat.getNameTeam1());
-				lMatches[i].setTeam2(dat.getNameTeam2());
-			
 				ArrayOfMatchResult lMatchResults = dat.getMatchResults();
 				
 				if(lMatchResults != null){
@@ -57,6 +53,12 @@ public class LigaWService {
 					if (lListMatchResult != null && lListMatchResult.size() > 0)
 						lMatches[i] = new Match(i, dat.getNameTeam1(), dat.getNameTeam2(), lListMatchResult.get(1).getPointsTeam1(), lListMatchResult.get(1).getPointsTeam2());
 				}
+
+				//				if (lMatches[i] == null) {
+				//					lMatches[i] = new Match();
+				//					lMatches[i].setTeam1(dat.getNameTeam1());
+				//					lMatches[i].setTeam2(dat.getNameTeam2());
+				//				}
 			}
 			i++;
 		}

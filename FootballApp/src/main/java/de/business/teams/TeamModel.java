@@ -8,10 +8,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 public class TeamModel {
-	private String mName;
-	private int mPosition;
-	private ImageIcon mIcon;	
 	private TeamIDEnum mId;
+	private String mName;
+	private ImageIcon mIcon;	
 	
 	public TeamModel(String pName) {
 		this.mName = pName;
@@ -28,14 +27,6 @@ public class TeamModel {
 
 	public void setName(String pName) {
 		this.mName = pName;
-	}
-
-	public int getPosition() {
-		return mPosition;
-	}
-
-	public void setPosition(int pPosition) {
-		this.mPosition = pPosition;
 	}
 
 	public ImageIcon getIcon() {

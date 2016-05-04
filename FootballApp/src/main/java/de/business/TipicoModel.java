@@ -16,7 +16,7 @@ public class TipicoModel {
 	private PersistenceType mPersistenceType;
 
 	public TipicoModel() {
-		this(100, "Default", 0.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+		this(100, "Default", 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
 	}
 	
 	public TipicoModel(int pTnr, String pTeam, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){

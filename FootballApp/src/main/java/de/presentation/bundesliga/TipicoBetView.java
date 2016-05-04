@@ -199,6 +199,10 @@ public class TipicoBetView extends AbstractPanelContainer {
 		this.mBtnDBSplit.getPullItem().addActionListener(l);
 	}
 
+	public void setButtonPullDetailListerner(ActionListener l) {
+		this.mBtnDBSplit.getPullDetailItem().addActionListener(l);
+	}
+
 	public void setButtonRemoveListerner(ActionListener l){
 		this.mBtnDBSplit.getRemoveItem().addActionListener(l);
 	}	
