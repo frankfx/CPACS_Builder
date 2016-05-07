@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="74c78ad8-3db4-49a0-a3e3-08d34c906552">
+	<property name="ireport.zoom" value="1.948717100000007"/>
+	<property name="ireport.x" value="152"/>
+	<property name="ireport.y" value="354"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="monat" class="java.lang.String"/>
+	<field name="tnr" class="java.lang.String"/>
+	<field name="team" class="java.lang.String"/>
+	<field name="winValue" class="java.lang.String"/>
+	<field name="expenses" class="java.lang.String"/>
+	<field name="attempts" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="success" class="java.lang.String"/>
+	<group name="Group1">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/15)]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="47" y="13" width="506" height="24" forecolor="#CC0000" uuid="baf31a16-496f-4ae9-a173-112f3ce5a683"/>
+					<textElement>
+						<font fontName="Courier" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Aufstellungen"]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Opaque" x="0" y="13" width="36" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="b1ddf169-6af7-4363-828c-b7688f8ddc2e"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="8"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[(int)($V{REPORT_COUNT}/5)]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<staticText>
+					<reportElement x="0" y="10" width="36" height="20" uuid="6adf354a-be65-4762-a97f-a42ca5277ebf"/>
+					<textElement>
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[ID]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="47" y="10" width="127" height="20" uuid="bdbd070c-2f8a-42b5-8769-6eb61e1943b7"/>
+					<textElement>
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[TEAM]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="186" y="10" width="58" height="20" uuid="f2418f56-521d-44c6-87ee-2ad963b6f854"/>
+					<textElement textAlignment="Center">
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[WINVALUE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="263" y="10" width="58" height="20" uuid="bc327c45-abee-4cf8-8401-4b4420d814fb"/>
+					<textElement textAlignment="Center">
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[EXPENSES]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="339" y="10" width="58" height="20" uuid="54d70ee6-aa29-4535-99c3-85bd7c825c7a"/>
+					<textElement textAlignment="Center">
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[ATTEMPTS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="410" y="10" width="84" height="20" uuid="129ef921-89ba-4066-ae9a-4b526b2b34f3"/>
+					<textElement textAlignment="Center">
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[DATE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="497" y="10" width="58" height="20" uuid="0a7f4925-f1cf-47f6-8cd3-c2d35a369ef7"/>
+					<textElement textAlignment="Center">
+						<font fontName="Courier"/>
+					</textElement>
+					<text><![CDATA[SUCCESS]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="108" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="263" height="33" uuid="380eb1fc-372d-4aa6-8343-c42bcbf430cd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier" size="24" isBold="true" isItalic="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Tipico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="44" width="202" height="22" uuid="1b69b71a-43a6-4301-a97e-b0e62415a98e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Dokument: Monatsuebersicht]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="0" y="66" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e8f86b03-c3e5-4e46-8132-91a53dd564e1"/>
+				<textElement verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="Courier" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Monat: " + $P{monat}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="86" width="202" height="22" uuid="c52ac3c4-32d6-4a59-b6ca-453b0287049d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Bearbeiter: Rene Frank]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="1960c490-52f9-45ec-85e8-e7e025313c84"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="eef23430-a0d5-42a9-9d7d-196b7ca0fbe3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="36" height="12" uuid="a6cdcdfd-db7a-4767-a8db-ff0e635ee445"/>
+				<textFieldExpression><![CDATA[$F{tnr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="0" width="127" height="12" uuid="f0f7835a-0802-4cc1-8554-757425bf9411"/>
+				<textFieldExpression><![CDATA[$F{team}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="0" width="58" height="12" uuid="388ac561-0ce1-45b2-ad1c-a5b35cc1c38f"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{winValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="0" width="58" height="13" uuid="75bb57fb-c32e-4d77-955c-bd6071a6c989"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{attempts}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="84" height="13" uuid="a40368d9-055e-4e81-9994-691e1c409b4e"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="0" width="58" height="13" uuid="56c156b5-aecf-44b9-a507-5f4681dda948"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{success}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="0" width="58" height="12" uuid="d6443b8a-1538-47f8-9730-0ac6be5844fc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{expenses}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="615ba7e9-df44-445d-a468-7254e6e45892"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="6d505612-598f-468e-b91e-b66ef26b91b3"/>
+				<textElement textAlignment="Right">
+					<font fontName="Courier" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="83a9f04d-f057-4bb4-82b6-a28d3aba4e3c"/>
+				<textElement>
+					<font fontName="Courier" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="974271c0-f26e-42f8-8c4d-2fa484159806"/>
+				<textElement>
+					<font fontName="Courier" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
