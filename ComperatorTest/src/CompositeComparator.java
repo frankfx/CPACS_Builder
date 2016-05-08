@@ -6,6 +6,7 @@ public class CompositeComparator<T> implements Comparator<T> {
 
 	private List<Comparator<T>> defaultFoobarComparison;
 
+	@SafeVarargs
 	public CompositeComparator(Comparator<T>... args) {
 		defaultFoobarComparison = Arrays.<Comparator<T>> asList(args);
 	}

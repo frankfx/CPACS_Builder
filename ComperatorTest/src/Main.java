@@ -8,8 +8,8 @@ public class Main {
 		Mahnung mahnung3 = new Mahnung(MahnStatus.OFFEN);
 
 		ForderungVerbindlichkeitModel[] ford1 = getRadomForderungen(4);
-		ForderungVerbindlichkeitModel[] ford2 = getRadomForderungen(7);
-		ForderungVerbindlichkeitModel[] ford3 = getRadomForderungen(7);
+		ForderungVerbindlichkeitModel[] ford2 = getRadomForderungen(5);
+		ForderungVerbindlichkeitModel[] ford3 = getRadomForderungen(12);
 		
 		// fill mahnung1
 		for (ForderungVerbindlichkeitModel f : ford1) {
@@ -26,26 +26,19 @@ public class Main {
 		// fill mahnung3 with two values of mahnung2
 		for (ForderungVerbindlichkeitModel f : ford2) {
 			mahnung3.addForderungen(f);
-			//	f.addMahnung(mahnung3);
 		}
 
 		// fill mahnung3 with two values of mahnung1
 		for (ForderungVerbindlichkeitModel f : ford1) {
 			mahnung3.addForderungen(f);
-			//			f.addMahnung(mahnung3);
 		}
 
 		// fill mahnung3
 		for (ForderungVerbindlichkeitModel f : ford3) {
 			mahnung3.addForderungen(f);
-			//			f.addMahnung(mahnung3);
 		}
 
-
-
-		MahnpositionenPrintModel mahnpositionenPrintModel = new MahnpositionenPrintModel(mahnung3);
-
-		Iterator<ForderungVerbindlichkeitModel> iter = mahnpositionenPrintModel.retrieveListDetailIterator();
+		Iterator<ForderungVerbindlichkeitModel> iter = new MahnpositionenPrintModel(mahnung3).retrieveListDetailIterator();
 
 		while (iter.hasNext()) {
 			System.out.println(iter.next());

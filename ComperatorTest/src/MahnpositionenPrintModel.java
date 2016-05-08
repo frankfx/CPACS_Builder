@@ -41,20 +41,19 @@ public class MahnpositionenPrintModel {
 						result = -1;
 					else if (o1IstBescheidet && !o2IstBescheidet)
 						result = 1;
-					else
-						result = 0;
 
-				boolean o1IstSZVZ = o1.getMahnbelegart().equals(MahnBelegartType.SAEUMNISZUSCHLAG) || o1.getMahnbelegart().equals(MahnBelegartType.VERSPAETUNGSZUSCHLAG);
-				boolean o2IstSZVZ = o2.getMahnbelegart().equals(MahnBelegartType.SAEUMNISZUSCHLAG) || o2.getMahnbelegart().equals(MahnBelegartType.VERSPAETUNGSZUSCHLAG);
+				boolean o1IstSZVZUndHatMahnungen = (o1.getMahnbelegart().equals(MahnBelegartType.SAEUMNISZUSCHLAG) || o1.getMahnbelegart().equals(MahnBelegartType.VERSPAETUNGSZUSCHLAG))
+						&& !o1.getMahnungen().isEmpty();
+				boolean o2IstSZVZUndHatMahnungen = (o2.getMahnbelegart().equals(MahnBelegartType.SAEUMNISZUSCHLAG) || o2.getMahnbelegart().equals(MahnBelegartType.VERSPAETUNGSZUSCHLAG))
+						&& !o2.getMahnungen().isEmpty();
 
-				if (o1IstSZVZ && !o1.getMahnungen().isEmpty() && o2IstSZVZ && !o2.getMahnungen().isEmpty()) {
+				if (o1IstSZVZUndHatMahnungen && o2IstSZVZUndHatMahnungen) {
 					result = 0;
-				} else if (o1IstSZVZ && !o1.getMahnungen().isEmpty()) {
+				} else if (o1IstSZVZUndHatMahnungen) {
 					result = 1;
-				} else if (o2IstSZVZ && !o2.getMahnungen().isEmpty()) {
+				} else if (o2IstSZVZUndHatMahnungen) {
 					result = -1;
 				}
-
 
 				return result;
 			}
