@@ -37,10 +37,11 @@ public class MahnpositionenPrintModel {
 				int result = 0;
 
 				// sortiere offene (nicht bescheidete) nach vorn
-				if (!o1IstBescheidet && o2IstBescheidet)
+				if (!o1IstBescheidet && o2IstBescheidet) {
 					result = -1;
-				else if (o1IstBescheidet && !o2IstBescheidet)
+				} else if (o1IstBescheidet && !o2IstBescheidet) {
 					result = 1;
+				}
 
 				boolean o1IstSZVZUndHatMahnungen = (o1.getMahnbelegart().equals(MahnBelegartType.SAEUMNISZUSCHLAG) || o1.getMahnbelegart().equals(MahnBelegartType.VERSPAETUNGSZUSCHLAG))
 						&& !o1.getMahnungen().isEmpty();
