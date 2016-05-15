@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.business.TipicoModel;
+import de.utils.ResourceService;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -59,9 +60,9 @@ public class TipicoPrintService {
 		JRMapCollectionDataSource ds = new JRMapCollectionDataSource(fields);
 
 		try {
-			jasperReport = JasperCompileManager.compileReport(System.getProperty("user.dir") + "/src/main/resources/printing/TipicoGesamtUebersicht.jrxml");
+			jasperReport = JasperCompileManager.compileReport(ResourceService.getInstance().getRessourceJRMXL("TipicoGesamtUebersicht.jrxml"));
 			jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, ds);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, System.getProperty("user.dir") + "/src/main/resources/printing/output/TipicoGesamtUebersicht.pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, System.getProperty("user.dir") + "/TipicoGesamtUebersicht.pdf");
 			return true;
 		} catch (JRException e) {
 			e.printStackTrace();

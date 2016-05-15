@@ -158,7 +158,6 @@ public class Database {
 			return null;
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("{");
 		
 		try {
 			if (mResultSet.next()){
@@ -168,7 +167,6 @@ public class Database {
 					sb.append(", ");
 				}
 				sb.append(mResultSet.getString(numberOfColumns));
-				sb.append("}");
 				
 				return sb.toString();
 			}

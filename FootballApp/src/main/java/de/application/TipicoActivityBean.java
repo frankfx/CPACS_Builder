@@ -29,6 +29,7 @@ import de.presentation.popups.PopupType;
 import de.printing.TipicoPrintService;
 import de.utils.FAMessages;
 import de.utils.PersistenceType;
+import de.utils.SQLService;
 import de.utils.math.ExpressionType;
 import de.utils.math.IExpression;
 import de.utils.math.Node;
@@ -407,6 +408,7 @@ public class TipicoActivityBean implements ISubController{
 	
 	public void actionPullDetailChild() {
 		String[] arr = PopupFactory.getPopup(PopupType.DATABASE_PULLDETAIL_POPUP, null).requestInputData();
+
 		if (readFromDatabaseToTableModel(mView.getTableModel(), arr[0])) {
 			mView.getTableModel().fireTableDataChanged();
 		}
@@ -751,7 +753,12 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN FUNCTION
  // ========================
 	public float getBalance(){
-		return mView.getTableModel().getBalance();
+		if (mDB != null) {
+			mDB.query(SQLService.SQL_COMPUTE_BALANCE);
+			return Float.parseFloat(mDB.getNextResult(1));
+		} else {
+			return Float.NaN;
+		}
 	}
 	
 	public void updateTable(){

@@ -24,9 +24,6 @@ import de.utils.ParserService;
 import de.utils.ResourceService;
 
 public class BundesligaActivityBean {
-
-	private final float TIPICO_BALANCE = 41.1f;
-
 	private BundesligaModel mModel;
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
@@ -215,7 +212,7 @@ public class BundesligaActivityBean {
 	}
 
 	public void actionUpdateStatistics(float pBalance) {
-		mView.getStatisticPanel().setBalanceValue(TIPICO_BALANCE + pBalance);
+		mView.getStatisticPanel().setBalanceValue(pBalance);
 		int n = (int) (mView.getStatisticPanel().getProgressBar().getValue() + mView.getStatisticPanel().getBalanceValue()) / 10;
 		mView.getStatisticPanel().getProgressBar().setValue(n);
 	}
@@ -265,7 +262,7 @@ public class BundesligaActivityBean {
 				addListener();
 
 				//BEGIN FAST DATABASE ACCESS ONLY FOR TESTING
-				//mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
+				mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "130386" });
 				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
 		});

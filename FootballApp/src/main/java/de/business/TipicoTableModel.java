@@ -186,15 +186,4 @@ public class TipicoTableModel extends AbstractTableModel {
 	public void setFilterList(List<TipicoModel> pFilterList) {
 		this.mFilterList = new ArrayList<TipicoModel>(pFilterList);
 	}
-
-	public float getBalance(){
-		float lResult = 0.0f;
-		for(int i = 0; i<list.size(); i++){
-			if(list.get(i).getSuccess())
-				lResult += list.get(i).getWinValue();
-			else
-				lResult -= list.get(i).getExpenses();
-		}
-		return lResult;
-	}
 }

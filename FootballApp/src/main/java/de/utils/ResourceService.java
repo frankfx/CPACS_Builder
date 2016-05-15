@@ -42,10 +42,12 @@ public class ResourceService {
 		return null;
 	}
 
+	public InputStream getRessourceJRMXL(String pPath) {
+		return cl.getResourceAsStream("printing/" + pPath);
+	}
 
 	public String getRessourceScripts(String pPath) {
-		// Get current classloader
-		ClassLoader cl = this.getClass().getClassLoader();
+		cl = this.getClass().getClassLoader();
 		InputStream a = cl.getResourceAsStream("scripts/" + pPath);
 
 		File tempFile = new File("");
