@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFileChooser;
+
 import de.business.TipicoModel;
 import de.utils.ResourceService;
 import net.sf.jasperreports.engine.JRException;
@@ -60,9 +62,15 @@ public class TipicoPrintService {
 		JRMapCollectionDataSource ds = new JRMapCollectionDataSource(fields);
 
 		try {
-			jasperReport = JasperCompileManager.compileReport(ResourceService.getInstance().getRessourceJRMXL("TipicoGesamtUebersicht.jrxml"));
-			jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, ds);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, System.getProperty("user.dir") + "/TipicoGesamtUebersicht.pdf");
+			final JFileChooser fc = new JFileChooser();
+			int returnVal = fc.showSaveDialog(null);
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				jasperReport = JasperCompileManager.compileReport(ResourceService.getInstance().getRessourceJRMXL("TipicoGesamtUebersicht.jrxml"));
+				jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, ds);
+				JasperExportManager.exportReportToPdfFile(jasperPrint, fc.getSelectedFile().getAbsolutePath());
+			}
+
 			return true;
 		} catch (JRException e) {
 			e.printStackTrace();
