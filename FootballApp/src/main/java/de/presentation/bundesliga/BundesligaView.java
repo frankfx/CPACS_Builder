@@ -34,6 +34,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	
 	private JSplitPane mSplitPaneRightHorizontal;
 	private JSplitPane mSplitPaneLeftHorizontal;
+	private JSplitPane mSplitPaneVertikal;
+
 
 	// Menu items
 	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
@@ -82,15 +84,15 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
+		mSplitPaneLeftHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mConsolenPanel, mStatisticPanel);
+		mSplitPaneRightHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
+		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mSplitPaneLeftHorizontal, mSplitPaneRightHorizontal);
+
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0.1;
 		c.weighty = 0.1;
-		mSplitPaneLeftHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mConsolenPanel, mStatisticPanel);
-		pane.add(mSplitPaneLeftHorizontal, c);
 
-		c.gridx = 1;
-		mSplitPaneRightHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
-		pane.add(mSplitPaneRightHorizontal, c);
+		pane.add(mSplitPaneVertikal, c);
 
 		getContentPane().add(pane, BorderLayout.CENTER);
 		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);

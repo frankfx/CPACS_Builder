@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -48,6 +49,7 @@ public class StatisticContainer extends AbstractPanelContainer {
 		
 		mDate = new JTextField();
 		mDate.setEditable(false);
+		System.out.println(getDaysOfWork());
 		mDate.setText(getDaysOfWork()+"");
 		
 		mComboTeamID = new JComboBox<TeamIDEnum>();
@@ -164,7 +166,8 @@ public class StatisticContainer extends AbstractPanelContainer {
 		this.mBtnTeamRequest = pBtnTeamRequest;
 	}	
 	
-	private int getDaysOfWork(){
-		return LocalDate.of(2016, 4, 6).until(LocalDate.now()).getDays();
+	private long getDaysOfWork() {
+		return ChronoUnit.DAYS.between(LocalDate.of(2016, 4, 6), LocalDate.now());
+
 	}
 }

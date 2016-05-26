@@ -2,10 +2,8 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +13,14 @@ import javax.swing.event.ChangeListener;
 import de.business.BundesligaModel;
 import de.business.LigaWService;
 import de.business.Match;
+import de.business.SoccerwayMatchModel;
 import de.business.teams.TeamIDEnum;
 import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
-import de.utils.ParserService;
-import de.utils.ResourceService;
+import de.utils.SWJSONParser;
+import de.utils.SoccerwayMatchType;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;
@@ -228,21 +227,11 @@ public class BundesligaActivityBean {
 	public void actionTeamDataPythonRequest() {
 		String lId = ((TeamIDEnum) mView.getStatisticPanel().getComboTeamID().getSelectedItem()).getID();
 		String lMatchType = mView.getStatisticPanel().getComboMatchType().getSelectedItem().toString();
-		String lResult = null;
 
-		ProcessBuilder pb = new ProcessBuilder("python", ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY, lId, lMatchType);
+		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(lId, SoccerwayMatchType.getType(lMatchType));
 
-		try {
-			Process p = pb.start();
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			lResult = in.readLine();
-
-			for (String s : ParserService.getInstance().parseListString(lResult))
-				mView.getConsolenPanel().appendConsole(s);
-
-		} catch (IOException e) {
-			mView.getConsolenPanel().appendConsole("Error while python call: " + e.getMessage());
+		while (iter.hasNext()) {
+			mView.getConsolenPanel().appendConsole(iter.next().toString());
 		}
 	}
 
