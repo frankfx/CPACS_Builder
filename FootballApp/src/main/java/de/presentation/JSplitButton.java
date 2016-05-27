@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 
-import de.utils.ResourceService;
+import de.services.ResourceService;
 
 
 public class JSplitButton extends JButton {
@@ -34,7 +34,7 @@ public class JSplitButton extends JButton {
         setHorizontalAlignment(SwingConstants.RIGHT);
         setIconTextGap(-getText().length()*18);
 
-		Image lImg = ResourceService.getInstance().IMGAGE_ICON_ARROW_DOWN.getScaledInstance(13, 15, Image.SCALE_SMOOTH);
+		Image lImg = ResourceService.getInstance().IMAGE_ICON_ARROW_DOWN.getScaledInstance(13, 15, Image.SCALE_SMOOTH);
 
 		this.setIcon(new ImageIcon(lImg, "ARROW DOWN"));
 

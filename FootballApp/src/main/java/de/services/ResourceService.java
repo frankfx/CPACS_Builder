@@ -1,4 +1,4 @@
-package de.utils;
+package de.services;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,15 +17,18 @@ public class ResourceService {
 	private ClassLoader cl;
 
 	// predefined fields
-	public final BufferedImage IMGAGE_ICON_ARROW_DOWN;
+	public final BufferedImage IMAGE_ICON_ARROW_DOWN;
+	public final BufferedImage IMAGE_ICON_ADD_GREEN;
+	public final BufferedImage IMAGE_ICON_REMOVE_RED;
 	public final String SCRIPT_PYTHON_TEST = getRessourceScripts("test.py");
 	public final String SCRIPT_PYTHON_SOCCERWAY = getRessourceScripts("soccerway.py");
-
 
 	//make the constructor private so that this class cannot be instantiated
 	private ResourceService() {
 		cl = this.getClass().getClassLoader();
-		IMGAGE_ICON_ARROW_DOWN = getRessourceImages("arrow.png");
+		IMAGE_ICON_ARROW_DOWN = getRessourceImages("arrow.png");
+		IMAGE_ICON_ADD_GREEN = getRessourceImages("add_green.png");
+		IMAGE_ICON_REMOVE_RED = getRessourceImages("minus_red.png");
 	}
 
 	//Get the only object available

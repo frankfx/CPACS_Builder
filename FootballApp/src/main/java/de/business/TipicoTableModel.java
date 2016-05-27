@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.types.TipicoDataType;
+
 public class TipicoTableModel extends AbstractTableModel {
 
 	/**
@@ -16,15 +18,11 @@ public class TipicoTableModel extends AbstractTableModel {
 	List<TipicoModel> list;
 	List<TipicoModel> mFilterList;
 
-	// the headers
-	String[] header;
-    
 	public TipicoTableModel(){
-		this(null, new String[]{"ID", "TEAM", "WINVALUE", "EXPENSES", "ATTEMPTS", "DATE", "SUCCESSFUL"});
+		this(null);
 	}
 
-	public TipicoTableModel(TipicoModel [] entries, String [] header){
-		this.header = header;
+	public TipicoTableModel(TipicoModel [] entries){
 		list = new ArrayList<TipicoModel>();
 		
 		if(entries != null)
@@ -40,12 +38,12 @@ public class TipicoTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return header.length;
+		return TipicoDataType.getSize();
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-		return header[columnIndex];
+		return TipicoDataType.getDataType(columnIndex).toString();
 	}
 
 	@Override

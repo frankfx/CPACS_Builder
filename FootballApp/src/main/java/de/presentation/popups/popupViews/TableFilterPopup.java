@@ -1,5 +1,7 @@
 package de.presentation.popups.popupViews;
 
+import java.util.List;
+
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -30,4 +32,9 @@ public class TableFilterPopup implements IPopup {
 		}
 	}
 
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
+		return null;
+	}		
 }

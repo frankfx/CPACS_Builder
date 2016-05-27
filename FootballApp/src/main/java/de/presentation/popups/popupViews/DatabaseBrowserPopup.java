@@ -1,6 +1,7 @@
 package de.presentation.popups.popupViews;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -34,6 +35,12 @@ public class DatabaseBrowserPopup implements IPopup {
 
 	@Override
 	public String[] requestInputData() {
+		return null;
+	}
+
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
 		return null;
 	}	
 }

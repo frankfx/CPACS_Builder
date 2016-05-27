@@ -1,11 +1,13 @@
 package de.presentation.popups.popupViews;
 
+import java.util.List;
+
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import de.presentation.popups.IPopup;
-import de.utils.SQLService;
+import de.services.SQLService;
 
 public class DatabasePullDetailPopup implements IPopup {
 
@@ -44,4 +46,9 @@ public class DatabasePullDetailPopup implements IPopup {
 		}
 	}
 
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
+		return null;
+	}		
 }

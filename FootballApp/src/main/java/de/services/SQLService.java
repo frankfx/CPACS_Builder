@@ -1,4 +1,4 @@
-package de.utils;
+package de.services;
 
 public class SQLService {
 

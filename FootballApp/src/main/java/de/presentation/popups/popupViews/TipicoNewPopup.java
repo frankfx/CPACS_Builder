@@ -2,6 +2,7 @@ package de.presentation.popups.popupViews;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -10,9 +11,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
+import de.business.SpinnerTemporalModel;
 import de.business.TipicoModel;
 import de.presentation.popups.IPopup;
-import de.utils.SpinnerTemporalModel;
 
 public class TipicoNewPopup implements IPopup {
 
@@ -76,4 +77,10 @@ public class TipicoNewPopup implements IPopup {
 			return null;
 		}
 	}
+
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }

@@ -19,8 +19,8 @@ import de.business.teams.TeamModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.types.SoccerwayMatchType;
 import de.utils.SWJSONParser;
-import de.utils.SoccerwayMatchType;
 
 public class BundesligaActivityBean {
 	private BundesligaModel mModel;

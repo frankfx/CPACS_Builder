@@ -12,7 +12,7 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 
 import de.business.TipicoModel;
-import de.utils.ResourceService;
+import de.services.ResourceService;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;

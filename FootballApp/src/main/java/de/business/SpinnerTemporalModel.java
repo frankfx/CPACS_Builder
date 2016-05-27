@@ -1,4 +1,4 @@
-package de.utils;
+package de.business;
 /**
  * @(#)SpinnerTemporalModel.java	1.0 2014/12/05
  */

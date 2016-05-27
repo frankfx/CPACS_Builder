@@ -1,0 +1,2 @@
+Fehler beim Start von eclipse
+- Aendere Java-Version in --> C:\Users\frank\My Apps\eclipse\eclipse.ini

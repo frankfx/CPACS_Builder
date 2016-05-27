@@ -2,6 +2,7 @@ package de.presentation.popups.popupViews;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -82,4 +83,10 @@ public class DatabaseConnectionPopup implements IPopup {
 			return null;
 		}
 	}
+
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }

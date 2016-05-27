@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.business.SoccerwayMatchModel;
+import de.types.SoccerwayMatchType;
 
 public class SWJSONParser {
 

@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 
 import de.business.Database;
 import de.business.TipicoModel;
+import de.business.TipicoTableFilterModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
 import de.presentation.filter.AndCriteria;
@@ -24,12 +25,14 @@ import de.presentation.filter.CriteriaID;
 import de.presentation.filter.CriteriaWinValue;
 import de.presentation.filter.ICriteria;
 import de.presentation.filter.OrCriteria;
+import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.presentation.popups.popupViews.TipicoTableFilterPopup;
 import de.printing.TipicoPrintService;
+import de.services.SQLService;
+import de.types.PersistenceType;
 import de.utils.FAMessages;
-import de.utils.PersistenceType;
-import de.utils.SQLService;
 import de.utils.math.ExpressionType;
 import de.utils.math.IExpression;
 import de.utils.math.Node;
@@ -578,24 +581,24 @@ public class TipicoActivityBean implements ISubController{
 	}
 
 	private void actionFilterTableData() {
-		String[] lExpression = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null).requestInputData();
+      	final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
+      	List<?> lExpression = popup.requestInputDataAsObjectList();
 		
 		if (lExpression != null) {
-			boolean isFilterEnabled = Boolean.valueOf(lExpression[0]);
-
-			if (isFilterEnabled) {
-
-				List<TipicoModel> lList = mView.getTableModel().getAsList();
-
-				Node<IExpression> root = new Parser(lExpression[1]).getExpressionTree();
-				List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
-				lList.removeAll(lList);
-
-				for (int i = 0; i < lResult.size(); i++) {
-					mView.getTableModel().addRow(lResult.get(i));
-				}
+			for (Object row : lExpression){
+				TipicoTableFilterModel filterModel = (TipicoTableFilterModel) row;
+				System.out.println(filterModel);
 			}
-		}
+		}	
+			// List<TipicoModel> lList = mView.getTableModel().getAsList();
+
+//				Node<IExpression> root = new Parser(lExpression[1]).getExpressionTree();
+//				List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
+//				lList.removeAll(lList);
+//
+//				for (int i = 0; i < lResult.size(); i++) {
+//					mView.getTableModel().addRow(lResult.get(i));
+//				}
 	}
 
 	/**

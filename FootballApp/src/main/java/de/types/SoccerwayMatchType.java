@@ -1,4 +1,4 @@
-package de.utils;
+package de.types;
 
 public enum SoccerwayMatchType {
 	all, home, away;

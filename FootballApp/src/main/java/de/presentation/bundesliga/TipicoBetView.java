@@ -22,7 +22,7 @@ import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
 import de.presentation.JSplitButton;
-import de.utils.PersistenceType;
+import de.types.PersistenceType;
 
 public class TipicoBetView extends AbstractPanelContainer {
 	/**

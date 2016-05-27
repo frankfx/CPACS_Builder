@@ -3,7 +3,7 @@ package de.business;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import de.utils.PersistenceType;
+import de.types.PersistenceType;
 
 public class TipicoModel {
 	private int mTnr;

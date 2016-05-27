@@ -1,5 +1,7 @@
 package de.presentation.popups.popupViews;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -68,6 +70,10 @@ public class TipicoBetValuePopup implements IPopup {
 
 		lBetValueCompution.setText(a + "");
 	}
-	
 
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }
