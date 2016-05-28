@@ -412,7 +412,7 @@ public class TipicoActivityBean implements ISubController{
 	public void actionPullDetailChild() {
 		String[] arr = PopupFactory.getPopup(PopupType.DATABASE_PULLDETAIL_POPUP, null).requestInputData();
 
-		if (readFromDatabaseToTableModel(mView.getTableModel(), arr[0])) {
+		if (arr != null && readFromDatabaseToTableModel(mView.getTableModel(), arr[0])) {
 			mView.getTableModel().fireTableDataChanged();
 		}
 	}
@@ -581,11 +581,19 @@ public class TipicoActivityBean implements ISubController{
 //	}
 
 	private void actionFilterTableData() {
-      	final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
-      	List<?> lExpression = popup.requestInputDataAsObjectList();
 		
-		if (lExpression != null) {
-			for (Object row : lExpression){
+      	// call child widget to get the filter assertions
+		final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
+      	List<?> lFilterExpressions = popup.requestInputDataAsObjectList();
+      	
+      	// filter list with the filter expressions given in the child popup widget
+		if (lFilterExpressions != null) {
+			// revert table list
+	      	mView.getTableModel().setList(mView.getTableModel().getFilterBackupList());			
+			
+			List<TipicoModel> lResultList = null;
+			
+			for (Object row : lFilterExpressions){
 				TipicoTableFilterModel filterModel = (TipicoTableFilterModel) row;
 				
 //				ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
@@ -593,14 +601,14 @@ public class TipicoActivityBean implements ISubController{
 				switch (filterModel.getFilterDataType()) {
 				case ID: 
 					ICriteria lCriteria = new CriteriaID(filterModel.getFilterValueAsFloat(), filterModel.getFilterOperation());
-					List<TipicoModel> lList = lCriteria.matchedCriteria(mView.getTableModel().getAsList());
-					mView.getTableModel().setList(lList);
-					break;
+					lResultList = lCriteria.matchedCriteria(mView.getTableModel().getAsList());
 				default:
 					break;
 				}
 			}
+			updateTableInFilterMode(lResultList);
 		}	
+		
 		
 		
 			// List<TipicoModel> lList = mView.getTableModel().getAsList();
@@ -780,6 +788,13 @@ public class TipicoActivityBean implements ISubController{
 	public void updateTable(){
 		this.mView.updateTable();
 		mBundesligaListener.actionUpdateStatistics(getBalance());
+	}
+	
+	public void updateTableInFilterMode(List<TipicoModel> pList){
+		if (pList != null){
+			mView.getTableModel().setList(pList);
+		}
+		updateTable();
 	}
  // ========================
  // END FUNCTION

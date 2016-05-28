@@ -47,7 +47,8 @@ public class TipicoTableFilterModel {
 		mFilterConnector.addItem(null);
 		mFilterConnector.addItem(FilterConnectionType.AND);
 		mFilterConnector.addItem(FilterConnectionType.OR);
-
+		mFilterConnector.setEnabled(false);
+		
 		mFilterValue = new JTextField();
 		
 		mRemoveButton = new JButton();
@@ -69,7 +70,6 @@ public class TipicoTableFilterModel {
 	    	}
 		} else {
 			mRemoveButton.setVisible(false);
-			mFilterConnector.setVisible(false);
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class TipicoTableFilterModel {
 		return (FilterOperationType) mFilterOperation.getSelectedItem();
 	}
 
-	public FilterConnectionType getFilterConnector() {
+	public FilterConnectionType getFilterConnectorType() {
 		Object obj = mFilterConnector.getSelectedItem();
 		
 		if (obj != null) 
@@ -114,6 +114,18 @@ public class TipicoTableFilterModel {
 		}
 		
 		return null;
+	}	
+	
+	/**
+	 * getter and setter
+	 * @return
+	 */
+	public JComboBox<FilterConnectionType> getFilterConnector() {
+		return mFilterConnector;
+	}
+
+	public void setFilterConnector(JComboBox<FilterConnectionType> mFilterConnector) {
+		this.mFilterConnector = mFilterConnector;
 	}	
 	
 	public String toString(){

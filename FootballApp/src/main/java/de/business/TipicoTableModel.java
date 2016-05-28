@@ -16,7 +16,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	// storing the objects in list
 	List<TipicoModel> list;
-	List<TipicoModel> mFilterList;
+	List<TipicoModel> mBackupListPtr;
 
 	public TipicoTableModel(){
 		this(null);
@@ -29,6 +29,7 @@ public class TipicoTableModel extends AbstractTableModel {
 			for (int i = 0; i < entries.length; i++) {
 				list.add(entries[i]);
 			}
+		mBackupListPtr = list;
 	}
 	
 	@Override
@@ -177,11 +178,11 @@ public class TipicoTableModel extends AbstractTableModel {
 		return list.toArray(new TipicoModel[list.size()]);
 	}
 
-	public List<TipicoModel> getFilterList() {
-		return mFilterList;
+	public List<TipicoModel> getFilterBackupList() {
+		return mBackupListPtr;
 	}
 
-	public void setFilterList(List<TipicoModel> pFilterList) {
-		this.mFilterList = new ArrayList<TipicoModel>(pFilterList);
+	public void setFilterBackupList(List<TipicoModel> pFilterList) {
+		this.mBackupListPtr = new ArrayList<TipicoModel>(pFilterList);
 	}
 }
