@@ -37,7 +37,7 @@
               <archive>
                 <manifest>
                   <mainClass>de.Main</mainClass>
-                </manifest>
+                </manifest>             
               </archive>
             </configuration>
           </execution>
@@ -46,6 +46,14 @@
     </plugins>
   </build>
   <dependencies>
+		<dependency>
+		  <groupId>JSON</groupId>
+		  <artifactId>JSON</artifactId>
+		  <version>4.12</version>
+		  <scope>system</scope>
+		  <systemPath>${basedir}/src/main/resources/libs/org.json.jar</systemPath>
+		</dependency>
+		
 		<dependency>
 		  <groupId>junit</groupId>
 		  <artifactId>junit</artifactId>
