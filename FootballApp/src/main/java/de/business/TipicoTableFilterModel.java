@@ -9,10 +9,15 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.services.ResourceService;
 import de.types.FilterConnectionType;
 import de.types.FilterOperationType;
 import de.types.TipicoDataType;
+import de.utils.DoubleInputVerifier;
+import de.utils.DoubleKeyAdapter;
+import de.utils.FAMessages;
 
 public class TipicoTableFilterModel {
 	private JPanel mMainPanel;
@@ -44,6 +49,7 @@ public class TipicoTableFilterModel {
 		mFilterConnector.addItem(FilterConnectionType.OR);
 
 		mFilterValue = new JTextField();
+		
 		mRemoveButton = new JButton();
 		
 		mMainPanel = new JPanel();
@@ -63,6 +69,7 @@ public class TipicoTableFilterModel {
 	    	}
 		} else {
 			mRemoveButton.setVisible(false);
+			mFilterConnector.setVisible(false);
 		}
 	}
 	
@@ -73,6 +80,41 @@ public class TipicoTableFilterModel {
 	public void setRemoveButtonActionListener(ActionListener l){
 		this.mRemoveButton.addActionListener(l);
 	}
+	
+	public TipicoDataType getFilterDataType(){
+		return (TipicoDataType)mTableColumn.getSelectedItem();
+	}
+
+	public float getFilterValueAsFloat(){
+		try{
+			return Float.parseFloat(mFilterValue.getText());
+		} catch(NumberFormatException | NullPointerException e){
+			return Float.NaN;
+		}
+	}
+	
+	public String getFilterValue() {
+		return mFilterValue.getText();
+	}
+
+	public FilterOperationType getFilterOperation() {
+		return (FilterOperationType) mFilterOperation.getSelectedItem();
+	}
+
+	public FilterConnectionType getFilterConnector() {
+		Object obj = mFilterConnector.getSelectedItem();
+		
+		if (obj != null) 
+			return (FilterConnectionType) obj;
+		
+		if (mRemoveButton.isVisible()){
+			PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_NO_FILTER_CONNECTOR);
+		} else { 
+			return FilterConnectionType.EMPTY;
+		}
+		
+		return null;
+	}	
 	
 	public String toString(){
 		StringBuilder sb = new StringBuilder();

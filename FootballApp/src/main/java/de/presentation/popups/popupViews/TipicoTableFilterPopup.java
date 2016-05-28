@@ -5,17 +5,24 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import de.business.TipicoTableFilterModel;
 import de.presentation.popups.IPopup;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.services.ResourceService;
+import de.types.TipicoDataType;
+import de.utils.FAMessages;
 
 public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	
@@ -27,6 +34,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	private int curFilterSize = 0;
 	private boolean successFlag = false;
 	private List<TipicoTableFilterModel> mTipicoTableFilterModels = new ArrayList<TipicoTableFilterModel>();
+	public static boolean isFilterActivated = false;
 	
 	public TipicoTableFilterPopup(Object[] pParams) {
 		// the parent must wait for the dialog
@@ -44,13 +52,16 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		JButton lExitButton = createExitButton();
         JButton lAddButton = createAddNewFilterRowButton();
 		JButton lOKButton = createOKButton();
-        
+        JCheckBox lFilterActivatedCheckBox = createFilterActivatedCheckBox();
+		
 		// Add control panel to add new filter rows or close the window
 		JPanel lControlPanel = new JPanel();
-		lControlPanel.setLayout(new GridLayout(1, 3));
+		lControlPanel.setLayout(new GridLayout(1, 4));
+		lControlPanel.add(lFilterActivatedCheckBox);
 		lControlPanel.add(lAddButton);
 		lControlPanel.add(lOKButton);
 		lControlPanel.add(lExitButton);
+
 		this.getContentPane().add(lControlPanel);        
         
 		// Add first fixed filter row
@@ -64,14 +75,28 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
         this.setVisible(true);		
 	}
 
+	private JCheckBox createFilterActivatedCheckBox() {
+		JCheckBox lFilterActivatedCheckbox = new JCheckBox("Filter enabled");
+		lFilterActivatedCheckbox.setSelected(isFilterActivated);
+		lFilterActivatedCheckbox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				isFilterActivated = lFilterActivatedCheckbox.isSelected();
+			}
+		});
+		return lFilterActivatedCheckbox;
+	}
+
 	private JButton createOKButton() {
 		JButton lOKButton = new JButton("OK");
 	
 		lOKButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				successFlag = true;
-				dispose();
+				if(validateFilterInput()){
+					successFlag = true;
+					dispose();
+				}
 			}
 		});
 		
@@ -126,21 +151,39 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 					revalidate();
 					curFilterSize++;
 				} else {
-					System.out.println("row maximum reached");
+					PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_FILTER_ADD_ROW_FAILED);
 				}
 			}
 		});
 		return lAddButton;
 	}
 	
-//	public static void main(String[] args) {
-//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//            	new TipicoTableFilterPopup(null);
-//            }
-//        });
-//	}
+	public static void main(String[] args) {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	new TipicoTableFilterPopup(null);
+            }
+        });
+	}
 
+	private boolean validateFilterInput() {
+		for (TipicoTableFilterModel lModel: mTipicoTableFilterModels){
+			TipicoDataType lDataType = lModel.getFilterDataType();
+			boolean isNumericalDataType = lDataType.equals(TipicoDataType.ID) || lDataType.equals(TipicoDataType.WINVALUE) || 
+					lDataType.equals(TipicoDataType.EXPENSES) || lDataType.equals(TipicoDataType.ATTEMPTS);
+			
+			boolean isInvalidNumericalValue = isNumericalDataType && Float.isNaN(lModel.getFilterValueAsFloat());
+			boolean isInvalidStringValue = !isNumericalDataType && (lModel.getFilterValue() == null || lModel.getFilterValue().equals(""));
+
+			if (isInvalidNumericalValue || isInvalidStringValue){
+				PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_WRONG_FILTER_INPUT_VALUE + " (\"" + lModel.getFilterValue() +"\")");
+				return false;					
+			}
+		}
+		return true;
+	}	
+	
+	
 	@Override
 	public String[] requestInputData() {
 		if (successFlag)

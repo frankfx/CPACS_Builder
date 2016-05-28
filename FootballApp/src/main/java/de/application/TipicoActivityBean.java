@@ -555,30 +555,30 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN ACTION
  // ========================
 	
-	private ICriteria createFilteredList(Node<IExpression> pNode) {
-		if (pNode == null)
-			return null;
-
-		ExpressionType exp = ExpressionType.getType(pNode.getData());
-
-		switch (exp) {
-		case AND:
-			return new AndCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
-		case OR:
-			return new OrCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
-		case VALUE:
-			String[] mExpression = pNode.getData().split(";");
-			if (mExpression[0].equalsIgnoreCase(ExpressionType.EXPENSES.toString())) {
-				return new CriteriaExpenses(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.WINVALUE.toString())) {
-				return new CriteriaWinValue(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.ID.toString())) {
-				return new CriteriaID(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-			}
-		default:
-			return null;
-		}
-	}
+//	private ICriteria createFilteredList(Node<IExpression> pNode) {
+//		if (pNode == null)
+//			return null;
+//
+//		ExpressionType exp = ExpressionType.getType(pNode.getData());
+//
+//		switch (exp) {
+//		case AND:
+//			return new AndCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
+//		case OR:
+//			return new OrCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
+//		case VALUE:
+//			String[] mExpression = pNode.getData().split(";");
+//			if (mExpression[0].equalsIgnoreCase(ExpressionType.EXPENSES.toString())) {
+//				return new CriteriaExpenses(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+//			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.WINVALUE.toString())) {
+//				return new CriteriaWinValue(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+//			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.ID.toString())) {
+//				return new CriteriaID(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
+//			}
+//		default:
+//			return null;
+//		}
+//	}
 
 	private void actionFilterTableData() {
       	final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
@@ -587,9 +587,22 @@ public class TipicoActivityBean implements ISubController{
 		if (lExpression != null) {
 			for (Object row : lExpression){
 				TipicoTableFilterModel filterModel = (TipicoTableFilterModel) row;
-				System.out.println(filterModel);
+				
+//				ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
+				
+				switch (filterModel.getFilterDataType()) {
+				case ID: 
+					ICriteria lCriteria = new CriteriaID(filterModel.getFilterValueAsFloat(), filterModel.getFilterOperation());
+					List<TipicoModel> lList = lCriteria.matchedCriteria(mView.getTableModel().getAsList());
+					mView.getTableModel().setList(lList);
+					break;
+				default:
+					break;
+				}
 			}
 		}	
+		
+		
 			// List<TipicoModel> lList = mView.getTableModel().getAsList();
 
 //				Node<IExpression> root = new Parser(lExpression[1]).getExpressionTree();

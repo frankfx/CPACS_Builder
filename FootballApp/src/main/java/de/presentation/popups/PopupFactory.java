@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 import de.presentation.popups.popupViews.DatabaseBrowserPopup;
 import de.presentation.popups.popupViews.DatabaseConnectionPopup;
 import de.presentation.popups.popupViews.DatabasePullDetailPopup;
-import de.presentation.popups.popupViews.TableFilterPopup;
 import de.presentation.popups.popupViews.TipicoBetValuePopup;
 import de.presentation.popups.popupViews.TipicoNewPopup;
 import de.presentation.popups.popupViews.TipicoTableFilterPopup;
