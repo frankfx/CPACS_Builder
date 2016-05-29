@@ -43,9 +43,15 @@
     <property name="user.name" value="frank"/>
     <property name="java.class.path" value="C:\Users\frank\My Apps\apache-maven-3.3.9-bin\apache-maven-3.3.9\bin\..\boot\plexus-classworlds-2.5.2.jar"/>
     <property name="java.vm.specification.version" value="1.8"/>
+<<<<<<< HEAD
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_74\jre"/>
     <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
+=======
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/opt/java/jdk1.8.0_60/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean package"/>
+>>>>>>> 50f27a5a9197847d599a4c4434f534168dffceba
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="user.language.format" value="de"/>
