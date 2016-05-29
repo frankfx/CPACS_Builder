@@ -143,8 +143,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 							mTipicoTableFilterModels.remove(tempFilter);
 							
 							// disable the filter connector if only the first row exists 
-							mTipicoTableFilterModels.get(mTipicoTableFilterModels.size()-1).getFilterConnector().setEnabled(false);
-							mTipicoTableFilterModels.get(mTipicoTableFilterModels.size()-1).getFilterConnector().setSelectedItem(null);;
+							mTipicoTableFilterModels.get(mTipicoTableFilterModels.size()-1).getFilterConnector().setVisible(false);
 							
 							getContentPane().remove(tempFilter.getFilterOperationModelPanel());
 							revalidate();
@@ -156,7 +155,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 					mTipicoTableFilterModels.add(tempFilter);
 					// enable the filter connector if the previous last row if a new row was added 
 					if (mTipicoTableFilterModels.size() > 1)
-						mTipicoTableFilterModels.get(mTipicoTableFilterModels.size()-2).getFilterConnector().setEnabled(true);
+						mTipicoTableFilterModels.get(mTipicoTableFilterModels.size()-2).getFilterConnector().setVisible(true);
 					getContentPane().add(tempFilter.getFilterOperationModelPanel());
 					revalidate();
 					curFilterSize++;
@@ -168,13 +167,13 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		return lAddButton;
 	}
 	
-	public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-            	new TipicoTableFilterPopup(null);
-            }
-        });
-	}
+//	public static void main(String[] args) {
+//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//            	new TipicoTableFilterPopup(null);
+//            }
+//        });
+//	}
 
 	private boolean validateFilterInput() {
 		for (TipicoTableFilterModel lModel: mTipicoTableFilterModels){

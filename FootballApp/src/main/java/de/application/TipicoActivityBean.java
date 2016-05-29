@@ -28,16 +28,12 @@ import de.presentation.filter.OrCriteria;
 import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
-import de.presentation.popups.popupViews.TipicoTableFilterPopup;
 import de.printing.TipicoPrintService;
+import de.services.FilterService;
 import de.services.SQLService;
+import de.types.FilterConnectionType;
 import de.types.PersistenceType;
 import de.utils.FAMessages;
-import de.utils.math.ExpressionType;
-import de.utils.math.IExpression;
-import de.utils.math.Node;
-import de.utils.math.Parser;
-
 
 public class TipicoActivityBean implements ISubController{
 
@@ -581,45 +577,22 @@ public class TipicoActivityBean implements ISubController{
 //	}
 
 	private void actionFilterTableData() {
-		
       	// call child widget to get the filter assertions
 		final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
       	List<?> lFilterExpressions = popup.requestInputDataAsObjectList();
       	
       	// filter list with the filter expressions given in the child popup widget
 		if (lFilterExpressions != null) {
-			// revert table list
+			// revert table list for unfilter operation (empty lFilterExpressions) 
 	      	mView.getTableModel().setList(mView.getTableModel().getFilterBackupList());			
 			
-			List<TipicoModel> lResultList = null;
-			
-			for (Object row : lFilterExpressions){
-				TipicoTableFilterModel filterModel = (TipicoTableFilterModel) row;
+			// creates the complete coherent filter expression
+			ICriteria lCriteria = FilterService.getCompleteCriteriaExpressionRec(lFilterExpressions);
 				
-//				ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
+			List<TipicoModel> lResultList = lCriteria == null ? null : lCriteria.matchedCriteria(mView.getTableModel().getAsList());
 				
-				switch (filterModel.getFilterDataType()) {
-				case ID: 
-					ICriteria lCriteria = new CriteriaID(filterModel.getFilterValueAsFloat(), filterModel.getFilterOperation());
-					lResultList = lCriteria.matchedCriteria(mView.getTableModel().getAsList());
-				default:
-					break;
-				}
-			}
 			updateTableInFilterMode(lResultList);
 		}	
-		
-		
-		
-			// List<TipicoModel> lList = mView.getTableModel().getAsList();
-
-//				Node<IExpression> root = new Parser(lExpression[1]).getExpressionTree();
-//				List<TipicoModel> lResult = createFilteredList(root).matchedCriteria(lList);
-//				lList.removeAll(lList);
-//
-//				for (int i = 0; i < lResult.size(); i++) {
-//					mView.getTableModel().addRow(lResult.get(i));
-//				}
 	}
 
 	/**

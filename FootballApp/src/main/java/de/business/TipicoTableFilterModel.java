@@ -44,10 +44,9 @@ public class TipicoTableFilterModel {
 		mFilterOperation.addItem(FilterOperationType.GREATER_OR_EQUAL);
 		
 		mFilterConnector = new JComboBox<FilterConnectionType>();
-		mFilterConnector.addItem(null);
 		mFilterConnector.addItem(FilterConnectionType.AND);
 		mFilterConnector.addItem(FilterConnectionType.OR);
-		mFilterConnector.setEnabled(false);
+		mFilterConnector.setVisible(false);
 		
 		mFilterValue = new JTextField();
 		
