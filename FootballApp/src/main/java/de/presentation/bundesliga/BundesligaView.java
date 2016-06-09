@@ -26,16 +26,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private BundesligaFixtureContainer mFixturePanel;
 	private BundesligaConsoleContainer mConsolenPanel;
 	private TipicoBetView mTipicoPanel;
 	private StatisticContainer mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
 	
-	private JSplitPane mSplitPaneRightHorizontal;
 	private JSplitPane mSplitPaneLeftHorizontal;
 	private JSplitPane mSplitPaneVertikal;
-
 
 	// Menu items
 	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
@@ -77,16 +74,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
-		
-		mFixturePanel = new BundesligaFixtureContainer();
 		mConsolenPanel = new BundesligaConsoleContainer();
 		mStatisticPanel = new StatisticContainer();
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		mSplitPaneLeftHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mConsolenPanel, mStatisticPanel);
-		mSplitPaneRightHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mFixturePanel, mTipicoPanel);
-		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mSplitPaneLeftHorizontal, mSplitPaneRightHorizontal);
+		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mSplitPaneLeftHorizontal, mTipicoPanel);
 
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0.1;
@@ -139,16 +133,12 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     }	
     
     public void setButtonRequestListener(ActionListener l){
-        this.mFixturePanel.getBtnRequest().addActionListener(l);
-    }    
-
+        this.mButtonPanel.getBtnRequest().addActionListener(l);
+    }
+    
     public void setButtonClearListener(ActionListener l){
         this.mConsolenPanel.getBtnClear().addActionListener(l);
     }    
-
-    public void setButtonRequestTeamListener(ActionListener l){
-    	this.mStatisticPanel.getBtnTeamRequest().addActionListener(l);
-    }
 
     public void setProgressbarListener(ChangeListener l){
     	this.mStatisticPanel.getProgressBar().addChangeListener(l);
@@ -204,14 +194,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 * BEGIN GETTER AND SETTER
 	 * ========================
 	 */
-	public BundesligaFixtureContainer getFixturePanel() {
-		return mFixturePanel;
-	}
-
-	public void setFixturePanel(BundesligaFixtureContainer lFixturePanel) {
-		this.mFixturePanel = lFixturePanel;
-	}
-
 	public ButtonPanelContainer getButtonPanel() {
 		return mButtonPanel;
 	}

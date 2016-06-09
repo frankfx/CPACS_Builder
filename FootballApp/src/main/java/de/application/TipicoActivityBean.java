@@ -752,7 +752,12 @@ public class TipicoActivityBean implements ISubController{
 	public float getBalance(){
 		if (mDB != null) {
 			mDB.query(SQLService.SQL_COMPUTE_BALANCE);
-			return Float.parseFloat(mDB.getNextResult(1));
+
+			try{
+				return Float.parseFloat(mDB.getNextResult(1));
+			} catch (NumberFormatException e){
+				return Float.NaN;
+			}
 		} else {
 			return Float.NaN;
 		}

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Example5" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="64" bottomMargin="64" isTitleNewPage="true" isSummaryNewPage="true" uuid="c82ae968-f01c-4954-a89a-91e7e53c7c3f">
+	<queryString>
+		<![CDATA[SELECT firstname, lastname, birthday FROM persons]]>
+	</queryString>
+	<field name="firstname" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String"/>
+	<field name="birthday" class="java.sql.Timestamp"/>
+	<title>
+		<band height="560" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="6828764d-ec65-43d6-8d5c-0b309cc3f7d6"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Titel-Seite]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="5ddd5b46-220c-4ada-9ce7-32d12f48668b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Seitenkopf-Block]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="25" uuid="0036449c-6d67-4dd8-84d3-28e581b0dc01"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Vorname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="0" width="80" height="25" uuid="42151c50-abb2-44cf-9e86-5f20ed4dfe53"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nachname]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="0" width="80" height="25" uuid="f5895726-d119-4879-b4fd-c59de5698a0c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Geburtstag]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="80" height="25" uuid="45391ea9-b191-4860-91d7-003127dfff27"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{firstname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="0" width="80" height="25" uuid="cf663da4-8039-433c-abc2-64d229461afe"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.yyyy">
+				<reportElement x="162" y="0" width="80" height="25" uuid="c1ef9cb2-4fd9-484c-a9a1-346803a3c706"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{birthday}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="2f2c8410-b06e-4cc6-8ece-5e491818302b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Spaltenfuss-Block]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="9e2038ea-6db5-40ab-8996-ff1145bfcb43"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Seitenfuss-Block]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="f0d86180-c914-4993-9d7d-798ec8c38bba"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Letzte-Seite-Block]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="560" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="0" width="200" height="50" uuid="6d3740d5-0a48-4b7b-a5f6-bd62e8554978"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Zusammenfassungsblock]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

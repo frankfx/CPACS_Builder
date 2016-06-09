@@ -8,6 +8,8 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.ResultSetMetaData;
 
+import de.services.SQLService;
+
 public class Database {
 	
 	// JDBC driver name and database url
@@ -156,7 +158,7 @@ public class Database {
 		
 		if (mResultSet == null)
 			return null;
-		
+
 		StringBuilder sb = new StringBuilder();
 		
 		try {
@@ -198,7 +200,12 @@ public class Database {
 	
 	public static void main(String[] args) throws SQLException {
 		Database db = new Database();
-		if (db.connect("localhost", "3306", "TestData", "root", "130386")){
+		//if (db.connect("localhost", "3306", "TestData", "root", "")){
+			
+		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "")){
+			db.query(SQLService.SQL_COMPUTE_BALANCE);
+			db.printResultSet(1);
+			
 		//	db.updateDB("drop table Tipico");
 			
 		//	db.updateDB("create table Tipico (tnr int, team varchar(20), winValue decimal, expenses decimal, bet decimal, profit decimal, Primary Key(tnr));");

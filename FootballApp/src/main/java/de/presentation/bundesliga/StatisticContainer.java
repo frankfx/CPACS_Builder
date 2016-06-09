@@ -6,13 +6,10 @@ import java.awt.GridBagLayout;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-import de.business.teams.TeamIDEnum;
 import de.presentation.AbstractPanelContainer;
 
 public class StatisticContainer extends AbstractPanelContainer {
@@ -25,10 +22,6 @@ public class StatisticContainer extends AbstractPanelContainer {
 	private JTextField mBalance;
 	private JProgressBar mProgressbar;
 	private JTextField mDate;
-
-	private JComboBox<TeamIDEnum> mComboTeamID;
-	private JComboBox<String> mComboMatchType;	
-	private JButton mBtnTeamRequest;
 	
 	public StatisticContainer() {
 		c = new GridBagConstraints(); 
@@ -51,20 +44,6 @@ public class StatisticContainer extends AbstractPanelContainer {
 		mDate.setEditable(false);
 		System.out.println(getDaysOfWork());
 		mDate.setText(getDaysOfWork()+"");
-		
-		mComboTeamID = new JComboBox<TeamIDEnum>();
-		mComboMatchType = new JComboBox<String>(); 		
-		
-		mComboTeamID.addItem(TeamIDEnum.ZWICKAU);
-		mComboTeamID.addItem(TeamIDEnum.ESSEN);
-		mComboTeamID.addItem(TeamIDEnum.HSV);
-		mComboTeamID.addItem(TeamIDEnum.VFR);
-		
-		mComboMatchType.addItem("all");
-		mComboMatchType.addItem("home");
-		mComboMatchType.addItem("away");		
-		
-		mBtnTeamRequest = new JButton("TeamRequest");
 		
 		// set layout
 		
@@ -92,22 +71,6 @@ public class StatisticContainer extends AbstractPanelContainer {
 		c.fill = GridBagConstraints.BOTH;
 		c.weighty = 0.1;
 		this.add(mProgressbar,c);	
-		
-		c.gridy = 6;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weighty = 0.0;
-		this.add(new JLabel("Team request"), c);
-
-		c.gridy = 8;
-		this.add(mBtnTeamRequest, c);		
-		
-		c.gridwidth = 1;
-		c.gridy = 7;
-		this.add(mComboTeamID, c);
-
-		c.gridx = 1;
-		c.gridy = 7;
-		this.add(mComboMatchType, c);	
 	}
 
 	public JTextField getBalance() {
@@ -142,32 +105,7 @@ public class StatisticContainer extends AbstractPanelContainer {
 		this.mProgressbar.setValue(val);
 	}	
 
-	public JComboBox<TeamIDEnum> getComboTeamID() {
-		return mComboTeamID;
-	}
-
-	public void setComboTeamID(JComboBox<TeamIDEnum> pComboTeamID) {
-		this.mComboTeamID = pComboTeamID;
-	}
-
-	public JComboBox<String> getComboMatchType() {
-		return mComboMatchType;
-	}
-
-	public void setComboMatchType(JComboBox<String> pComboMatchType) {
-		this.mComboMatchType = pComboMatchType;
-	}	
-	
-	public JButton getBtnTeamRequest() {
-		return mBtnTeamRequest;
-	}
-
-	public void setBtnTeamRequest(JButton pBtnTeamRequest) {
-		this.mBtnTeamRequest = pBtnTeamRequest;
-	}	
-	
 	private long getDaysOfWork() {
 		return ChronoUnit.DAYS.between(LocalDate.of(2016, 4, 6), LocalDate.now());
-
 	}
 }
