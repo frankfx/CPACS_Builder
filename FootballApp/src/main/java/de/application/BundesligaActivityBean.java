@@ -1,7 +1,9 @@
 package de.application;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,6 +141,24 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mSubController.get(0).updateBean();
+			}
+		});
+
+		/**
+		 * Link to tipico
+		 */
+		mView.setMenuItemLinkTipico(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+				if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+					try {
+						URL url = new URL("https://www.tipico.de/de/online-sportwetten/");
+						desktop.browse(url.toURI());
+					} catch (Exception ee) {
+						ee.printStackTrace();
+					}
+				}
 			}
 		});
 
