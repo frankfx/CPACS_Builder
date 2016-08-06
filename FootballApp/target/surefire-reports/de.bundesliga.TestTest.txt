@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: de.bundesliga.TestTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 sec
+=======
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 sec
+>>>>>>> 757295a8a5dc81f88cb86eb6b7045ed7f74dedbe

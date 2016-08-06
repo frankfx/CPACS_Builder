@@ -43,6 +43,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemPullDB = new JMenuItem("Pull DB");		
 	private JMenuItem menuItemPrint = new JMenuItem("Print");
 	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
+	private JMenuItem menuItemLinkTipico = new JMenuItem("www.tipico.de");
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	
 	@Override
@@ -99,6 +100,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		JMenu menuFile = new JMenu("File");
 		JMenu menuConfig = new JMenu("Configure");
+		JMenu menuLinks = new JMenu("Links");
 		JMenu menuHelp = new JMenu("Help");
 		
 		menuFile.add(menuItemLoadCSV);
@@ -114,10 +116,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuConfig.add(menuItemDBConnect);
 		menuConfig.add(menuItemDBDisConnect);
 		
+		menuLinks.add(menuItemLinkTipico);
+
 		menuHelp.add(menuItemAbout);
 		
 		bar.add(menuFile);
 		bar.add(menuConfig);
+		bar.add(menuLinks);
 		bar.add(menuHelp);
 		
 		this.setJMenuBar(bar);		
@@ -172,6 +177,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     	this.menuItemDBDisConnect.addActionListener(l);
     }     
     
+	public void setMenuItemLinkTipico(ActionListener l) {
+		this.menuItemLinkTipico.addActionListener(l);
+	}
+
     public void setMenuItemAboutListener(ActionListener l){
     	this.menuItemAbout.addActionListener(l);
     }    
