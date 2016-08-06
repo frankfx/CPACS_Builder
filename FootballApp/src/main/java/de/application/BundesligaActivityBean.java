@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -148,7 +149,10 @@ public class BundesligaActivityBean {
 		mView.setMenuItemAboutListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("About");
+				JOptionPane.showMessageDialog(null,
+				    "Java FootballApp\nVersion: 0.1\n\n2016-open Rene Frank\n\nOpenSoure",
+					"About",
+					JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 

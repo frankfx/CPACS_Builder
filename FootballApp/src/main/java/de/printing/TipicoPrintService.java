@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.business.TipicoModel;
 import de.services.ResourceService;
@@ -66,9 +67,13 @@ public class TipicoPrintService {
 			int returnVal = fc.showSaveDialog(null);
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				String lFile = fc.getSelectedFile().getAbsolutePath();
+				if (!(lFile.endsWith(".pdf") || lFile.endsWith(".PDF"))){
+					lFile += ".pdf";
+				}
 				jasperReport = JasperCompileManager.compileReport(ResourceService.getInstance().getRessourceJRMXL("TipicoGesamtUebersicht.jrxml"));
 				jasperPrint = JasperFillManager.fillReport(jasperReport, parameter, ds);
-				JasperExportManager.exportReportToPdfFile(jasperPrint, fc.getSelectedFile().getAbsolutePath());
+				JasperExportManager.exportReportToPdfFile(jasperPrint, lFile);
 			}
 
 			return true;

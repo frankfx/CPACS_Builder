@@ -32,8 +32,10 @@ public class PopupFactory {
 			return new DatabasePullDetailPopup(pParams);
 		case HINT:
 			startHintPopup(pParams[0].toString());
+			return null;
 		case ERROR:
 			startErrorPopup(pParams[0].toString());
+			return null;
 		default:
 			return null;
 		}

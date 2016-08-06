@@ -16,22 +16,15 @@ import javax.swing.SwingUtilities;
 
 import de.business.Database;
 import de.business.TipicoModel;
-import de.business.TipicoTableFilterModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
-import de.presentation.filter.AndCriteria;
-import de.presentation.filter.CriteriaExpenses;
-import de.presentation.filter.CriteriaID;
-import de.presentation.filter.CriteriaWinValue;
 import de.presentation.filter.ICriteria;
-import de.presentation.filter.OrCriteria;
 import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.printing.TipicoPrintService;
 import de.services.FilterService;
 import de.services.SQLService;
-import de.types.FilterConnectionType;
 import de.types.PersistenceType;
 import de.utils.FAMessages;
 
@@ -178,10 +171,13 @@ public class TipicoActivityBean implements ISubController{
 		String lResult;
 		
 		if (mDB == null)
-			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4]))
+			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
 				lResult = "connection successfull";
-			else
+				mBundesligaListener.actionUpdateStatistics(getBalance());
+			}
+			else {
 				lResult = "connection refused";
+			}
 		else 
 			lResult = "already connected";
 
@@ -196,6 +192,8 @@ public class TipicoActivityBean implements ISubController{
 		if (mDB != null){
 			mDB.disconnect();
 			mDB = null;
+			mBundesligaListener.actionUpdateConsole("disconnected");
+			mBundesligaListener.actionUpdateStatistics(getBalance());
 		}
 	}		
 		
@@ -655,21 +653,22 @@ public class TipicoActivityBean implements ISubController{
 		
 		if (lModel == null) {
 			lModel = new TipicoModel();
-			lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
-			mView.getTableModel().addRow(lModel);
 		}
 		
 		String[] arr = PopupFactory.getPopup(PopupType.TIPICO_BETVALUE_POPUP, new Object[] { lModel.getWinValue(), lModel.getExpenses() }).requestInputData();
 
 		if (arr != null) {
+			lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
 			lModel.setWinValue(Float.parseFloat(arr[0]));
 			lModel.setExpenses(Float.parseFloat(arr[1]) + lModel.getExpenses());
 			lModel.setDate(LocalDate.now());
 			lModel.setPersistenceType(PersistenceType.NEW);
+			mView.getTableModel().addRow(lModel);
+			
 			lResult = FAMessages.MESSAGE_SUCCESS;
 			this.updateTable();
 		} else {
-			lResult = FAMessages.MESSAGE_NO_VALID_FORMULAR_DATA;
+			lResult = FAMessages.MESSAGE_CANCEL_POPUP;
 		}
 		
 		mBundesligaListener.actionUpdateConsole(lResult);
