@@ -19,6 +19,7 @@ de\services\FilterService.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$1.class
 de\types\PersistenceType.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup.class
+de\application\BundesligaActivityBean$15.class
 de\presentation\bundesliga\BundesligaView.class
 de\presentation\filter\CriteriaID.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$2.class

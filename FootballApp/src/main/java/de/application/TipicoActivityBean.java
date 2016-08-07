@@ -686,6 +686,7 @@ public class TipicoActivityBean implements ISubController{
 			if(insertOrUpdateRowInTipico(lModel))
 				lModel.setPersistenceType(PersistenceType.OTHER);
 		}
+		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}	
 
 	/**
@@ -720,7 +721,8 @@ public class TipicoActivityBean implements ISubController{
 						lModel.setPersistenceType(PersistenceType.NEW);
 				}
 			}
-		}		
+		}
+		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}
 
 	/**
@@ -732,6 +734,7 @@ public class TipicoActivityBean implements ISubController{
 		    // yes option
 			if(dropTableTipico())
 				createTableTipico();
+			mBundesligaListener.actionUpdateStatistics(getBalance());
 		}		
 	}
 	
