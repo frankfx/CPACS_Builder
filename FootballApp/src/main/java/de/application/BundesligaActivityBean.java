@@ -1,9 +1,7 @@
 package de.application;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +12,7 @@ import javax.swing.event.ChangeListener;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.services.WorldWideWebService;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
@@ -151,18 +150,21 @@ public class BundesligaActivityBean {
 		mView.setMenuItemLinkTipico(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-				if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-					try {
-						URL url = new URL("https://www.tipico.de/de/online-sportwetten/");
-						desktop.browse(url.toURI());
-					} catch (Exception ee) {
-						ee.printStackTrace();
-					}
-				}
+				WorldWideWebService.openUrlInBrowser("https://www.tipico.de/de/online-sportwetten/");
 			}
 		});
 
+		/**
+		 * Link to soccerway
+		 */
+		mView.setMenuItemLinkSoccerway(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WorldWideWebService.openUrlInBrowser("http://de.soccerway.com/");
+			}
+		});		
+
+		
 		/**
 		 * About frame
 		 */

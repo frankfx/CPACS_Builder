@@ -43,7 +43,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemPullDB = new JMenuItem("Pull DB");		
 	private JMenuItem menuItemPrint = new JMenuItem("Print");
 	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
-	private JMenuItem menuItemLinkTipico = new JMenuItem("www.tipico.de");
+	private JMenuItem menuItemLinkTipico = new JMenuItem("tipico.de");
+	private JMenuItem menuItemLinkSoccerway = new JMenuItem("soccerway.com");
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	
 	@Override
@@ -117,6 +118,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuConfig.add(menuItemDBDisConnect);
 		
 		menuLinks.add(menuItemLinkTipico);
+		menuLinks.add(menuItemLinkSoccerway);
 
 		menuHelp.add(menuItemAbout);
 		
@@ -179,6 +181,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     
 	public void setMenuItemLinkTipico(ActionListener l) {
 		this.menuItemLinkTipico.addActionListener(l);
+	}
+	
+	public void setMenuItemLinkSoccerway(ActionListener l) {
+		this.menuItemLinkSoccerway.addActionListener(l);
 	}
 
     public void setMenuItemAboutListener(ActionListener l){
