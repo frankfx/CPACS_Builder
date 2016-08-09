@@ -4,6 +4,7 @@ de\business\TipicoTableModel.class
 de\utils\math\MathTipico.class
 de\services\ResourceService.class
 de\application\TipicoActivityBean$12.class
+de\services\SWJSONParser.class
 de\application\BundesligaActivityBean$10.class
 de\services\WorldWideWebService.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup$1.class
@@ -14,6 +15,7 @@ de\presentation\filter\CriteriaWinValue.class
 de\presentation\bundesliga\TipicoBetView$2.class
 de\application\TipicoActivityBean$9.class
 de\application\BundesligaActivityBean$5.class
+de\presentation\bundesliga\StatisticPanel.class
 de\application\TipicoActivityBean$2.class
 de\presentation\filter\CriteriaID$1.class
 de\services\FilterService.class
@@ -42,16 +44,16 @@ de\application\TipicoActivityBean$4.class
 de\business\TipicoTableFilterModel.class
 de\presentation\filter\CriteriaWinValue$1.class
 de\business\SpinnerTemporalModel.class
+de\types\SoccerwayMatchType.class
 de\application\TipicoActivityBean$7.class
-de\presentation\bundesliga\StatisticContainer.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$4$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$4.class
-de\presentation\bundesliga\BundesligaConsoleContainer.class
 de\presentation\ButtonPanelContainer.class
 de\utils\FAMessages.class
 de\business\Database.class
 de\application\BundesligaActivityBean$4.class
 de\application\BundesligaActivityBean$11.class
+de\application\BundesligaActivityBean$17.class
 de\types\TipicoDataType.class
 de\application\BundesligaActivityBean.class
 de\business\TipicoModel.class
@@ -62,6 +64,7 @@ de\application\TipicoActivityBean$1.class
 de\application\TipicoActivityBean$10.class
 de\presentation\popups\popupViews\DatabaseBrowserPopup.class
 de\application\TipicoActivityBean.class
+de\presentation\bundesliga\ConsolenPanel.class
 de\application\BundesligaActivityBean$12.class
 de\presentation\bundesliga\TipicoBetView.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$2.class
@@ -70,12 +73,14 @@ de\presentation\popups\popupViews\DatabasePullDetailPopup.class
 de\utils\DoubleKeyAdapter.class
 de\presentation\filter\OrCriteria.class
 de\application\TipicoActivityBean$5.class
+de\business\SoccerwayMatchModel.class
 de\presentation\JSplitButton$1.class
 de\presentation\popups\PopupFactory$1.class
 de\application\BundesligaActivityBean$2.class
 de\presentation\bundesliga\TipicoBetView$1.class
 de\presentation\filter\CriteriaExpenses$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$1.class
+de\presentation\bundesliga\SWAufgabenPanel.class
 de\presentation\filter\AndCriteria.class
 de\presentation\filter\ICriteria.class
 de\application\BundesligaActivityBean$13.class
