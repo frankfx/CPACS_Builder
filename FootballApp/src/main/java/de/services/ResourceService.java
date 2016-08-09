@@ -2,9 +2,12 @@ package de.services;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
@@ -20,15 +23,15 @@ public class ResourceService {
 	public final BufferedImage IMAGE_ICON_ARROW_DOWN;
 	public final BufferedImage IMAGE_ICON_ADD_GREEN;
 	public final BufferedImage IMAGE_ICON_REMOVE_RED;
-	public final String SCRIPT_PYTHON_TEST = getRessourceScripts("test.py");
-	public final String SCRIPT_PYTHON_SOCCERWAY = getRessourceScripts("soccerway.py");
-
+	public final String SCRIPT_PYTHON_TEST = getResourceScripts("test.py");
+	public final String SCRIPT_PYTHON_SOCCERWAY = getResourceScripts("soccerway.py");
+	
 	//make the constructor private so that this class cannot be instantiated
 	private ResourceService() {
 		cl = this.getClass().getClassLoader();
-		IMAGE_ICON_ARROW_DOWN = getRessourceImages("arrow.png");
-		IMAGE_ICON_ADD_GREEN = getRessourceImages("add_green.png");
-		IMAGE_ICON_REMOVE_RED = getRessourceImages("minus_red.png");
+		IMAGE_ICON_ARROW_DOWN = getResourceImages("arrow.png");
+		IMAGE_ICON_ADD_GREEN = getResourceImages("add_green.png");
+		IMAGE_ICON_REMOVE_RED = getResourceImages("minus_red.png");
 	}
 
 	//Get the only object available
@@ -36,7 +39,7 @@ public class ResourceService {
 		return instance;
 	}
 
-	public BufferedImage getRessourceImages(String pFilename) {
+	public BufferedImage getResourceImages(String pFilename) {
 		try {
 			return ImageIO.read(cl.getResourceAsStream("images/" + pFilename));
 		} catch (IOException e) {
@@ -45,11 +48,27 @@ public class ResourceService {
 		return null;
 	}
 
-	public InputStream getRessourceJRMXL(String pPath) {
+	public InputStream getResourceJRMXL(String pPath) {
 		return cl.getResourceAsStream("printing/" + pPath);
 	}
 
-	public String getRessourceScripts(String pPath) {
+	public InputStream getResourcePropertyFile(String pPath) {
+		return cl.getResourceAsStream(pPath);
+	}	
+	
+	public OutputStream getResourceOutputStreamPropertyFile(String pPath){
+		File file;
+		try {
+			file = new File(cl.getResource(pPath).toURI());
+			return new FileOutputStream(file);
+		} catch (URISyntaxException | FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+		
+	public String getResourceScripts(String pPath) {
+		// TODO check if this line is notwendig
 		cl = this.getClass().getClassLoader();
 		InputStream a = cl.getResourceAsStream("scripts/" + pPath);
 
@@ -77,6 +96,6 @@ public class ResourceService {
 
 	public static void main(String[] args) {
 		System.out.println(ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY);
-		System.out.println(ResourceService.getInstance().getRessourceImages("dortmund.png"));
+		System.out.println(ResourceService.getInstance().getResourceImages("dortmund.png"));
 	}
 }

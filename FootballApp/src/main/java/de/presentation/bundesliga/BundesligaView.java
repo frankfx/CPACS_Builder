@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeListener;
 
@@ -26,12 +28,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private BundesligaConsoleContainer mConsolenPanel;
+	private JTabbedPane mTabbedPane;	
+	private ConsolenPanel mConsolenPanel;
+	private SWAufgabenPanel mAufgabenPanel;
 	private TipicoBetView mTipicoPanel;
-	private StatisticContainer mStatisticPanel;
+	private StatisticPanel mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
 	
-	private JSplitPane mSplitPaneLeftHorizontal;
 	private JSplitPane mSplitPaneVertikal;
 
 	// Menu items
@@ -50,7 +53,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	@Override
 	public void initView() {
 		UIManager.getDefaults().put("SplitPane.border", BorderFactory.createEmptyBorder());
-		setTitle("1. Bundesliga View");
+		setTitle("Tipico bet tool");
 		createGUIElements();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(600, 500));
@@ -76,17 +79,31 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
-		mConsolenPanel = new BundesligaConsoleContainer();
-		mStatisticPanel = new StatisticContainer();
+		mTabbedPane = new JTabbedPane();
+		mConsolenPanel = new ConsolenPanel();
+		mAufgabenPanel = new SWAufgabenPanel();
+		mStatisticPanel = new StatisticPanel();
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
-		mSplitPaneLeftHorizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mConsolenPanel, mStatisticPanel);
-		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mSplitPaneLeftHorizontal, mTipicoPanel);
+		mTabbedPane.addTab("Console", mConsolenPanel);
+		mTabbedPane.addTab("Fixtures",mAufgabenPanel);
+		
+		JPanel mPanelLeftHorizontal = new JPanel();
+		mPanelLeftHorizontal.setLayout(new GridBagLayout());
 
-		c.fill = GridBagConstraints.BOTH;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 1;		
 		c.weightx = 0.1;
-		c.weighty = 0.1;
+		mPanelLeftHorizontal.add(mStatisticPanel, c);		
+		
+		c.fill = GridBagConstraints.BOTH;
+		c.gridy = 0;
+		c.weightx = 0.1;
+		c.weighty = 0.1;		
+		mPanelLeftHorizontal.add(mTabbedPane, c);
+
+		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mPanelLeftHorizontal, mTipicoPanel);
 
 		pane.add(mSplitPaneVertikal, c);
 
@@ -194,14 +211,15 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	public void setMenuItemPrintListener(ActionListener l) {
 		this.menuItemPrint.addActionListener(l);
 	}
-    
+
+	public void addTabChangeListender(ChangeListener l){
+		this.mTabbedPane.addChangeListener(l);
+	}	
 	/**
 	 * ========================
 	 * END LISTENER
 	 * ========================
 	 */	    
-    
-    
     
     
 	/**
@@ -217,11 +235,11 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		this.mButtonPanel = lButtonPanel;
 	}
 
-	public StatisticContainer getStatisticPanel() {
+	public StatisticPanel getStatisticPanel() {
 		return mStatisticPanel;
 	}
 
-	public void setStatisticPanel(StatisticContainer pStatisticPanel) {
+	public void setStatisticPanel(StatisticPanel pStatisticPanel) {
 		this.mStatisticPanel = pStatisticPanel;
 	}
 
@@ -233,13 +251,21 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		this.mTipicoPanel = lTipicoPanel;
 	}
 
-	public BundesligaConsoleContainer getConsolenPanel() {
+	public ConsolenPanel getConsolenPanel() {
 		return mConsolenPanel;
 	}
 
-	public void setConsolenPanel(BundesligaConsoleContainer lConsolenPanel) {
+	public void setConsolenPanel(ConsolenPanel lConsolenPanel) {
 		this.mConsolenPanel = lConsolenPanel;
 	}
+	
+	public SWAufgabenPanel getAufgabenPanel(){
+		return mAufgabenPanel;
+	}
+	
+	public JTabbedPane getTabbedPane(){
+		return mTabbedPane;
+	}	
 	/**
 	 * ========================
 	 * END GETTER AND SETTER

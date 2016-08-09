@@ -2,21 +2,31 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.services.ResourceService;
+import de.services.SWJSONParser;
 import de.services.WorldWideWebService;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
+	private boolean mFlag = true;
+	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
 
 	/**
 	 * Controller 
@@ -179,6 +189,19 @@ public class BundesligaActivityBean {
 		});
 
 		/**
+		 * Creates match tasks when tab was changed the first time 
+		 */		
+		mView.addTabChangeListender(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent pE) {
+				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mFlag){
+					createAufgabe();
+					mFlag = false;
+				}
+			}
+		});		
+		
+		/**
 		 * Observer pattern to trigger this.actionUpdateConsole from the subcontroller
 		 */
 		for (ISubController lController : mSubController)
@@ -203,6 +226,30 @@ public class BundesligaActivityBean {
 		mView.dispose();
 	}
 
+	private void createAufgabe(){
+		Vector<String> vec;
+		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getResultsBySWObserverPropertyFile();
+		
+		SoccerwayMatchModel match;
+		
+		while (iter.hasNext()){
+			match = iter.next();
+			vec = new Vector<String>();
+			vec.add(match.getDate().toString());
+			vec.add(match.getCompetition());
+			vec.add(match.getTeam1());
+			vec.add(match.getTeam2());
+			mView.getAufgabenPanel().addToTable(vec);			
+		}
+	}	
+	
+	public void writeRessourcePropertyFile(String pPath){
+		OutputStream output = ResourceService.getInstance().getResourceOutputStreamPropertyFile(pPath);
+		//prop.setProperty("maxamount", model.getMaxAmount()+"");
+		//prop.store(output, null);
+		//output.close();
+	}	
+	
 	/**
 	 * Start App
 	 */
