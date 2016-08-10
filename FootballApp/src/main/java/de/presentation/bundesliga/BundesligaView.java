@@ -49,6 +49,9 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemLinkTipico = new JMenuItem("tipico.de");
 	private JMenuItem menuItemLinkSoccerway = new JMenuItem("soccerway.com");
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
+	private JMenuItem menuItemShowProperties = new JMenuItem("Show...");
+	private JMenuItem menuItemOpenProperties = new JMenuItem("Open...");
+	private JMenuItem menuItemSaveProperties = new JMenuItem("Save");
 	
 	@Override
 	public void initView() {
@@ -118,6 +121,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		JMenu menuFile = new JMenu("File");
 		JMenu menuConfig = new JMenu("Configure");
+		JMenu menuProperties = new JMenu("Properties");
 		JMenu menuLinks = new JMenu("Links");
 		JMenu menuHelp = new JMenu("Help");
 		
@@ -134,6 +138,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuConfig.add(menuItemDBConnect);
 		menuConfig.add(menuItemDBDisConnect);
 		
+		menuProperties.add(menuItemShowProperties);
+		menuProperties.add(menuItemOpenProperties);
+		menuProperties.add(menuItemSaveProperties);
+		
 		menuLinks.add(menuItemLinkTipico);
 		menuLinks.add(menuItemLinkSoccerway);
 
@@ -141,6 +149,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		bar.add(menuFile);
 		bar.add(menuConfig);
+		bar.add(menuProperties);
 		bar.add(menuLinks);
 		bar.add(menuHelp);
 		
@@ -208,11 +217,23 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     	this.menuItemAbout.addActionListener(l);
     }    
 
+	public void setMenuItemShowPropertiesListener(ActionListener l){
+		menuItemShowProperties.addActionListener(l);
+	}	
+	
+	public void setMenuItemOpenPropertiesListener(ActionListener l){
+		menuItemOpenProperties.addActionListener(l);
+	}
+
+	public void setMenuItemSavePropertiesListener(ActionListener l){
+		menuItemSaveProperties.addActionListener(l);
+	}    
+    
 	public void setMenuItemPrintListener(ActionListener l) {
 		this.menuItemPrint.addActionListener(l);
 	}
 
-	public void addTabChangeListender(ChangeListener l){
+	public void addTabChangeListener(ChangeListener l){
 		this.mTabbedPane.addChangeListener(l);
 	}	
 	/**

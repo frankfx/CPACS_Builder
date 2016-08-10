@@ -2,8 +2,7 @@ package de.application;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,15 +17,20 @@ import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
+import de.services.PropertyService;
 import de.services.ResourceService;
 import de.services.SWJSONParser;
 import de.services.WorldWideWebService;
+import de.utils.FAMessages;
+import de.utils.Tupel;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
-	private boolean mFlag = true;
+	private boolean mAufgabenNochNichtErzeugtFlag = true;
 	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
+	private File mPropertiesFile;
+	private boolean isDefaultPropertiesFile;
 
 	/**
 	 * Controller 
@@ -187,16 +191,52 @@ public class BundesligaActivityBean {
 					JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+		
+		/**
+		 * Show Properties file
+		 */
+		mView.setMenuItemShowPropertiesListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent pE) {
+				if (mPropertiesFile == null){
+					loadPropertiesFile();
+				}
+				PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{new Tupel<File, Boolean>(mPropertiesFile, isDefaultPropertiesFile)}).requestInputData();
+			}
+		});
+		
+		/**
+		 * Save Properties file
+		 */
+		mView.setMenuItemSavePropertiesListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent pE) {
+				System.out.println("Save");
+			}
+		});
+
+		/**
+		 * Opens Properties file
+		 */		
+		mView.setMenuItemOpenPropertiesListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent pE) {
+				File choosenFile = PropertyService.choosePropertiesFile();
+				if (choosenFile != null)
+					mPropertiesFile = choosenFile;
+			}
+		});		
 
 		/**
 		 * Creates match tasks when tab was changed the first time 
 		 */		
-		mView.addTabChangeListender(new ChangeListener() {
+		mView.addTabChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent pE) {
-				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mFlag){
-					createAufgabe();
-					mFlag = false;
+				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
+					loadPropertiesFile();
+					createAufgabe(mPropertiesFile);
+					mAufgabenNochNichtErzeugtFlag = false;
 				}
 			}
 		});		
@@ -226,9 +266,15 @@ public class BundesligaActivityBean {
 		mView.dispose();
 	}
 
-	private void createAufgabe(){
+	private void createAufgabe(File pFile){
 		Vector<String> vec;
-		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getResultsBySWObserverPropertyFile();
+		Iterator<SoccerwayMatchModel> iter;
+		
+		if (isDefaultPropertiesFile){
+			iter = SWJSONParser.getResultsBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(PropertyService.DEFAULT_PROPERTIES_FILE));
+		} else {
+			iter = SWJSONParser.getResultsBySWObserverPropertyFile(pFile);
+		}
 		
 		SoccerwayMatchModel match;
 		
@@ -248,6 +294,24 @@ public class BundesligaActivityBean {
 		//prop.setProperty("maxamount", model.getMaxAmount()+"");
 		//prop.store(output, null);
 		//output.close();
+	}	
+	
+	/**
+	 * Falls kein Properties file vorhanden ist (bspw. beim ersten oeffen), wird ein FileDialog geoeffnet,
+	 * um die zu verwendente Datei zu bestimmen. Wird die Dateiauswahl abgebrochen wird ein Default File verwendet. 
+	 * 
+	 */
+	private void loadPropertiesFile() {
+		if (mPropertiesFile == null){
+			mPropertiesFile = PropertyService.choosePropertiesFile();
+			if (mPropertiesFile != null){
+				isDefaultPropertiesFile = false;
+			} else {
+				isDefaultPropertiesFile = true;
+				PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_DEFAULT_PROPERTY);
+				mPropertiesFile = new File(PropertyService.DEFAULT_PROPERTIES_FILE);
+			}
+		}
 	}	
 	
 	/**

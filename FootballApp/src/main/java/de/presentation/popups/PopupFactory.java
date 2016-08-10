@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import de.presentation.popups.popupViews.DatabaseBrowserPopup;
 import de.presentation.popups.popupViews.DatabaseConnectionPopup;
 import de.presentation.popups.popupViews.DatabasePullDetailPopup;
+import de.presentation.popups.popupViews.SWPropertyPopup;
 import de.presentation.popups.popupViews.TipicoBetValuePopup;
 import de.presentation.popups.popupViews.TipicoNewPopup;
 import de.presentation.popups.popupViews.TipicoTableFilterPopup;
@@ -30,6 +31,8 @@ public class PopupFactory {
 			return new DatabaseBrowserPopup(pParams);
 		case DATABASE_PULLDETAIL_POPUP:
 			return new DatabasePullDetailPopup(pParams);
+		case PROPERTIES_POPUP :
+			return new SWPropertyPopup(pParams);
 		case HINT:
 			startHintPopup(pParams[0].toString());
 			return null;

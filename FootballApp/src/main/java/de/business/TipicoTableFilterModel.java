@@ -15,8 +15,6 @@ import de.services.ResourceService;
 import de.types.FilterConnectionType;
 import de.types.FilterOperationType;
 import de.types.TipicoDataType;
-import de.utils.DoubleInputVerifier;
-import de.utils.DoubleKeyAdapter;
 import de.utils.FAMessages;
 
 public class TipicoTableFilterModel {

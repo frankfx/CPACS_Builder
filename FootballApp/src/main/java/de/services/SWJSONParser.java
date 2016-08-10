@@ -1,7 +1,11 @@
 package de.services;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,8 +24,6 @@ import de.business.SoccerwayMatchModel;
 import de.types.SoccerwayMatchType;
 
 public class SWJSONParser {
-
-	private static final String SW_TEAM_OBSERVER_PROPERTY = "SW_Team_Observer.properties";
 
 	/**
 	 * Handels the team data given by teamID and matchtype
@@ -159,12 +161,21 @@ public class SWJSONParser {
 	}
 
 	
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(){
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(File pPropertyFile){		
+		try {
+			return getResultsBySWObserverPropertyFile(new FileInputStream(pPropertyFile));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();
 
 		try {
-			prop.load(ResourceService.getInstance().getResourcePropertyFile(SW_TEAM_OBSERVER_PROPERTY));
+			prop.load(pPropertyInputStream);
 			int lDuration = Integer.parseInt(prop.getProperty("duration"));
 			
 			//TODO test LocalDateTime for genauere vergleiche
