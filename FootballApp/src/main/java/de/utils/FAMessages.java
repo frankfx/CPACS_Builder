@@ -11,4 +11,5 @@ public class FAMessages {
 	public final static String MESSAGE_WRONG_FILTER_INPUT_VALUE = "Wrong filter input value";
 	public final static String MESSAGE_CANCEL_POPUP = "Operation canceled";
 	public final static String MESSAGE_DEFAULT_PROPERTY = "Default properties loaded";
+	public final static String MESSAGE_NO_PROPERTIES_FILE = "No properties file found";
 }

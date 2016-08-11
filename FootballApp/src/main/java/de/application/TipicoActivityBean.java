@@ -651,19 +651,18 @@ public class TipicoActivityBean implements ISubController{
 		int lRow = getSelectedRow();
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow( lRow);		
 		
-		if (lModel == null) {
-			lModel = new TipicoModel();
-		}
-		
-		String[] arr = PopupFactory.getPopup(PopupType.TIPICO_BETVALUE_POPUP, new Object[] { lModel.getWinValue(), lModel.getExpenses() }).requestInputData();
+		String[] arr = PopupFactory.getPopup(PopupType.TIPICO_BETVALUE_POPUP, new Object[] { 1.0f, 0.0f }).requestInputData();
 
 		if (arr != null) {
-			lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
+			if (lModel == null) {
+				lModel = new TipicoModel();
+				lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
+				mView.getTableModel().addRow(lModel);
+			}
 			lModel.setWinValue(Float.parseFloat(arr[0]));
 			lModel.setExpenses(Float.parseFloat(arr[1]) + lModel.getExpenses());
 			lModel.setDate(LocalDate.now());
 			lModel.setPersistenceType(PersistenceType.NEW);
-			mView.getTableModel().addRow(lModel);
 			
 			lResult = FAMessages.MESSAGE_SUCCESS;
 			this.updateTable();

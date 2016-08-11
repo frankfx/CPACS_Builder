@@ -3,7 +3,8 @@ package de.application;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -206,16 +207,6 @@ public class BundesligaActivityBean {
 		});
 		
 		/**
-		 * Save Properties file
-		 */
-		mView.setMenuItemSavePropertiesListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent pE) {
-				System.out.println("Save");
-			}
-		});
-
-		/**
 		 * Opens Properties file
 		 */		
 		mView.setMenuItemOpenPropertiesListener(new ActionListener() {
@@ -235,8 +226,12 @@ public class BundesligaActivityBean {
 			public void stateChanged(ChangeEvent pE) {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
 					loadPropertiesFile();
-					createAufgabe(mPropertiesFile);
-					mAufgabenNochNichtErzeugtFlag = false;
+					if (mPropertiesFile != null){
+						createAufgabe();
+						mAufgabenNochNichtErzeugtFlag = false;
+					} else {
+						PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_PROPERTIES_FILE);
+					}
 				}
 			}
 		});		
@@ -266,14 +261,19 @@ public class BundesligaActivityBean {
 		mView.dispose();
 	}
 
-	private void createAufgabe(File pFile){
+	private void createAufgabe(){
 		Vector<String> vec;
 		Iterator<SoccerwayMatchModel> iter;
 		
 		if (isDefaultPropertiesFile){
-			iter = SWJSONParser.getResultsBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(PropertyService.DEFAULT_PROPERTIES_FILE));
+			iter = SWJSONParser.getResultsBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
 		} else {
-			iter = SWJSONParser.getResultsBySWObserverPropertyFile(pFile);
+			try {
+				iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+			} catch (FileNotFoundException e) {
+				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+				return;
+			}
 		}
 		
 		SoccerwayMatchModel match;
@@ -287,13 +287,8 @@ public class BundesligaActivityBean {
 			vec.add(match.getTeam2());
 			mView.getAufgabenPanel().addToTable(vec);			
 		}
-	}	
-	
-	public void writeRessourcePropertyFile(String pPath){
-		OutputStream output = ResourceService.getInstance().getResourceOutputStreamPropertyFile(pPath);
-		//prop.setProperty("maxamount", model.getMaxAmount()+"");
-		//prop.store(output, null);
-		//output.close();
+		
+		mView.getAufgabenPanel().sortTableByDate();
 	}	
 	
 	/**
@@ -309,7 +304,7 @@ public class BundesligaActivityBean {
 			} else {
 				isDefaultPropertiesFile = true;
 				PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_DEFAULT_PROPERTY);
-				mPropertiesFile = new File(PropertyService.DEFAULT_PROPERTIES_FILE);
+				mPropertiesFile = new File(ResourceService.DEFAULT_PROPERTIES_FILE);
 			}
 		}
 	}	

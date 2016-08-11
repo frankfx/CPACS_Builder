@@ -2,7 +2,6 @@ package de.services;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,6 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PropertyService{
-	public static final String DEFAULT_PROPERTIES_FILE = "SW_Team_Observer.properties";
 	
 	/**
 	 * loads a properties files and returns the content as a sorted TreeMap
@@ -22,15 +20,6 @@ public class PropertyService{
 	 * @param pFile the properties file
 	 * @return a (sorted) TreeMap with all keys and values of the properties file
 	 */
-	public static Map<Object, Object> getProperties(File pFile){
-		try {
-			return getProperties(new FileInputStream(pFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public static Map<Object, Object> getProperties(InputStream pInputStream){
 		Properties prop = new Properties();
 		try {

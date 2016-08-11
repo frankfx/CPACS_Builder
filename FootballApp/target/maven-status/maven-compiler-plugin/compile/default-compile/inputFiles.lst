@@ -13,10 +13,12 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SoccerwayMatc
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\TipicoTableFilterModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabaseConnectionPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\DefaultPopup.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\SWPropertyPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\filter\ICriteria.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\filter\OrCriteria.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\FAMessages.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\filter\CriteriaID.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\PropertyService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\ParserService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\TipicoModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\StatisticPanel.java
@@ -29,6 +31,7 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\Po
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\TipicoBetValuePopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\ResultType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\BundesligaView.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\Tupel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\PersistenceType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\BundesligaActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\Main.java

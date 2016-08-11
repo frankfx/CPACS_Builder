@@ -26,6 +26,9 @@ public class ResourceService {
 	public final String SCRIPT_PYTHON_TEST = getResourceScripts("test.py");
 	public final String SCRIPT_PYTHON_SOCCERWAY = getResourceScripts("soccerway.py");
 	
+	// paths
+	public static final String DEFAULT_PROPERTIES_FILE = "SW_Team_Observer.properties";
+	
 	//make the constructor private so that this class cannot be instantiated
 	private ResourceService() {
 		cl = this.getClass().getClassLoader();

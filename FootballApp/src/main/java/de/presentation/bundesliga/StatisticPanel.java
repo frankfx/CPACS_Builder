@@ -42,7 +42,6 @@ public class StatisticPanel extends AbstractPanelContainer {
 		
 		mDate = new JTextField();
 		mDate.setEditable(false);
-		System.out.println(getDaysOfWork());
 		mDate.setText(getDaysOfWork()+"");
 		
 		// set layout

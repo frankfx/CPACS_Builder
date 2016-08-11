@@ -3,6 +3,8 @@ package de.presentation.popups.popupViews;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,10 +21,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import de.presentation.popups.IPopup;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.services.PropertyService;
 import de.services.ResourceService;
 import de.utils.Tupel;
-
 
 public class SWPropertyPopup implements IPopup {
 
@@ -128,6 +131,8 @@ public class SWPropertyPopup implements IPopup {
 		TableModel model = new DefaultTableModel(null, columnNames){
 			private static final long serialVersionUID = 1L;
 			public boolean isCellEditable(int row, int column) {
+				if (isDefaultPropertiesFile)
+					return false;
 				if (column == COLUMN_KEY )
 					return false;
 				return true;
@@ -145,9 +150,14 @@ public class SWPropertyPopup implements IPopup {
 		Map<Object, Object> map;
 		
 		if (isDefaultPropertiesFile){
-			map = PropertyService.getProperties(ResourceService.getInstance().getResourcePropertyFile(PropertyService.DEFAULT_PROPERTIES_FILE));
+			map = PropertyService.getProperties(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
 		} else {
-			map = PropertyService.getProperties(lPropertiesFile);
+			try {
+				map = PropertyService.getProperties(new FileInputStream(lPropertiesFile));
+			} catch (FileNotFoundException e) {
+				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+				return;
+			}
 		}
 
 		for (Map.Entry<Object, Object> entry : map.entrySet()){

@@ -1,9 +1,6 @@
 package de.services;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -160,16 +157,6 @@ public class SWJSONParser {
 		return sb.toString();
 	}
 
-	
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(File pPropertyFile){		
-		try {
-			return getResultsBySWObserverPropertyFile(new FileInputStream(pPropertyFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();

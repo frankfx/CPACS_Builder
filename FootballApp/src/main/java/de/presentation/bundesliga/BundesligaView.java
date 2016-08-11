@@ -51,7 +51,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	private JMenuItem menuItemShowProperties = new JMenuItem("Show...");
 	private JMenuItem menuItemOpenProperties = new JMenuItem("Open...");
-	private JMenuItem menuItemSaveProperties = new JMenuItem("Save");
 	
 	@Override
 	public void initView() {
@@ -140,7 +139,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		
 		menuProperties.add(menuItemShowProperties);
 		menuProperties.add(menuItemOpenProperties);
-		menuProperties.add(menuItemSaveProperties);
 		
 		menuLinks.add(menuItemLinkTipico);
 		menuLinks.add(menuItemLinkSoccerway);
@@ -225,10 +223,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuItemOpenProperties.addActionListener(l);
 	}
 
-	public void setMenuItemSavePropertiesListener(ActionListener l){
-		menuItemSaveProperties.addActionListener(l);
-	}    
-    
 	public void setMenuItemPrintListener(ActionListener l) {
 		this.menuItemPrint.addActionListener(l);
 	}

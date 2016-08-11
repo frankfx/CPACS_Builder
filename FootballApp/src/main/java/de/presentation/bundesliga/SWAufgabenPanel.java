@@ -2,6 +2,7 @@ package de.presentation.bundesliga;
 
 
 import java.awt.BorderLayout;
+import java.util.Comparator;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -44,5 +45,16 @@ public class SWAufgabenPanel extends JPanel{
 	public void addToTable(Vector<String> dataVec){
 		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();
 		lModel.addRow(dataVec);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void sortTableByDate(){
+		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();
+		lModel.getDataVector().sort(new Comparator<Vector<String>>() {
+			@Override
+			public int compare(Vector<String> o1, Vector<String> o2) {
+				return o1.get(0).compareTo(o2.get(0));
+			}
+		});
 	}
 }
