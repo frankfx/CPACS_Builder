@@ -50,7 +50,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemLinkSoccerway = new JMenuItem("soccerway.com");
 	private JMenuItem menuItemExit = new JMenuItem("Exit");	
 	private JMenuItem menuItemShowProperties = new JMenuItem("Show...");
-	private JMenuItem menuItemOpenProperties = new JMenuItem("Open...");
+	private JMenuItem menuItemLoadProperties = new JMenuItem("Load...");
 	
 	@Override
 	public void initView() {
@@ -138,7 +138,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuConfig.add(menuItemDBDisConnect);
 		
 		menuProperties.add(menuItemShowProperties);
-		menuProperties.add(menuItemOpenProperties);
+		menuProperties.add(menuItemLoadProperties);
 		
 		menuLinks.add(menuItemLinkTipico);
 		menuLinks.add(menuItemLinkSoccerway);
@@ -219,8 +219,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuItemShowProperties.addActionListener(l);
 	}	
 	
-	public void setMenuItemOpenPropertiesListener(ActionListener l){
-		menuItemOpenProperties.addActionListener(l);
+	public void setMenuItemLoadPropertiesListener(ActionListener l){
+		menuItemLoadProperties.addActionListener(l);
 	}
 
 	public void setMenuItemPrintListener(ActionListener l) {

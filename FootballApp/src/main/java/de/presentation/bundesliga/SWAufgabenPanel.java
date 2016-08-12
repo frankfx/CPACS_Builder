@@ -47,6 +47,12 @@ public class SWAufgabenPanel extends JPanel{
 		lModel.addRow(dataVec);
 	}
 	
+	public void clearTable(){
+		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();
+		lModel.setRowCount(0);
+		mAufgabenTable.revalidate();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void sortTableByDate(){
 		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();

@@ -7,7 +7,6 @@ de\application\BundesligaActivityBean$18.class
 de\application\TipicoActivityBean$12.class
 de\services\SWJSONParser.class
 de\application\BundesligaActivityBean$10.class
-de\application\BundesligaActivityBean$20.class
 de\services\WorldWideWebService.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup$1.class
 de\application\TipicoActivityBean$8.class
@@ -15,6 +14,7 @@ de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
 de\application\BundesligaActivityBean$8.class
 de\presentation\filter\CriteriaWinValue.class
 de\presentation\bundesliga\TipicoBetView$2.class
+de\presentation\bundesliga\SWAufgabenPanel$1.class
 de\application\TipicoActivityBean$9.class
 de\application\BundesligaActivityBean$5.class
 de\presentation\bundesliga\StatisticPanel.class

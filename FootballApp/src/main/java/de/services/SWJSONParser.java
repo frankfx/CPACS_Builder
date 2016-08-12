@@ -9,6 +9,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -169,23 +170,24 @@ public class SWJSONParser {
 			LocalDate lToday = LocalDate.now(); 
 			LocalDate lFinalDate = lToday.plusDays(lDuration); 
 			
-			int i = 1;
-			String key;
-			while ((key = prop.getProperty(i+"")) != null){
-				// property #1 has value p
-				i++; 
+			String key , value;
+			Enumeration<Object> lAllKeys = prop.keys();
+			
+			while (lAllKeys.hasMoreElements()) {
+				key = lAllKeys.nextElement().toString();
+				if(key.startsWith("SW_TEAM_ID_")){
+					value = prop.getProperty(key);
+					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(value, SoccerwayMatchType.all);
 				
-				Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(key, SoccerwayMatchType.all);
-				
-				SoccerwayMatchModel lCurMatch;
-				
-				while (iter.hasNext()){
-					lCurMatch = iter.next();
-					if (lCurMatch.getDate().isAfter(lFinalDate)){
-						break;
-					} else if (!lCurMatch.getDate().isBefore(lToday) && !lCurMatch.getDate().isAfter(lFinalDate)){
-						lResultList.add(lCurMatch);
-				    }
+					SoccerwayMatchModel lCurMatch;
+					while (iter.hasNext()){
+						lCurMatch = iter.next();
+						if (lCurMatch.getDate().isAfter(lFinalDate)){
+							break;
+						} else if (!lCurMatch.getDate().isBefore(lToday) && !lCurMatch.getDate().isAfter(lFinalDate)){
+							lResultList.add(lCurMatch);
+					    }
+					}
 				}
 			}
 		} catch (IOException ex) {

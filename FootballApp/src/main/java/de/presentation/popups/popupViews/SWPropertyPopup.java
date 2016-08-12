@@ -101,10 +101,8 @@ public class SWPropertyPopup implements IPopup {
 			} else if (!isDefaultPropertiesFile && !changePropertyMap.isEmpty()){
 				PropertyService.writeProperties(lPropertiesFile, changePropertyMap);
 			}
-			return new String[] { null };
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 	@Override
