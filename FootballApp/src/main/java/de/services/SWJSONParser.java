@@ -158,7 +158,7 @@ public class SWJSONParser {
 		return sb.toString();
 	}
 
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(InputStream pPropertyInputStream){
+	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFile(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();
 
@@ -183,8 +183,9 @@ public class SWJSONParser {
 					while (iter.hasNext()){
 						lCurMatch = iter.next();
 						if (lCurMatch.getDate().isAfter(lFinalDate)){
+							// break the iteration to avoid reading all results (after the final date) 
 							break;
-						} else if (!lCurMatch.getDate().isBefore(lToday) && !lCurMatch.getDate().isAfter(lFinalDate)){
+						} else if (!lCurMatch.getDate().isBefore(lToday)){
 							lResultList.add(lCurMatch);
 					    }
 					}
@@ -196,6 +197,47 @@ public class SWJSONParser {
 		
 		return lResultList.iterator();
 	}	
+
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(InputStream pPropertyInputStream){
+		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+		Properties prop = new Properties();
+
+		try {
+			prop.load(pPropertyInputStream);
+			int lDuration = Integer.parseInt(prop.getProperty("duration"));
+			
+			//TODO test LocalDateTime for genauere vergleiche
+			LocalDate lToday = LocalDate.now(); 
+			LocalDate lPastDate = lToday.minusDays(lDuration); 
+			
+			String key , value;
+			Enumeration<Object> lAllKeys = prop.keys();
+			
+			while (lAllKeys.hasMoreElements()) {
+				key = lAllKeys.nextElement().toString();
+				if(key.startsWith("SW_TEAM_ID_")){
+					value = prop.getProperty(key);
+					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(value, SoccerwayMatchType.all);
+				
+					SoccerwayMatchModel lCurMatch;
+					while (iter.hasNext()){
+						lCurMatch = iter.next();
+						if (lCurMatch.getDate().isAfter(lToday)){
+							// break the iteration to avoid reading all results (after today)
+							break;
+						} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
+							lResultList.add(lCurMatch);
+					    }
+					}
+				}
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
+		return lResultList.iterator();
+	}	
+	
 	
 	public static void main(String[] args) {
 		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData("198", SoccerwayMatchType.all);

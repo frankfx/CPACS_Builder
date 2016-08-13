@@ -2,6 +2,7 @@ package de.presentation.bundesliga;
 
 
 import java.awt.BorderLayout;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Vector;
 
@@ -24,10 +25,34 @@ public class SWAufgabenPanel extends JPanel{
 	public SWAufgabenPanel() {
 		this.setLayout(new BorderLayout());
 		
-		Object columnNames[] = {"Date", "Compet.", "Team1", "Team2"};
+		Object columnNames[] = {"Date", "Time", "Compet.", "Team1", "Team2"};
 		TableModel model = new DefaultTableModel(null, columnNames);
 		
-		mAufgabenTable = new JTable(model);
+		mAufgabenTable = new JTable(model){
+			private static final long serialVersionUID = 1L;
+
+            /*@Override
+            public Class getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+            }*/
+            @Override
+            public Class<?> getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return LocalDate.class;
+                    case 1:
+                        return String.class;
+                    case 2:
+                        return String.class;
+                    case 3:
+                        return String.class;
+                    case 4:
+                        return String.class;    
+                    default:
+                        return String.class;
+                }
+            }
+        };
 		
 		TableColumnModel columnModel = mAufgabenTable.getColumnModel();
 		columnModel.getColumn(1).setMaxWidth(55);
@@ -42,7 +67,7 @@ public class SWAufgabenPanel extends JPanel{
 	 * 
 	 * @param dataVec data for one table row
 	 */
-	public void addToTable(Vector<String> dataVec){
+	public void addToTable(Vector<Object> dataVec){
 		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();
 		lModel.addRow(dataVec);
 	}
@@ -56,9 +81,9 @@ public class SWAufgabenPanel extends JPanel{
 	@SuppressWarnings("unchecked")
 	public void sortTableByDate(){
 		DefaultTableModel lModel = (DefaultTableModel) mAufgabenTable.getModel();
-		lModel.getDataVector().sort(new Comparator<Vector<String>>() {
+		lModel.getDataVector().sort(new Comparator<Vector<LocalDate>>() {
 			@Override
-			public int compare(Vector<String> o1, Vector<String> o2) {
+			public int compare(Vector<LocalDate> o1, Vector<LocalDate> o2) {
 				return o1.get(0).compareTo(o2.get(0));
 			}
 		});

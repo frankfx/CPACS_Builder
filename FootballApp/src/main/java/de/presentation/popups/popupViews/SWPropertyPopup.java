@@ -100,6 +100,7 @@ public class SWPropertyPopup implements IPopup {
 				System.out.println("WARN: Default properties file was loaded. This file couldn't be changed!");
 			} else if (!isDefaultPropertiesFile && !changePropertyMap.isEmpty()){
 				PropertyService.writeProperties(lPropertiesFile, changePropertyMap);
+				return new String[]{PropertyService.PROPERTIES_CHANGED};
 			}
 		}
 		return null;
@@ -128,6 +129,7 @@ public class SWPropertyPopup implements IPopup {
 		Object columnNames[] = {"KEY", "VALUE"};
 		TableModel model = new DefaultTableModel(null, columnNames){
 			private static final long serialVersionUID = 1L;
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				if (isDefaultPropertiesFile)
 					return false;

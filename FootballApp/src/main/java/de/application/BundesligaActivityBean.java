@@ -29,7 +29,9 @@ public class BundesligaActivityBean {
 	private BundesligaView mView;
 	private List<ISubController> mSubController;
 	private boolean mAufgabenNochNichtErzeugtFlag = true;
+	private boolean mResultsNochNichtErzeugtFlag = true;
 	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
+	private final static int TAB_INDEX_SW_RESULTS = 2;	
 	private File mPropertiesFile;
 	private boolean isDefaultPropertiesFile;
 
@@ -199,9 +201,13 @@ public class BundesligaActivityBean {
 		mView.setMenuItemShowPropertiesListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
-				if (!mAufgabenNochNichtErzeugtFlag)
-					PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{new Tupel<File, Boolean>(mPropertiesFile, isDefaultPropertiesFile)}).requestInputData();
-				else 
+				if (!mAufgabenNochNichtErzeugtFlag){
+					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{new Tupel<File, Boolean>(mPropertiesFile, isDefaultPropertiesFile)}).requestInputData();
+					if (res != null & res[0].equals(PropertyService.PROPERTIES_CHANGED)){
+						createAufgaben();
+						createResults();
+					}
+				} else 
 					PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_PROPERTIES_FILE);
 			}
 		});
@@ -217,6 +223,7 @@ public class BundesligaActivityBean {
 					mPropertiesFile = choosenFile;
 					isDefaultPropertiesFile = false;
 					createAufgaben();
+					createResults();
 				}
 			}
 		});		
@@ -228,9 +235,15 @@ public class BundesligaActivityBean {
 			@Override
 			public void stateChanged(ChangeEvent pE) {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
-					loadPropertiesFile();
+					if (!isPropertiesFileAvailalble())
+						loadPropertiesFile();
 					createAufgaben();
+				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && mResultsNochNichtErzeugtFlag){
+					if (!isPropertiesFileAvailalble())
+						loadPropertiesFile();
+					createResults();
 				}
+				
 			}
 		});		
 		
@@ -260,10 +273,43 @@ public class BundesligaActivityBean {
 	}
 
 	private void createAufgaben(){
-		Vector<String> vec;
 		Iterator<SoccerwayMatchModel> iter;
 		
 		mAufgabenNochNichtErzeugtFlag = false;
+		
+		if (isDefaultPropertiesFile){
+			iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
+		} else {
+			try {
+				iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+			} catch (FileNotFoundException e) {
+				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+				return;
+			}
+		}
+
+		mView.getAufgabenPanel().clearTable();
+		
+		Vector<Object> vec;
+		SoccerwayMatchModel match;
+		while (iter.hasNext()){
+			match = iter.next();
+			vec = new Vector<Object>();
+			vec.add(match.getDate());
+			vec.add(match.getResult());
+			vec.add(match.getCompetition());
+			vec.add(match.getTeam1());
+			vec.add(match.getTeam2());
+			mView.getAufgabenPanel().addToTable(vec);			
+		}
+		
+		mView.getAufgabenPanel().sortTableByDate();
+	}
+	
+	private void createResults(){
+		Iterator<SoccerwayMatchModel> iter;
+		
+		mResultsNochNichtErzeugtFlag = false;
 		
 		if (isDefaultPropertiesFile){
 			iter = SWJSONParser.getResultsBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
@@ -276,21 +322,27 @@ public class BundesligaActivityBean {
 			}
 		}
 
-		mView.getAufgabenPanel().clearTable();
-		
+		mView.getSWResultPanel().clearTable();
+		Vector<Object> vec;
 		SoccerwayMatchModel match;
 		while (iter.hasNext()){
 			match = iter.next();
-			vec = new Vector<String>();
-			vec.add(match.getDate().toString());
+			vec = new Vector<Object>();
+			vec.add(match.getDate());
 			vec.add(match.getCompetition());
 			vec.add(match.getTeam1());
 			vec.add(match.getTeam2());
-			mView.getAufgabenPanel().addToTable(vec);			
+			vec.add(match.getResult());
+			vec.add(false);
+			mView.getSWResultPanel().addToTable(vec);			
 		}
 		
-		mView.getAufgabenPanel().sortTableByDate();
-	}	
+		mView.getSWResultPanel().sortTableByDate();		
+	}
+	
+	private boolean isPropertiesFileAvailalble(){
+		return mPropertiesFile != null || isDefaultPropertiesFile;
+	}
 	
 	/**
 	 * Falls kein Properties file vorhanden ist (bspw. beim ersten oeffen), wird ein FileDialog geoeffnet,
@@ -315,6 +367,7 @@ public class BundesligaActivityBean {
 	public void runApp() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
 				mView.initView();
 				addSubController(new TipicoActivityBean(mView.getTipicoPanel()));

@@ -45,6 +45,7 @@ public class JSplitButton extends JButton {
 		addMouseListener(new MouseAdapter() {
 			JPopupMenu lPopupMenu = getPopupMenu();
 
+			@Override
 			public void mousePressed(MouseEvent e) {
 				lPopupMenu.show(JSplitButton.this, getWidth()-30, getHeight());
 			}

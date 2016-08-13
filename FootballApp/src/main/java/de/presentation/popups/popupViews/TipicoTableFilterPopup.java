@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import de.business.TipicoTableFilterModel;
 import de.presentation.popups.IPopup;
@@ -43,7 +44,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	public void initView(){
 		// Create and set up the window.
         this.setTitle("Extras");
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(new GridLayout(maxFilterSize+2,1));
 		
 		JButton lExitButton = createExitButton();

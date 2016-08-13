@@ -125,6 +125,7 @@ public class TipicoTableFilterModel {
 		this.mFilterConnector = mFilterConnector;
 	}	
 	
+	@Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(mTableColumn.getSelectedItem());

@@ -31,6 +31,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JTabbedPane mTabbedPane;	
 	private ConsolenPanel mConsolenPanel;
 	private SWAufgabenPanel mAufgabenPanel;
+	private SWResultPanel mSWResultPanel;
 	private TipicoBetView mTipicoPanel;
 	private StatisticPanel mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
@@ -84,12 +85,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mTabbedPane = new JTabbedPane();
 		mConsolenPanel = new ConsolenPanel();
 		mAufgabenPanel = new SWAufgabenPanel();
+		mSWResultPanel = new SWResultPanel();
 		mStatisticPanel = new StatisticPanel();
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		mTabbedPane.addTab("Console", mConsolenPanel);
-		mTabbedPane.addTab("Fixtures",mAufgabenPanel);
+		mTabbedPane.addTab("Fixtures", mAufgabenPanel);
+		mTabbedPane.addTab("Results", mSWResultPanel);
 		
 		JPanel mPanelLeftHorizontal = new JPanel();
 		mPanelLeftHorizontal.setLayout(new GridBagLayout());
@@ -278,6 +281,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		return mAufgabenPanel;
 	}
 	
+	public SWResultPanel getSWResultPanel() {
+		return mSWResultPanel;
+	}
+
 	public JTabbedPane getTabbedPane(){
 		return mTabbedPane;
 	}	

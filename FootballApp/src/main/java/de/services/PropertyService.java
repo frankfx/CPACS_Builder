@@ -14,6 +14,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PropertyService{
 	
+	public static final String PROPERTIES_CHANGED = "properties changed";
+	
 	/**
 	 * loads a properties files and returns the content as a sorted TreeMap
 	 * 
