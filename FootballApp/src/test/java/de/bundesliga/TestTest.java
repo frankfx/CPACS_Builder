@@ -1,7 +1,11 @@
 package de.bundesliga;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import de.utils.math.MathTipico;
 
 public class TestTest {
 
@@ -12,6 +16,13 @@ public class TestTest {
 		//    	item2 = new SpendingItem(new String[]{"1", "2016-02-02", null, "test desciption", "3.2", "true"});
 	}
 
+	
+	@Test
+	public void testComputeBetValue(){
+		assertTrue(MathTipico.computeBetValue(2, 0, 3) == 1);
+		assertTrue(MathTipico.computeBetValue(2, 2, 3) == 2);
+	}
+	
 	@Test
 	public void testCompareTo() {
 		//		// item1 < item2
@@ -26,6 +37,8 @@ public class TestTest {
 		//		assertTrue(item1.compareTo(item2)==0);		
 	}
 
+	
+	
 	@Test
 	public void testActivityEnum() {
 		//		assertTrue(ActivityEnum.getType("hoLidAY").equals(ActivityEnum.HOLIDAY));

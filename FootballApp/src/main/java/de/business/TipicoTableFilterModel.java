@@ -105,7 +105,7 @@ public class TipicoTableFilterModel {
 			return (FilterConnectionType) obj;
 		
 		if (mRemoveButton.isVisible()){
-			PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_NO_FILTER_CONNECTOR);
+			PopupFactory.getPopup(PopupType.ERROR, FAMessages.MSG_NO_FILTER_CONNECTOR);
 		} else { 
 			return FilterConnectionType.EMPTY;
 		}

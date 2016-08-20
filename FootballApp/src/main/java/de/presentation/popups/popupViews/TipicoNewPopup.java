@@ -14,15 +14,17 @@ import javax.swing.SpinnerNumberModel;
 import de.business.SpinnerTemporalModel;
 import de.business.TipicoModel;
 import de.presentation.popups.IPopup;
+import de.types.BetPredictionType;
 
 public class TipicoNewPopup implements IPopup {
 
-	private JSpinner lSpinID;
-	private JSpinner lSpinWinValue;
-	private JSpinner lSpinExpenses;
-	private JSpinner lSpinAttempts;
-	private JSpinner lSpinDate;
-	private JTextField lTeam;
+	private JSpinner mSpinID;
+	private JSpinner mSpinWinValue;
+	private JComboBox<BetPredictionType> mComboBetPrediction;
+	private JSpinner mSpinExpenses;
+	private JSpinner mSpinAttempts;
+	private JSpinner mSpinDate;
+	private JTextField mTeam;
 	
 	private boolean mIDEnable; 
 	
@@ -35,13 +37,16 @@ public class TipicoNewPopup implements IPopup {
 		float lExp = lTipicoModel.getExpenses();
 		int lAtt = lTipicoModel.getAttempts();
 
-		lSpinID = new JSpinner(new SpinnerNumberModel(lTipicoModel.getTnr(), 1, 100, 1));
-		lSpinWinValue = new JSpinner(new SpinnerNumberModel(lWin < 1 ? 1.0 : lWin, 1.0, 100, 0.1));
-		lSpinExpenses = new JSpinner(new SpinnerNumberModel(lExp < 1 ? 1.0 : lExp, 1.0, 1000, 1.0));
-		lSpinAttempts = new JSpinner(new SpinnerNumberModel(lAtt < 1 ? 1 : lAtt, 1, 100, 1));
-		lSpinDate = new JSpinner(new SpinnerTemporalModel<LocalDate>(lTipicoModel.getDate(), LocalDate.of(2016, 01, 01), LocalDate.of(2020, 01, 01), ChronoUnit.DAYS));
+		mSpinID = new JSpinner(new SpinnerNumberModel(lTipicoModel.getTnr(), 1, 100, 1));
+		mSpinWinValue = new JSpinner(new SpinnerNumberModel(lWin < 1 ? 1.0 : lWin, 1.0, 100, 0.1));
+		mSpinExpenses = new JSpinner(new SpinnerNumberModel(lExp < 1 ? 1.0 : lExp, 1.0, 1000, 1.0));
+		mSpinAttempts = new JSpinner(new SpinnerNumberModel(lAtt < 1 ? 1 : lAtt, 1, 100, 1));
+		mSpinDate = new JSpinner(new SpinnerTemporalModel<LocalDate>(lTipicoModel.getDate(), LocalDate.of(2016, 01, 01), LocalDate.of(2020, 01, 01), ChronoUnit.DAYS));
 
-		lTeam = new JTextField(lTipicoModel.getTeam());
+		BetPredictionType [] predictions = new BetPredictionType [] {BetPredictionType.DRAW, BetPredictionType.HOME_WIN, BetPredictionType.AWAY_WIN, BetPredictionType.FST_HOME_WIN, BetPredictionType.FST_AWAY_WIN, BetPredictionType.SND_HOME_WIN, BetPredictionType.SND_AWAY_WIN};
+		mComboBetPrediction = new JComboBox<BetPredictionType>(predictions); 
+		
+		mTeam = new JTextField(lTipicoModel.getTeam());
 	}
 
 	@Override
@@ -50,10 +55,10 @@ public class TipicoNewPopup implements IPopup {
 		lSuccess.addItem(false);
 		lSuccess.addItem(true);
 			
-		lSpinID.setEnabled(mIDEnable);
+		mSpinID.setEnabled(mIDEnable);
 			
-		Object[] message = { "TNr.", lSpinID, "Team", lTeam, "Win Value", lSpinWinValue,
-				"Expenses", lSpinExpenses, "Attempts", lSpinAttempts, "Date", lSpinDate, "Successfull", lSuccess };
+		Object[] message = { "TNr.", mSpinID, "Team", mTeam, "Bet prediction", mComboBetPrediction , "Win Value", mSpinWinValue,
+				"Expenses", mSpinExpenses, "Attempts", mSpinAttempts, "Date", mSpinDate, "Successfull", lSuccess };
 
 		JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 	                
@@ -71,8 +76,8 @@ public class TipicoNewPopup implements IPopup {
 		lDialog.dispose();
 			
 		if (n == JOptionPane.OK_OPTION) {
-			return new String[] { lSpinID.getValue().toString(), lTeam.getText(), lSpinWinValue.getValue().toString(),
-					lSpinExpenses.getValue().toString(), lSpinAttempts.getValue().toString(), lSpinDate.getValue().toString(), lSuccess.getSelectedItem().toString() };
+			return new String[] { mSpinID.getValue().toString(), mTeam.getText(), mComboBetPrediction.getSelectedItem().toString(), mSpinWinValue.getValue().toString(),
+					mSpinExpenses.getValue().toString(), mSpinAttempts.getValue().toString(), mSpinDate.getValue().toString(), lSuccess.getSelectedItem().toString() };
 		} else {
 			return null;
 		}

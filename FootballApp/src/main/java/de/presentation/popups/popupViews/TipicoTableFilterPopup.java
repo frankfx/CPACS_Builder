@@ -158,7 +158,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 					revalidate();
 					curFilterSize++;
 				} else {
-					PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_FILTER_ADD_ROW_FAILED);
+					PopupFactory.getPopup(PopupType.ERROR, FAMessages.MSG_FILTER_ADD_ROW_FAILED);
 				}
 			}
 		});
@@ -183,7 +183,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 			boolean isInvalidStringValue = !isNumericalDataType && (lModel.getFilterValue() == null);
 
 			if (isInvalidNumericalValue || isInvalidStringValue){
-				PopupFactory.getPopup(PopupType.ERROR, FAMessages.MESSAGE_WRONG_FILTER_INPUT_VALUE + " (\"" + lModel.getFilterValue() +"\")");
+				PopupFactory.getPopup(PopupType.ERROR, FAMessages.MSG_WRONG_FILTER_INPUT_VALUE + " (\"" + lModel.getFilterValue() +"\")");
 				return false;					
 			}
 		}

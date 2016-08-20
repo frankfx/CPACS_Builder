@@ -21,7 +21,7 @@ import de.presentation.popups.PopupType;
 import de.services.PropertyService;
 import de.services.ResourceService;
 import de.services.SWJSONParser;
-import de.services.WorldWideWebService;
+import de.services.HyperlinkService;
 import de.utils.FAMessages;
 import de.utils.Tupel;
 
@@ -167,7 +167,7 @@ public class BundesligaActivityBean {
 		mView.setMenuItemLinkTipico(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WorldWideWebService.openUrlInBrowser("https://www.tipico.de/de/online-sportwetten/");
+				HyperlinkService.openUrlInBrowser("https://www.tipico.de/de/online-sportwetten/");
 			}
 		});
 
@@ -177,7 +177,7 @@ public class BundesligaActivityBean {
 		mView.setMenuItemLinkSoccerway(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WorldWideWebService.openUrlInBrowser("http://de.soccerway.com/");
+				HyperlinkService.openUrlInBrowser("http://de.soccerway.com/");
 			}
 		});		
 
@@ -208,7 +208,7 @@ public class BundesligaActivityBean {
 						createResults();
 					}
 				} else 
-					PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_NO_PROPERTIES_FILE);
+					PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_NO_PROPERTIES_FILE);
 			}
 		});
 		
@@ -356,7 +356,7 @@ public class BundesligaActivityBean {
 				isDefaultPropertiesFile = false;
 			} else {
 				isDefaultPropertiesFile = true;
-				PopupFactory.getPopup(PopupType.HINT, FAMessages.MESSAGE_DEFAULT_PROPERTY);
+				PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_DEFAULT_PROPERTY);
 			}
 		}
 	}	

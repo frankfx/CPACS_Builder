@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import de.utils.Utils;
 
 public class PropertyService{
 	
@@ -59,18 +58,6 @@ public class PropertyService{
 	 * opens a file chooser
 	 */	
 	public static File choosePropertiesFile(){
-		// JFileChooser-Objekt erstellen
-		JFileChooser chooser = new JFileChooser();
-		chooser.setFileFilter(new FileNameExtensionFilter("Java Properties", "properties"));
-
-		// Dialog zum Oeffnen von Dateien anzeigen
-        int rueckgabeWert = chooser.showOpenDialog(null);
-        
-        /* Abfrage, ob auf "Oeffnen" geklickt wurde */
-        if(rueckgabeWert == JFileChooser.APPROVE_OPTION){
-            return chooser.getSelectedFile();
-        }
-        return null;
+		return Utils.chooseFile("Java Properties", "properties");
 	}
-	
 }

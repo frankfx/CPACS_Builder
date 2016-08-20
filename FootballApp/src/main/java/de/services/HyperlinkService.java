@@ -3,7 +3,7 @@ package de.services;
 import java.awt.Desktop;
 import java.net.URL;
 
-public class WorldWideWebService {
+public class HyperlinkService {
 	
 	public static void openUrlInBrowser(String pUrl) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;

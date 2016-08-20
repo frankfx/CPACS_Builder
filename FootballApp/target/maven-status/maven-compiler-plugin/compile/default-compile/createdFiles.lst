@@ -7,8 +7,9 @@ de\application\BundesligaActivityBean$18.class
 de\application\TipicoActivityBean$12.class
 de\services\SWJSONParser.class
 de\application\BundesligaActivityBean$10.class
-de\services\WorldWideWebService.class
+de\services\HyperlinkService.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup$1.class
+de\utils\Utils.class
 de\application\TipicoActivityBean$8.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
 de\presentation\bundesliga\SWAufgabenPanel$2.class
@@ -34,7 +35,6 @@ de\presentation\popups\popupViews\TipicoBetValuePopup$2.class
 de\application\TipicoActivityBean$3.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup.class
 de\presentation\filter\CriteriaExpenses.class
-de\services\ParserService.class
 de\presentation\bundesliga\SWResultPanel$2.class
 de\application\BundesligaActivityBean$16.class
 de\presentation\AbstractPanelContainer.class
@@ -82,6 +82,7 @@ de\services\SQLService.class
 de\presentation\popups\popupViews\DatabasePullDetailPopup.class
 de\utils\DoubleKeyAdapter.class
 de\presentation\filter\OrCriteria.class
+de\types\BetPredictionType.class
 de\application\TipicoActivityBean$5.class
 de\business\SoccerwayMatchModel.class
 de\presentation\JSplitButton$1.class

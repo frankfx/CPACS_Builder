@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.types.BetPredictionType;
 import de.types.TipicoDataType;
 
 public class TipicoTableModel extends AbstractTableModel {
@@ -17,7 +18,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	// storing the objects in list
 	List<TipicoModel> list;
 	List<TipicoModel> mBackupListPtr;
-
+	
 	public TipicoTableModel(){
 		this(null);
 	}
@@ -55,17 +56,19 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 1:
 			return String.class;
 		case 2:
-			return Float.class;
+			return BetPredictionType.class;			
 		case 3:
 			return Float.class;
 		case 4:
-			return Integer.class;
+			return Float.class;
 		case 5:
-			return LocalDate.class;
+			return Integer.class;
 		case 6:
+			return LocalDate.class;
+		case 7:
 			return Boolean.class;
 		default:
-			return Object.class;
+			return Boolean.class;
 		}
 	}
 
@@ -87,14 +90,16 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 1:
 			return list.get(rowIndex).getTeam();
 		case 2:
-			return list.get(rowIndex).getWinValue();
+			return list.get(rowIndex).getBetPrediction();
 		case 3:
-			return list.get(rowIndex).getExpenses();
+			return list.get(rowIndex).getWinValue();
 		case 4:
-			return list.get(rowIndex).getAttempts();
+			return list.get(rowIndex).getExpenses();
 		case 5:
-			return list.get(rowIndex).getDate();
+			return list.get(rowIndex).getAttempts();
 		case 6:
+			return list.get(rowIndex).getDate();
+		case 7:
 			return list.get(rowIndex).getSuccess();
 		default:
 			return null;
@@ -109,14 +114,16 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 1:
 			list.get(rowIndex).setTeam(aValue.toString()); break;
 		case 2:
-			list.get(rowIndex).setWinValue((Float) aValue); break;
+			list.get(rowIndex).setBetPrediction((BetPredictionType) aValue); break;
 		case 3:
-			list.get(rowIndex).setExpenses((Float) aValue); break;
+			list.get(rowIndex).setWinValue((Float) aValue); break;
 		case 4:
-			list.get(rowIndex).setAttempts((Integer) aValue); break;
+			list.get(rowIndex).setExpenses((Float) aValue); break;
 		case 5:
-			list.get(rowIndex).setDate((LocalDate) aValue); break;
+			list.get(rowIndex).setAttempts((Integer) aValue); break;
 		case 6:
+			list.get(rowIndex).setDate((LocalDate) aValue); break;
+		case 7:
 			list.get(rowIndex).setSuccess((Boolean) aValue); break;
 		}		
 	}

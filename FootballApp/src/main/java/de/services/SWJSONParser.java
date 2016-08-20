@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.business.SoccerwayMatchModel;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.types.SoccerwayMatchType;
 
 public class SWJSONParser {
@@ -89,7 +91,8 @@ public class SWJSONParser {
 					lResultList.add(mSoccerwayModel);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			//PopupFactory.getPopup(PopupType.ERROR, "");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -166,7 +169,6 @@ public class SWJSONParser {
 			prop.load(pPropertyInputStream);
 			int lDuration = Integer.parseInt(prop.getProperty("duration"));
 			
-			//TODO test LocalDateTime for genauere vergleiche
 			LocalDate lToday = LocalDate.now(); 
 			LocalDate lFinalDate = lToday.plusDays(lDuration); 
 			
@@ -192,7 +194,7 @@ public class SWJSONParser {
 				}
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			PopupFactory.getPopup(PopupType.ERROR, ex.getMessage());
 		}
 		
 		return lResultList.iterator();
@@ -206,7 +208,6 @@ public class SWJSONParser {
 			prop.load(pPropertyInputStream);
 			int lDuration = Integer.parseInt(prop.getProperty("duration"));
 			
-			//TODO test LocalDateTime for genauere vergleiche
 			LocalDate lToday = LocalDate.now(); 
 			LocalDate lPastDate = lToday.minusDays(lDuration); 
 			

@@ -69,7 +69,7 @@ public class TipicoBetView extends AbstractPanelContainer {
         
 		TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
 		mTable.setRowSorter(sorter);
-        
+		
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
 	    
@@ -105,6 +105,18 @@ public class TipicoBetView extends AbstractPanelContainer {
 		final JTable lTable = new JTable(mTableModel) {
 			private static final long serialVersionUID = 1L;
 
+//			@Override
+//			public TableCellEditor getCellEditor(int row, int column) {
+//			   Object value = super.getValueAt(row, column);
+//			   if(value != null) {
+//			      if(value instanceof JComboBox) {
+//			           return new DefaultCellEditor((JComboBox<BetPredictionType>)value);
+//			      }
+//			            return getDefaultEditor(value.getClass());
+//			   }
+//			   return super.getCellEditor(row, column);
+//			}			
+			
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -126,6 +138,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 				return c;
 			}
 		};
+		
 		
 		// set mouse listener for context menu
 		lTable.addMouseListener(new MouseAdapter() {

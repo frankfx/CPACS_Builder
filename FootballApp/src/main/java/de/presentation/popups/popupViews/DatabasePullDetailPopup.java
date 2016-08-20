@@ -15,7 +15,7 @@ public class DatabasePullDetailPopup implements IPopup {
 
 	public DatabasePullDetailPopup(Object[] pParams) {
 		mTemplateList = new JComboBox<String>();
-		mTemplateList.addItem(SQLService.SQL_PULLDETAILS_OPEN);
+		mTemplateList.addItem(SQLService.SQL_SELECT_OPEN_GAMES);
 	}
 
 	@Override

@@ -96,9 +96,4 @@ public class ResourceService {
 
 		return tempFile.getAbsolutePath();
 	}
-
-	public static void main(String[] args) {
-		System.out.println(ResourceService.getInstance().SCRIPT_PYTHON_SOCCERWAY);
-		System.out.println(ResourceService.getInstance().getResourceImages("dortmund.png"));
-	}
 }

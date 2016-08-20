@@ -200,11 +200,16 @@ public class Database {
 	
 	public static void main(String[] args) throws SQLException {
 		Database db = new Database();
+		
 		//if (db.connect("localhost", "3306", "TestData", "root", "")){
-			
 		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "")){
-			db.query(SQLService.SQL_COMPUTE_BALANCE);
-			db.printResultSet(1);
+
+			//db.updateDB("alter table Tipico add betPrediction varchar(20) after team");
+			//db.query(SQLService.SQL_COMPUTE_BALANCE);
+			
+			
+			
+			//db.printResultSet(1);
 			
 		//	db.updateDB("drop table Tipico");
 			
