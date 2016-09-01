@@ -15,6 +15,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -115,7 +116,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 //			            return getDefaultEditor(value.getClass());
 //			   }
 //			   return super.getCellEditor(row, column);
-//			}			
+//			}	
 			
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
@@ -163,7 +164,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 				}
 			}
 		});
-
+		
 		return lTable;
 	}
 
@@ -236,6 +237,9 @@ public class TipicoBetView extends AbstractPanelContainer {
 		this.mTable.getTableHeader().addMouseListener(l);
 	}
 	
+	public void setTableSelectionListener(ListSelectionListener l){
+		this.mTable.getSelectionModel().addListSelectionListener(l);
+	}
 	/**
 	 * ========================
 	 * END LISTENER

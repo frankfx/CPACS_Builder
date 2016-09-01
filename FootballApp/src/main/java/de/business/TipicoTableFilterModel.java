@@ -27,7 +27,6 @@ public class TipicoTableFilterModel {
 	
 	public TipicoTableFilterModel(boolean pShowRemoveButton) {
 		mTableColumn = new JComboBox<TipicoDataType>();
-		mTableColumn.addItem(TipicoDataType.ID);
 		mTableColumn.addItem(TipicoDataType.TEAM);
 		mTableColumn.addItem(TipicoDataType.EXPENSES);
 		mTableColumn.addItem(TipicoDataType.WINVALUE);

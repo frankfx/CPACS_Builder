@@ -5,7 +5,6 @@ import java.util.List;
 import de.business.TipicoTableFilterModel;
 import de.presentation.filter.AndCriteria;
 import de.presentation.filter.CriteriaExpenses;
-import de.presentation.filter.CriteriaID;
 import de.presentation.filter.CriteriaWinValue;
 import de.presentation.filter.ICriteria;
 import de.presentation.filter.OrCriteria;
@@ -14,8 +13,6 @@ public class FilterService {
 	private static ICriteria getCriteriaByTipicoDataType(TipicoTableFilterModel pModel){
 //		ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
 		switch (pModel.getFilterDataType()) {
-		case ID: 
-			return new CriteriaID(pModel.getFilterValueAsFloat(), pModel.getFilterOperation());
 		case WINVALUE: 
 			return new CriteriaWinValue(pModel.getFilterValueAsFloat(), pModel.getFilterOperation());
 		case EXPENSES: 

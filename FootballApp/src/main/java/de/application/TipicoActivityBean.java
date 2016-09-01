@@ -7,12 +7,15 @@ import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import de.business.Database;
 import de.business.TipicoModel;
@@ -26,8 +29,10 @@ import de.printing.TipicoPrintService;
 import de.services.FilterService;
 import de.services.SQLService;
 import de.types.BetPredictionType;
+import de.types.MessageType;
 import de.types.PersistenceType;
 import de.utils.FAMessages;
+import de.utils.Utils;
 
 public class TipicoActivityBean implements ISubController{
 
@@ -135,6 +140,21 @@ public class TipicoActivityBean implements ISubController{
 				}
 			}
 		});
+		
+		this.mView.setTableSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if(e.getValueIsAdjusting()){
+					int row_idx = mView.getTable().getSelectedRow();
+					if (row_idx != -1){
+						mBundesligaListener.actionUpdateFixturesTable(mView.getTable().getValueAt(mView.getTable().getSelectedRow(), 0).toString());
+					}
+				} else {
+					System.out.println("leave");
+				}
+				
+			}
+		});
 	}
 	
 	/**
@@ -237,8 +257,8 @@ public class TipicoActivityBean implements ISubController{
 	 * 
 	 * @return true if the row was successful removed otherwise false
 	 */		
-	public boolean deleteRowInTipico(int pTnr){
-		return mDB != null ? mDB.updateDB("delete from Tipico where tnr=" + pTnr) : false;
+	public boolean deleteRowInTipico(String pID){
+		return mDB != null ? mDB.updateDB("delete from Tipico where tnr=" + pID) : false;
 	}	
 
 	/**
@@ -286,7 +306,7 @@ public class TipicoActivityBean implements ISubController{
 			try {
 				mInsertBetStmt = mDB.getConnection().prepareStatement(pSql);
 
-				mInsertBetStmt.setInt(1, pModel.getTnr());
+				mInsertBetStmt.setString(1, pModel.getID());
 				mInsertBetStmt.setString(2, pModel.getTeam());
 				mInsertBetStmt.setString(3, pModel.getBetPrediction().toString());
 				mInsertBetStmt.setFloat(4, pModel.getWinValue());
@@ -402,21 +422,20 @@ public class TipicoActivityBean implements ISubController{
 		}
 	}
 
-	private List<Integer> getTipicoNumbersFromDB() {
-		List<Integer> list = new ArrayList<Integer>();
-		
-		if(mDB!=null&&mDB.isConnected()){
+	private List<String> getTipicoNumbersFromDB() {
+		if (mDB!=null&&mDB.isConnected()){
+			List<String> list = new ArrayList<String>();
 			mDB.query(SQLService.SQL_SELECT_TNR_FROM_TIPICO);
-			
 			try {
 				while (mDB.getResultSet().next()) {
-					list.add(mDB.getResultSet().getInt(1));
+					list.add(mDB.getResultSet().getString(1));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		return list;
+			return list;
+		} else 
+			return null;
 	}
 
 	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel, String pSQL) {
@@ -427,7 +446,7 @@ public class TipicoActivityBean implements ISubController{
 				TipicoModel data;
 				while(mDB.getResultSet().next()){
 					data = new TipicoModel();
-					data.setTnr(mDB.getResultSet().getInt(1));
+					data.setID(mDB.getResultSet().getString(1));
 					data.setTeam(mDB.getResultSet().getString(2));
 					data.setBetPrediction(BetPredictionType.getType(mDB.getResultSet().getString(3)));
 					data.setWinValue(mDB.getResultSet().getFloat(4));
@@ -494,14 +513,15 @@ public class TipicoActivityBean implements ISubController{
 	/**
 	 * private helper method to start an input dialog to manipulate the table attributes
 	 */	
-	private boolean startTableInputPopup(TipicoModel pTipicoModel, boolean pIDEnable){
+	private boolean startTableInputPopup(TipicoModel pTipicoModel){
 		String lResult;
 		
 		if (pTipicoModel == null){
 			lResult = FAMessages.MSG_NO_VALID_TABLE_MODEL + -1;
 		} else{
-			String[] lValues = PopupFactory.getPopup(PopupType.TIPICO_NEW_POPUP, new Object[] { pTipicoModel, pIDEnable }).requestInputData();
+			String[] lValues = PopupFactory.getPopup(PopupType.TIPICO_NEW_POPUP, new Object[] { pTipicoModel }).requestInputData();
 			if (lValues == null){
+				mBundesligaListener.actionUpdateStatusBar(MessageType.ERROR, FAMessages.MSG_NO_VALID_INPUT);
 				return false;
 			} else if(!updateTipicoEntry(pTipicoModel, lValues)){
 				lResult = FAMessages.MSG_NO_VALID_INPUT;
@@ -526,7 +546,7 @@ public class TipicoActivityBean implements ISubController{
 		if(args == null || pTipicoModel == null)
 			return false;
 		
-		pTipicoModel.setTnr(Integer.parseInt(args[0]));
+		pTipicoModel.setID(this.createInternalID(args[0]));
 		pTipicoModel.setTeam(args[1]);
 		pTipicoModel.setBetPrediction(BetPredictionType.getType(args[2]));
 		pTipicoModel.setWinValue(Float.parseFloat(args[3]));
@@ -591,9 +611,8 @@ public class TipicoActivityBean implements ISubController{
 	 */		
 	private void actionNew(){
 		TipicoModel lModel = new TipicoModel();
-		lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
 		
-		if(startTableInputPopup(lModel, true)){
+		if(startTableInputPopup(lModel)){
 			mView.getTableModel().addRow(lModel);
 			updateTable();
 		}
@@ -628,7 +647,7 @@ public class TipicoActivityBean implements ISubController{
 
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIndex);
 		
-		if(startTableInputPopup(lModel, false)){
+		if(startTableInputPopup(lModel)){
 			updateTable();
 			mBundesligaListener.actionUpdateConsole("Table updated");			
 		}
@@ -651,7 +670,7 @@ public class TipicoActivityBean implements ISubController{
 		if (arr != null) {
 			if (lModel == null) {
 				lModel = new TipicoModel();
-				lModel.setTnr(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB()));
+				lModel.setID(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB())+"");
 				mView.getTableModel().addRow(lModel);
 			}
 			lModel.setWinValue(Float.parseFloat(arr[0]));
@@ -711,7 +730,7 @@ public class TipicoActivityBean implements ISubController{
 				if (JOptionPane.showConfirmDialog(null, "Remove from Database ... are you sure?", "WARNING",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				    // yes option
-					if(deleteRowInTipico(lModel.getTnr()))
+					if(deleteRowInTipico(lModel.getID()))
 						lModel.setPersistenceType(PersistenceType.NEW);
 				}
 			}
@@ -773,4 +792,24 @@ public class TipicoActivityBean implements ISubController{
  // ========================
  // END FUNCTION
  // ========================
+	
+	private static String generateUniqueIDWithTimestamp(String pID){
+		// Erstellen der ID : Instant timestamp = Instant.now(); (Java 8)
+		return pID + "_" + Instant.now().toEpochMilli();
+	}
+	
+	public String createInternalID(String pID){
+		List<String> pIDsFromDB = getTipicoNumbersFromDB();
+			
+		if (pIDsFromDB == null) {
+			return generateUniqueIDWithTimestamp(pID);
+		} else {
+		 	for (int i=0; i<pIDsFromDB.size(); i++){
+		 		if ( Utils.getIDWithoutSuffix(pIDsFromDB.get(i)).equals(pID)){
+		 			return generateUniqueIDWithTimestamp(pID);
+		 		}
+		 	}
+		 }
+		 return pID+"";
+	}	
 }

@@ -7,7 +7,7 @@ import de.types.BetPredictionType;
 import de.types.PersistenceType;
 
 public class TipicoModel {
-	private int mTnr;
+	private String mID;
 	private String mTeam;
 	private BetPredictionType mBetPrediction;
 	private float mWinValue;
@@ -18,15 +18,15 @@ public class TipicoModel {
 	private PersistenceType mPersistenceType;
 
 	public TipicoModel() {
-		this(100, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+		this("", "Default", BetPredictionType.DRAW, 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
 	}
 	
-	public TipicoModel(int pTnr, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
-		this(pTnr, pTeam, pPrediction, pWinValue, pExpenses, pAttempts, pDate, pSuccess, PersistenceType.NEW);
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
+		this(pID, pTeam, pPrediction, pWinValue, pExpenses, pAttempts, pDate, pSuccess, PersistenceType.NEW);
 	}
 	
-	public TipicoModel(int pTnr, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
-		this.mTnr = pTnr;
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
+		this.mID = pID;
 		this.mTeam = pTeam;
 		this.mBetPrediction = pPrediction;
 		this.mWinValue = pWinValue;
@@ -37,11 +37,11 @@ public class TipicoModel {
 		this.mPersistenceType = pPersistenceType;
 	}
 	
-	public int getTnr() {
-		return mTnr;
+	public String getID() {
+		return mID;
 	}
-	public void setTnr(int pTnr) {
-		this.mTnr = pTnr;
+	public void setID(String pID) {
+		this.mID = pID;
 	}
 	public String getTeam() {
 		return mTeam;
@@ -106,11 +106,11 @@ public class TipicoModel {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.mTnr == ((TipicoModel)obj).getTnr();
+		return this.mID == ((TipicoModel)obj).getID();
 	};
 	
 	@Override
 	public String toString(){
-		return "[" + mTnr + ", " + mTeam + ", " + mBetPrediction + ", " + mWinValue + ", " + mExpenses + ", " + mAttempts + ", " + mDate + ", " + mSuccess + "]" ;
+		return "[" + mID + ", " + mTeam + ", " + mBetPrediction + ", " + mWinValue + ", " + mExpenses + ", " + mAttempts + ", " + mDate + ", " + mSuccess + "]" ;
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 import de.types.BetPredictionType;
 import de.types.TipicoDataType;
+import de.utils.Utils;
 
 public class TipicoTableModel extends AbstractTableModel {
 
@@ -86,7 +87,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return list.get(rowIndex).getTnr();
+			return list.get(rowIndex).getID();
 		case 1:
 			return list.get(rowIndex).getTeam();
 		case 2:
@@ -110,7 +111,7 @@ public class TipicoTableModel extends AbstractTableModel {
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			list.get(rowIndex).setTnr((Integer) aValue); break;
+			list.get(rowIndex).setID(aValue.toString()); break;
 		case 1:
 			list.get(rowIndex).setTeam(aValue.toString()); break;
 		case 2:
@@ -142,11 +143,11 @@ public class TipicoTableModel extends AbstractTableModel {
 		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
 	}
 	
-	public int generateValidID(List<Integer> pIDsFromDB) {
+	public int generateValidID(List<String> pIDsFromDB) {
 		int lMaxTnr;
 
 		if (pIDsFromDB != null && !pIDsFromDB.isEmpty()) {
-			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> i).max().getAsInt() + 1;
+			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> Integer.parseInt(Utils.getIDWithoutSuffix(i))).max().getAsInt() + 1;
 		} else {
 			lMaxTnr = list.size() + 1;
 		}
@@ -161,9 +162,9 @@ public class TipicoTableModel extends AbstractTableModel {
 			return rec_generateValidID(id+1);
 	}	
 	
-	public boolean isIDValid(int id){
+	public boolean isIDValid(int pID){
 		for(TipicoModel item : list)
-			if(item.getTnr() == id)
+			if(Integer.parseInt(Utils.getIDWithoutSuffix(item.getID())) == pID)
 				return false;
 		return true;
 	}	

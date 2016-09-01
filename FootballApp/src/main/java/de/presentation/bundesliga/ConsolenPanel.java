@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -63,7 +65,7 @@ public class ConsolenPanel extends AbstractPanelContainer {
 	}
 
 	public void appendConsole(String lText) {
-		this.mConsole.append(lText + "\n");
+		this.mConsole.append(System.getProperty("user.name") + " " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "> " + lText + "\n");
 	}
 
 	public JButton getBtnClear() {

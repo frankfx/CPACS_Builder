@@ -49,7 +49,7 @@ public class TipicoPrintService {
 		
 		for (TipicoModel lTipicoModel : pTipicoList){
 			hm = new HashMap<String, String>();
-			hm.put("tnr", lTipicoModel.getTnr() + "");
+			hm.put("tnr", lTipicoModel.getID());
 			hm.put("team", lTipicoModel.getTeam());
 			hm.put("winValue", lTipicoModel.getWinValue() + "");
 			hm.put("expenses", lTipicoModel.getExpenses() + "");

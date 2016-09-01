@@ -19,7 +19,7 @@ import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.services.ResourceService;
-import de.types.ResultType;
+import de.types.MessageType;
 import de.types.TipicoDataType;
 import de.utils.FAMessages;
 
@@ -31,7 +31,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	private static final long serialVersionUID = 1L;
 	private int maxFilterSize = 4;
 	private int curFilterSize = 0;
-	private ResultType mResultType;
+	private MessageType mResultType;
 	private List<TipicoTableFilterModel> mTipicoTableFilterModels = new ArrayList<TipicoTableFilterModel>();
 	
 	public TipicoTableFilterPopup(Object[] pParams) {
@@ -79,7 +79,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		lUnfilterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mResultType = ResultType.UNFILTERED;
+				mResultType = MessageType.UNFILTERED;
 				dispose();
 			}
 		});
@@ -94,7 +94,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(validateFilterInput()){
-					mResultType = ResultType.FILTERED;
+					mResultType = MessageType.FILTERED;
 					dispose();
 				}
 			}
@@ -109,7 +109,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		lExitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
-				mResultType = ResultType.ABORT;
+				mResultType = MessageType.ABORT;
 				dispose();
 			}
 		});        
@@ -176,7 +176,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	private boolean validateFilterInput() {
 		for (TipicoTableFilterModel lModel: mTipicoTableFilterModels){
 			TipicoDataType lDataType = lModel.getFilterDataType();
-			boolean isNumericalDataType = lDataType.equals(TipicoDataType.ID) || lDataType.equals(TipicoDataType.WINVALUE) || 
+			boolean isNumericalDataType = lDataType.equals(TipicoDataType.WINVALUE) || 
 					lDataType.equals(TipicoDataType.EXPENSES) || lDataType.equals(TipicoDataType.ATTEMPTS);
 			
 			boolean isInvalidNumericalValue = isNumericalDataType && Float.isNaN(lModel.getFilterValueAsFloat());
@@ -193,9 +193,9 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	
 	@Override
 	public String[] requestInputData() {
-		if (mResultType.equals(ResultType.FILTERED)){
+		if (mResultType.equals(MessageType.FILTERED)){
 			return mTipicoTableFilterModels.stream().map(i -> i.toString()).toArray(String[]::new);
-		} else if (mResultType.equals(ResultType.UNFILTERED)){
+		} else if (mResultType.equals(MessageType.UNFILTERED)){
 			mTipicoTableFilterModels.removeAll(mTipicoTableFilterModels);
 			return mTipicoTableFilterModels.stream().map(i -> i.toString()).toArray(String[]::new);
 		} else {
@@ -205,9 +205,9 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 
 	@Override
 	public List<TipicoTableFilterModel> requestInputDataAsObjectList() {
-		if (mResultType.equals(ResultType.FILTERED)){
+		if (mResultType.equals(MessageType.FILTERED)){
 			return mTipicoTableFilterModels;
-		} else if (mResultType.equals(ResultType.UNFILTERED)){
+		} else if (mResultType.equals(MessageType.UNFILTERED)){
 			mTipicoTableFilterModels.removeAll(mTipicoTableFilterModels);
 			return mTipicoTableFilterModels;
 		} else

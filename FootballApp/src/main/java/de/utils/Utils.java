@@ -23,4 +23,13 @@ public class Utils {
         }
         return null;
 	}
+	
+	/**
+	 * ID
+	 * @param pID
+	 * @return
+	 */
+	public static String getIDWithoutSuffix(String pID){
+		return pID != null ? pID.split("_", 2)[0] : null;
+	}
 }

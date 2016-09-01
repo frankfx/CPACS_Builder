@@ -1,5 +1,6 @@
 package de.application;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -21,6 +22,7 @@ import de.presentation.popups.PopupType;
 import de.services.PropertyService;
 import de.services.ResourceService;
 import de.services.SWJSONParser;
+import de.types.MessageType;
 import de.services.HyperlinkService;
 import de.utils.FAMessages;
 import de.utils.Tupel;
@@ -257,8 +259,25 @@ public class BundesligaActivityBean {
 	/**
 	 * Action Events
 	 */
-	public void actionUpdateConsole(String lMessage) {
-		mView.getConsolenPanel().appendConsole(lMessage);
+	public void actionUpdateConsole(String pMessage) {
+		mView.getConsolenPanel().appendConsole(pMessage);
+	}
+	
+	public void actionUpdateFixturesTable(String pID){
+		mView.getAufgabenPanel().updateTableMarker(pID);
+	}
+	
+	public void actionUpdateStatusBar(MessageType pType, String pMessage){
+		switch (pType) {
+		case ERROR:
+			mView.getStatusMessagePanel().setStatusMessageColor(Color.RED);
+			break;
+		default:
+			mView.getStatusMessagePanel().setStatusMessageColor(Color.BLACK);
+			break;
+		}
+		//mView.getStatusMessagePanel().showDelayedStatusMessage(pMessage, 10000);
+		mView.getStatusMessagePanel().showStatusMessage(pMessage);
 	}
 
 	public void actionUpdateStatistics(float pBalance) {
@@ -290,16 +309,13 @@ public class BundesligaActivityBean {
 
 		mView.getAufgabenPanel().clearTable();
 		
-		Vector<Object> vec;
+		// add only one soccerwayMatchModel to each row (column 0)
+		Vector<SoccerwayMatchModel> vec;
 		SoccerwayMatchModel match;
 		while (iter.hasNext()){
 			match = iter.next();
-			vec = new Vector<Object>();
-			vec.add(match.getDate());
-			vec.add(match.getResult());
-			vec.add(match.getCompetition());
-			vec.add(match.getTeam1());
-			vec.add(match.getTeam2());
+			vec = new Vector<SoccerwayMatchModel>();
+			vec.add(match);
 			mView.getAufgabenPanel().addToTable(vec);			
 		}
 		
@@ -356,7 +372,7 @@ public class BundesligaActivityBean {
 				isDefaultPropertiesFile = false;
 			} else {
 				isDefaultPropertiesFile = true;
-				PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_DEFAULT_PROPERTY);
+				actionUpdateStatusBar(MessageType.HINT, FAMessages.MSG_DEFAULT_PROPERTY);
 			}
 		}
 	}	
@@ -374,7 +390,7 @@ public class BundesligaActivityBean {
 				addListener();
 
 				//BEGIN FAST DATABASE ACCESS ONLY FOR TESTING
-				//mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "130386" });
+				//mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
 				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
 		});

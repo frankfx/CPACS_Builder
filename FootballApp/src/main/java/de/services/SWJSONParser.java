@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mysql.jdbc.StringUtils;
+
 import de.business.SoccerwayMatchModel;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
@@ -29,13 +31,60 @@ public class SWJSONParser {
 	 * Handels the team data given by teamID and matchtype
 	 * [commands][0]['parameters']['content']
 	 */
+	public static String getTeamNameByID(String pTeamID) {
+		try {
+			// Fetch the interesting part of inputted JSON obj
+			String content = new JSONObject(getJSONDataString(pTeamID, SoccerwayMatchType.home)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
+			if (StringUtils.isNullOrEmpty(content)){
+				System.out.println("ID not available");
+				return null;
+			}
+			
+			// Remove uninteresting header and footer data
+			content = content.substring(0, content.indexOf("</tbody>"));
+			content = content.substring(content.indexOf("<thead") + 7);
+
+			// Split content by <tr> -tags (tr is shorthand for table row)
+			Pattern p1 = Pattern.compile("<tr[^<]+?>");
+			String[] splitted = p1.split(content);
+
+			// Rest are the match info 
+			String[] data = Arrays.copyOfRange(splitted, 1, splitted.length);
+
+			// Split content by <td> -tags (table columns) and clean other tags
+			Pattern p2 = Pattern.compile("<td[^<]+?>");
+
+			int posOfHomeTeam = 4;
+			
+			for (String row : data) {
+				String[] cols = p2.split(row);
+				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
+				if (colData.length > posOfHomeTeam) {
+					return parseHTMLTableCellContent( colData[posOfHomeTeam].replace("<[^<]+?>", "").trim() );
+				}
+			}
+		} catch (JSONException | IOException e) {
+			return e.getMessage();
+		}			
+		return null;
+	}
+	
+	
+	/**
+	 * Handels the team data given by teamID and matchtype
+	 * [commands][0]['parameters']['content']
+	 */
 	public static Iterator<SoccerwayMatchModel> getTeamData(String pTeamID, SoccerwayMatchType pMatchType) {
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 
 		try {
 			// Fetch the interesting part of inputted JSON obj
 			String content = new JSONObject(getJSONDataString(pTeamID, pMatchType)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
-
+			if (StringUtils.isNullOrEmpty(content)){
+				System.out.println("ID not available");
+				return lResultList.iterator();
+			}
+				
 			// Remove uninteresting header and footer data
 			content = content.substring(0, content.indexOf("</tbody>"));
 			content = content.substring(content.indexOf("<thead") + 7);
@@ -58,7 +107,7 @@ public class SWJSONParser {
 
 				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
 
-				SoccerwayMatchModel mSoccerwayModel = new SoccerwayMatchModel();
+				SoccerwayMatchModel mSoccerwayModel = new SoccerwayMatchModel(pTeamID);
 
 				for (int i = 0; i < colData.length; i++) {
 					String val = parseHTMLTableCellContent( colData[i].replace("<[^<]+?>", "").trim() );
@@ -241,7 +290,9 @@ public class SWJSONParser {
 	
 	
 	public static void main(String[] args) {
-		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData("198", SoccerwayMatchType.all);
+		System.out.println(getTeamNameByID("198"));
+		
+		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData("191", SoccerwayMatchType.all);
 
 		while (iter.hasNext()) {
 			System.out.println(iter.next());

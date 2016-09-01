@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -35,7 +36,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private TipicoBetView mTipicoPanel;
 	private StatisticPanel mStatisticPanel;
 	private ButtonPanelContainer mButtonPanel;
-	
+	private StatusPanel mStatusMessagePanel;
 	private JSplitPane mSplitPaneVertikal;
 
 	// Menu items
@@ -82,6 +83,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		pane.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		mStatusMessagePanel = new StatusPanel(LocalDate.now().toString(), this.getWidth());
 		mTabbedPane = new JTabbedPane();
 		mConsolenPanel = new ConsolenPanel();
 		mAufgabenPanel = new SWAufgabenPanel();
@@ -102,6 +104,9 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		c.weightx = 0.1;
 		mPanelLeftHorizontal.add(mStatisticPanel, c);		
 		
+		c.gridy = 2;
+		pane.add(mButtonPanel, c);		
+		
 		c.fill = GridBagConstraints.BOTH;
 		c.gridy = 0;
 		c.weightx = 0.1;
@@ -111,9 +116,13 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mSplitPaneVertikal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mPanelLeftHorizontal, mTipicoPanel);
 
 		pane.add(mSplitPaneVertikal, c);
+		
+
 
 		getContentPane().add(pane, BorderLayout.CENTER);
-		getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
+		//getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
+		getContentPane().add(mStatusMessagePanel, BorderLayout.SOUTH);
+		
 		
 		createMenuBar();
 	}
@@ -287,6 +296,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 	public JTabbedPane getTabbedPane(){
 		return mTabbedPane;
+	}
+	
+	public StatusPanel getStatusMessagePanel() {
+		return mStatusMessagePanel;
+	}
+
+	public void setStatusMessagePanel(StatusPanel pStatusMessagePanel) {
+		this.mStatusMessagePanel = pStatusMessagePanel;
 	}	
 	/**
 	 * ========================

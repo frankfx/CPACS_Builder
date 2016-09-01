@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SoccerwayMatchModel {
+	private String mTeamID;
 	private String mDay;
 	private LocalDate mDate;
 	private String mCompetition;
@@ -11,7 +12,8 @@ public class SoccerwayMatchModel {
 	private String mTeam2;
 	private String mResult;
 
-	public SoccerwayMatchModel(String pDay, LocalDate pDate, String pCompetition, String pTeam1, String pTeam2, String pResult) {
+	public SoccerwayMatchModel(String pTeamID, String pDay, LocalDate pDate, String pCompetition, String pTeam1, String pTeam2, String pResult) {
+		mTeamID = pTeamID;
 		mDay = pDay;
 		mDate = pDate;
 		mCompetition = pCompetition;
@@ -19,11 +21,23 @@ public class SoccerwayMatchModel {
 		mTeam2 = pTeam2;
 		mResult = pResult;
 	}
+
+	public SoccerwayMatchModel(String pTeamID) {
+		this(pTeamID, null, LocalDate.MIN, null, null, null, null);
+	}	
 	
 	public SoccerwayMatchModel() {
-		this(null, LocalDate.MIN, null, null, null, null);
+		this(null,null, LocalDate.MIN, null, null, null, null);
 	}
 
+	public String getTeamID(){
+		return mTeamID;
+	}
+
+	public void setTeamID(String pTeamID){
+		this.mTeamID = pTeamID;
+	}	
+	
 	public String getDay() {
 		return mDay;
 	}
@@ -79,6 +93,6 @@ public class SoccerwayMatchModel {
 	
 	@Override
 	public String toString() {
-		return new StringBuilder().append(mDay).append(' ').append(mDate).append(' ').append(mCompetition).append(' ').append(mTeam1).append(' ').append(mResult).append(' ').append(mTeam2).toString();
+		return new StringBuilder().append(mTeamID).append(' ').append(mDay).append(' ').append(mDate).append(' ').append(mCompetition).append(' ').append(mTeam1).append(' ').append(mResult).append(' ').append(mTeam2).toString();
 	}
 }
