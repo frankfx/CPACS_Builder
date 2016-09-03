@@ -12,4 +12,6 @@ public class SQLService {
 
 	public final static String SQL_CREATE_TABLE_TIPICO = "create table Tipico (tnr int, team varchar(20), betPrediction varchar(20), winValue float, expenses float, attempts int, pDate date, success boolean, Primary Key(tnr));";
 	public final static String SQL_DROP_TABLE_TIPICO = "drop table if exists Tipico";
+
+	public final static String SQL_REMOVE_TIPICO = "delete from Tipico where tnr=?";
 }

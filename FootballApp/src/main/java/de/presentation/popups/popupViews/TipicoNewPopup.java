@@ -51,27 +51,35 @@ public class TipicoNewPopup implements IPopup {
 		mSpinDate = new JSpinner(new SpinnerTemporalModel<LocalDate>(lTipicoModel.getDate(), LocalDate.of(2016, 01, 01), LocalDate.of(2020, 01, 01), ChronoUnit.DAYS));
 		
 		mTeam = new JTextField();
-		mTeam.setEditable(false);
 		mTeamID = new JTextField();
-		mTeamID.setText(mPrevTeamID);
-		mTeamID.setInputVerifier(new TeamIDInputVerifier());
-		mTeamID.addKeyListener(new TeamIDKeyAdapter(mTeamID));
-		
-		mTeamID.addFocusListener(new FocusAdapter() {
-			public void focusLost(FocusEvent e){
-				actionComputeTeamByID();
-			}
-		});
+		if (mPrevTeamID != null){
+			mTeamID.setText(mPrevTeamID);
+			mTeamID.setEditable(false);
+			mTeam.setText(lTipicoModel.getTeam());
+		} else {
+			mTeam.setEditable(false);
+			mTeamID.setInputVerifier(new TeamIDInputVerifier());
+			mTeamID.addKeyListener(new TeamIDKeyAdapter(mTeamID));
+			mTeamID.addFocusListener(new FocusAdapter() {
+				public void focusLost(FocusEvent e){
+					actionComputeTeamByID();
+				}
+			});
+		}
 		
 		BetPredictionType [] predictions = new BetPredictionType [] {BetPredictionType.DRAW, BetPredictionType.HOME_WIN, BetPredictionType.AWAY_WIN, BetPredictionType.FST_DRAW, BetPredictionType.FST_HOME_WIN, BetPredictionType.FST_AWAY_WIN, BetPredictionType.SND_DRAW, BetPredictionType.SND_HOME_WIN, BetPredictionType.SND_AWAY_WIN};
 		mComboBetPrediction = new JComboBox<BetPredictionType>(predictions); 
 	}
 	
 	public void actionComputeTeamByID(){
-    	if (!mPrevTeamID.equals(mTeamID.getText())){
+    	if ( !StringUtils.isNullOrEmpty(mTeamID.getText()) && 
+    			(mPrevTeamID == null || !mPrevTeamID.equals(mTeamID.getText()))){
     		String team = SWJSONParser.getTeamNameByID(mTeamID.getText());
     		mTeam.setText(team);
     		mTeam.setEditable(team == null);
+    		mPrevTeamID = mTeam.getText();
+    	} else {
+    		mTeam.setText(null);
     	}
 	}
 

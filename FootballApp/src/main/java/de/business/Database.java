@@ -8,8 +8,6 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.ResultSetMetaData;
 
-import de.services.SQLService;
-
 public class Database {
 	
 	// JDBC driver name and database url

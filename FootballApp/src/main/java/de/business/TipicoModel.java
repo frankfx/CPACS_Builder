@@ -18,7 +18,11 @@ public class TipicoModel {
 	private PersistenceType mPersistenceType;
 
 	public TipicoModel() {
-		this("", "Default", BetPredictionType.DRAW, 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+		this(null, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+	}
+	
+	public TipicoModel(String pID){
+		this.mID = pID;
 	}
 	
 	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
@@ -106,7 +110,7 @@ public class TipicoModel {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.mID == ((TipicoModel)obj).getID();
+		return this.mID.equals(((TipicoModel)obj).getID());
 	};
 	
 	@Override

@@ -205,7 +205,7 @@ public class BundesligaActivityBean {
 			public void actionPerformed(ActionEvent pE) {
 				if (!mAufgabenNochNichtErzeugtFlag){
 					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{new Tupel<File, Boolean>(mPropertiesFile, isDefaultPropertiesFile)}).requestInputData();
-					if (res != null & res[0].equals(PropertyService.PROPERTIES_CHANGED)){
+					if (res != null && res[0].equals(PropertyService.PROPERTIES_CHANGED)){
 						createAufgaben();
 						createResults();
 					}

@@ -134,6 +134,10 @@ public class TipicoTableModel extends AbstractTableModel {
 			this.list.add(pModel);
 	}
 	
+	public boolean hasID(String pID){
+		return this.list.contains(new TipicoModel(pID));
+	}
+	
 	public void removeRow(int pRowIndex) {
 		if (pRowIndex >= 0 && pRowIndex < list.size() )
 			this.list.remove(pRowIndex);	
