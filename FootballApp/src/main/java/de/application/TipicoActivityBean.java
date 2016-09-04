@@ -662,7 +662,7 @@ public class TipicoActivityBean implements ISubController{
 
 		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIndex);
 		
-		if(startTableInputPopup(lModel, true)){
+		if(startTableInputPopup(lModel, false)){
 			updateTable();
 			mBundesligaListener.actionUpdateConsole("Table updated");			
 		}

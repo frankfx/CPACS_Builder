@@ -52,7 +52,7 @@ public class SWResultPanel extends JPanel{
                     case 5:
                         return Boolean.class;     
                     default:
-                        return String.class;
+                        return null;
                 }
             }
         };
