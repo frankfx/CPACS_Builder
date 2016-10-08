@@ -1,6 +1,5 @@
 package de.presentation.popups.popupViews;
 
-
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,30 +23,19 @@ import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.services.PropertyService;
-import de.services.ResourceService;
-import de.utils.Tupel;
 
 public class SWPropertyPopup implements IPopup {
 
 	private final JTable lSWPropertyTable;
 	private final JPanel lTablePanel;
 	private File lPropertiesFile;
-	private boolean isDefaultPropertiesFile;
 	private Map<String, String> changePropertyMap;
 	private static final int COLUMN_KEY = 0;
 	private static final int COLUMN_VALUE = 1;
 	
 	public SWPropertyPopup(Object[] pParams) {
-		if (pParams[0] instanceof Tupel){
-			Tupel<?, ?> tupel = (Tupel<?, ?>) pParams[0];
-			
-			if (tupel.getFirst() instanceof File){
-				lPropertiesFile = (File)tupel.getFirst();
-			}
-			
-			if (tupel.getSecond() instanceof Boolean){
-				isDefaultPropertiesFile = (Boolean)tupel.getSecond();
-			}
+		if (pParams[0] instanceof File){
+			lPropertiesFile = (File)pParams[0];
 		}
 		
 		lTablePanel = new JPanel();
@@ -96,9 +84,7 @@ public class SWPropertyPopup implements IPopup {
 		lDialog.dispose();
 
 		if (n == JOptionPane.OK_OPTION) {
-			if (isDefaultPropertiesFile && !changePropertyMap.isEmpty()) {
-				System.out.println("WARN: Default properties file was loaded. This file couldn't be changed!");
-			} else if (!isDefaultPropertiesFile && !changePropertyMap.isEmpty()){
+			if (!changePropertyMap.isEmpty()){
 				PropertyService.writeProperties(lPropertiesFile, changePropertyMap);
 				return new String[]{PropertyService.PROPERTIES_CHANGED};
 			}
@@ -131,8 +117,6 @@ public class SWPropertyPopup implements IPopup {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				if (isDefaultPropertiesFile)
-					return false;
 				if (column == COLUMN_KEY )
 					return false;
 				return true;
@@ -149,15 +133,11 @@ public class SWPropertyPopup implements IPopup {
 		Vector<String> vec;
 		Map<Object, Object> map;
 		
-		if (isDefaultPropertiesFile){
-			map = PropertyService.getProperties(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
-		} else {
-			try {
-				map = PropertyService.getProperties(new FileInputStream(lPropertiesFile));
-			} catch (FileNotFoundException e) {
-				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
-				return;
-			}
+		try {
+			map = PropertyService.getProperties(new FileInputStream(lPropertiesFile));
+		} catch (FileNotFoundException e) {
+			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+			return;
 		}
 
 		for (Map.Entry<Object, Object> entry : map.entrySet()){

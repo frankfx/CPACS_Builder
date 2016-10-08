@@ -148,6 +148,7 @@ public class TipicoActivityBean implements ISubController{
 					int row_idx = mView.getTable().getSelectedRow();
 					if (row_idx != -1){
 						mBundesligaListener.actionUpdateFixturesTable(mView.getTable().getValueAt(mView.getTable().getSelectedRow(), 0).toString());
+						mBundesligaListener.actionUpdateResultsTable(mView.getTable().getValueAt(mView.getTable().getSelectedRow(), 0).toString());
 					}
 				} else {
 					System.out.println("leave");
@@ -432,10 +433,20 @@ public class TipicoActivityBean implements ISubController{
 		}
 	}
 
-	private List<String> getTipicoNumbersFromDB() {
+	private List<String> getTipicoIDsFromDB() {
+		return this.getTipicoIDsFromDB(SQLService.SQL_SELECT_TNR_FROM_TIPICO);
+	}
+
+	public List<String> getTipicoOpenGameIDsFromDB() {
+		return this.getTipicoIDsFromDB(SQLService.SQL_SELECT_OPEN_TNR_FROM_TIPICO);
+	}	
+	
+	private List<String> getTipicoIDsFromDB(String pIDSearchCriterion) {
 		if (mDB!=null&&mDB.isConnected()){
 			List<String> list = new ArrayList<String>();
-			mDB.query(SQLService.SQL_SELECT_TNR_FROM_TIPICO);
+			
+			mDB.query(pIDSearchCriterion);
+			
 			try {
 				while (mDB.getResultSet().next()) {
 					list.add(mDB.getResultSet().getString(1));
@@ -686,7 +697,7 @@ public class TipicoActivityBean implements ISubController{
 			if (lModel == null) {
 				lModel = new TipicoModel();
 				
-				lModel.setID(mView.getTableModel().generateValidID(this.getTipicoNumbersFromDB())+"");
+				lModel.setID(mView.getTableModel().generateValidID(this.getTipicoIDsFromDB())+"");
 				mView.getTableModel().addRow(lModel);
 			}
 			lModel.setWinValue(Float.parseFloat(arr[0]));
@@ -815,7 +826,7 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	public String createInternalID(String pID){
-		List<String> pIDsFromDB = getTipicoNumbersFromDB();
+		List<String> pIDsFromDB = getTipicoIDsFromDB();
 			
 		if (pIDsFromDB == null) {
 			return generateUniqueIDWithTimestamp(pID);
@@ -828,4 +839,6 @@ public class TipicoActivityBean implements ISubController{
 		 }
 		 return pID+"";
 	}	
+	
+	
 }

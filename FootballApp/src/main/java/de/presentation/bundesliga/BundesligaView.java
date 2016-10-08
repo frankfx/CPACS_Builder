@@ -19,6 +19,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeListener;
 
+import de.business.SWResultTableModel;
+import de.business.TipicoTableModel;
 import de.presentation.ButtonPanelContainer;
 import de.presentation.IDefaultGUI;
 
@@ -175,10 +177,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
         this.mButtonPanel.getBtnExit().addActionListener(l);
     }	
     
-    public void setButtonRequestListener(ActionListener l){
-        this.mButtonPanel.getBtnRequest().addActionListener(l);
-    }
-    
     public void setButtonClearListener(ActionListener l){
         this.mConsolenPanel.getBtnClear().addActionListener(l);
     }    
@@ -310,4 +308,8 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 * END GETTER AND SETTER
 	 * ========================
 	 */	
+	
+	public SWResultTableModel getSWResultTableModel() {
+		return mSWResultPanel.getSWResultTableModel();
+	}
 }

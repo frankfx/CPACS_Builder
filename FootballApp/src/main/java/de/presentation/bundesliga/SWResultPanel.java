@@ -1,17 +1,17 @@
 package de.presentation.bundesliga;
 
 import java.awt.BorderLayout;
-import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+
+import de.business.SWResultTableModel;
+import de.business.SoccerwayMatchModel;
 
 public class SWResultPanel extends JPanel{
 
@@ -26,36 +26,7 @@ public class SWResultPanel extends JPanel{
 	public SWResultPanel() {
 		this.setLayout(new BorderLayout());
 		
-		Object columnNames[] = {"Date", "Compet.", "Team1", "Team2", "Result", "Accept"};
-		TableModel model = new DefaultTableModel(null, columnNames);
-		
-		mResultTable = new JTable(model){
-			private static final long serialVersionUID = 1L;
-
-            /*@Override
-            public Class getColumnClass(int column) {
-            return getValueAt(0, column).getClass();
-            }*/
-            @Override
-            public Class<?> getColumnClass(int column) {
-                switch (column) {
-                    case 0:
-                        return LocalDate.class;
-                    case 1:
-                        return String.class;
-                    case 2:
-                        return String.class;
-                    case 3:
-                        return String.class;
-                    case 4:
-                        return String.class;    
-                    case 5:
-                        return Boolean.class;     
-                    default:
-                        return null;
-                }
-            }
-        };
+		mResultTable = new JTable(new SWResultTableModel());
 		mAcceptButton = new JButton("Submit");
 		
 		TableColumnModel columnModel = mResultTable.getColumnModel();
@@ -67,32 +38,40 @@ public class SWResultPanel extends JPanel{
 		this.add(mAcceptButton, BorderLayout.SOUTH);
 	}
 
-	/**
-	 * adds a new row to the table Aufgaben.
-	 * 
-	 * @param dataVec data for one table row
-	 */
-	public void addToTable(Vector<Object> dataVec){
-		DefaultTableModel lModel = (DefaultTableModel) mResultTable.getModel();
-		lModel.addRow(dataVec);
-	}
+
+	
+	public void updateTableMarker(String pID){
+		SWResultTableModel lModel = (SWResultTableModel) mResultTable.getModel();
+		ListSelectionModel selectionModel = mResultTable.getSelectionModel();
+		String id;
+
+		selectionModel.clearSelection();
+	
+		for (int row = 0; row < lModel.getRowCount(); row++){
+			id = ((SoccerwayMatchModel)lModel.getDataList().get(row).g.getTeamID().toString();
+			if (pID.equals(id)){
+				selectionModel.addSelectionInterval(row, row);
+			}
+		}
+	}	
 	
 	public void clearTable(){
-		DefaultTableModel lModel = (DefaultTableModel) mResultTable.getModel();
-		lModel.setRowCount(0);
+		((SWResultTableModel) mResultTable.getModel()).clear();
 		mResultTable.revalidate();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void sortTableByDate(){
-		DefaultTableModel lModel = (DefaultTableModel) mResultTable.getModel();
-		lModel.getDataVector().sort(new Comparator<Vector<LocalDate>>() {
+		SWResultTableModel lModel = (SWResultTableModel) mResultTable.getModel();
+		lModel.getDataList().sort(new Comparator<SoccerwayMatchModel>() {
 			@Override
-			public int compare(Vector<LocalDate> o1, Vector<LocalDate> o2) {
-				return o1.get(0).compareTo(o2.get(0));
+			public int compare(SoccerwayMatchModel o1, SoccerwayMatchModel o2) {
+				return o1.getDate().compareTo(o2.getDate());
 			}
 		});
 	}
 	
+	public SWResultTableModel getSWResultTableModel(){
+		return (SWResultTableModel)mResultTable.getModel();
+	}
 
 }

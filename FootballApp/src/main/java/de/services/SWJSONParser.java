@@ -287,7 +287,52 @@ public class SWJSONParser {
 		
 		return lResultList.iterator();
 	}	
+
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverIDs(List<String> pIDList, int pDuration){
+		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+			
+		LocalDate lToday = LocalDate.now(); 
+		LocalDate lPastDate = lToday.minusDays(pDuration); 
+
+		for (int i = 0; i < pIDList.size(); i++) {
+			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(pIDList.get(i), SoccerwayMatchType.all);
+			SoccerwayMatchModel lCurMatch;
+			while (iter.hasNext()){
+				lCurMatch = iter.next();
+				if (lCurMatch.getDate().isAfter(lToday)){
+					// break the iteration to avoid reading all results (after today)
+					break;
+				} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
+					lResultList.add(lCurMatch);
+			    }
+			}
+		}
+		return lResultList.iterator();
+	}	
 	
+	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverIDs(List<String> pIDList, int pDuration){
+		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+			
+		LocalDate lToday = LocalDate.now(); 
+		LocalDate lFinalDate = lToday.plusDays(pDuration); 
+
+		for (int i = 0; i < pIDList.size(); i++) {
+			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(pIDList.get(i), SoccerwayMatchType.all);
+			SoccerwayMatchModel lCurMatch;
+			while (iter.hasNext()){
+				lCurMatch = iter.next();
+				if (lCurMatch.getDate().isAfter(lFinalDate)){
+					// break the iteration to avoid reading all results (after the final date) 
+					break;
+				} else if (!lCurMatch.getDate().isBefore(lToday)){
+					lResultList.add(lCurMatch);
+			    }
+			}
+		}
+		return lResultList.iterator();
+	}	
+	
+
 	
 	public static void main(String[] args) {
 		System.out.println(getTeamNameByID("198"));

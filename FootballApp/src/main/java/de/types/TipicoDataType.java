@@ -1,6 +1,6 @@
 package de.types;
 
-public enum TipicoDataType {
+public enum TipicoDataType{
 	ID, TEAM, BET, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS;
 	
 	public static TipicoDataType getDataType(int pPosition) {

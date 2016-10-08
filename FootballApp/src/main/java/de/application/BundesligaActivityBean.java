@@ -15,17 +15,16 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.business.SWResultTableModel;
 import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.services.PropertyService;
-import de.services.ResourceService;
 import de.services.SWJSONParser;
 import de.types.MessageType;
 import de.services.HyperlinkService;
 import de.utils.FAMessages;
-import de.utils.Tupel;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
@@ -35,7 +34,6 @@ public class BundesligaActivityBean {
 	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
 	private final static int TAB_INDEX_SW_RESULTS = 2;	
 	private File mPropertiesFile;
-	private boolean isDefaultPropertiesFile;
 
 	/**
 	 * Controller 
@@ -81,13 +79,6 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mView.getConsolenPanel().clearConsole();
-			}
-		});
-
-		mView.setButtonRequestListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//actionRequestCompleteMatchday();
 			}
 		});
 
@@ -204,9 +195,9 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
 				if (!mAufgabenNochNichtErzeugtFlag){
-					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{new Tupel<File, Boolean>(mPropertiesFile, isDefaultPropertiesFile)}).requestInputData();
+					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{mPropertiesFile}).requestInputData();
 					if (res != null && res[0].equals(PropertyService.PROPERTIES_CHANGED)){
-						createAufgaben();
+						createAufgaben(null);
 						createResults();
 					}
 				} else 
@@ -223,8 +214,7 @@ public class BundesligaActivityBean {
 				File choosenFile = PropertyService.choosePropertiesFile();
 				if (choosenFile != null){
 					mPropertiesFile = choosenFile;
-					isDefaultPropertiesFile = false;
-					createAufgaben();
+					createAufgaben(null);
 					createResults();
 				}
 			}
@@ -237,13 +227,16 @@ public class BundesligaActivityBean {
 			@Override
 			public void stateChanged(ChangeEvent pE) {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
-					if (!isPropertiesFileAvailalble())
-						loadPropertiesFile();
-					createAufgaben();
+					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(0);
+					List<String> list = m.getTipicoOpenGameIDsFromDB();
+					createAufgaben(list);
+//					if (!isPropertiesFileAvailalble())
+//						loadPropertiesFile();
+//					createAufgaben();
 				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && mResultsNochNichtErzeugtFlag){
-					if (!isPropertiesFileAvailalble())
-						loadPropertiesFile();
-					createResults();
+//					if (!isPropertiesFileAvailalble())
+//						loadPropertiesFile();
+//					createResults();
 				}
 				
 			}
@@ -265,6 +258,10 @@ public class BundesligaActivityBean {
 	
 	public void actionUpdateFixturesTable(String pID){
 		mView.getAufgabenPanel().updateTableMarker(pID);
+	}
+	
+	public void actionUpdateResultsTable(String pID){
+		mView.getSWResultPanel().updateTableMarker(pID);
 	}
 	
 	public void actionUpdateStatusBar(MessageType pType, String pMessage){
@@ -291,20 +288,20 @@ public class BundesligaActivityBean {
 		mView.dispose();
 	}
 
-	private void createAufgaben(){
+	private void createAufgaben(List<String> pIDList){
 		Iterator<SoccerwayMatchModel> iter;
 		
 		mAufgabenNochNichtErzeugtFlag = false;
 		
-		if (isDefaultPropertiesFile){
-			iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
-		} else {
-			try {
+		try {
+			if (pIDList != null){
+				iter = SWJSONParser.getAufgabenBySWObserverIDs(pIDList, 7);
+			} else {
 				iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
-			} catch (FileNotFoundException e) {
-				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
-				return;
 			}
+		} catch (FileNotFoundException e) {
+			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+			return;
 		}
 
 		mView.getAufgabenPanel().clearTable();
@@ -327,55 +324,47 @@ public class BundesligaActivityBean {
 		
 		mResultsNochNichtErzeugtFlag = false;
 		
-		if (isDefaultPropertiesFile){
-			iter = SWJSONParser.getResultsBySWObserverPropertyFile(ResourceService.getInstance().getResourcePropertyFile(ResourceService.DEFAULT_PROPERTIES_FILE));
-		} else {
-			try {
-				iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
-			} catch (FileNotFoundException e) {
-				PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
-				return;
-			}
+		try {
+			iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+		} catch (FileNotFoundException e) {
+			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
+			return;
 		}
 
 		mView.getSWResultPanel().clearTable();
-		Vector<Object> vec;
+		
+		// add only one soccerwayMatchModel to each row (column 0)
 		SoccerwayMatchModel match;
+		
+		SWResultTableModel lTableModel = mView.getSWResultPanel().getSWResultTableModel();
 		while (iter.hasNext()){
 			match = iter.next();
-			vec = new Vector<Object>();
-			vec.add(match.getDate());
-			vec.add(match.getCompetition());
-			vec.add(match.getTeam1());
-			vec.add(match.getTeam2());
-			vec.add(match.getResult());
-			vec.add(false);
-			mView.getSWResultPanel().addToTable(vec);			
-		}
+			lTableModel.addToTable(match);			
+		}		
 		
 		mView.getSWResultPanel().sortTableByDate();		
 	}
 	
-	private boolean isPropertiesFileAvailalble(){
-		return mPropertiesFile != null || isDefaultPropertiesFile;
-	}
+//	private boolean isPropertiesFileAvailalble(){
+//		return mPropertiesFile != null || isDefaultPropertiesFile;
+//	}
 	
-	/**
-	 * Falls kein Properties file vorhanden ist (bspw. beim ersten oeffen), wird ein FileDialog geoeffnet,
-	 * um die zu verwendente Datei zu bestimmen. Wird die Dateiauswahl abgebrochen wird ein Default File verwendet. 
-	 * 
-	 */
-	private void loadPropertiesFile() {
-		if (mPropertiesFile == null){
-			mPropertiesFile = PropertyService.choosePropertiesFile();
-			if (mPropertiesFile != null){
-				isDefaultPropertiesFile = false;
-			} else {
-				isDefaultPropertiesFile = true;
-				actionUpdateStatusBar(MessageType.HINT, FAMessages.MSG_DEFAULT_PROPERTY);
-			}
-		}
-	}	
+//	/**
+//	 * Falls kein Properties file vorhanden ist (bspw. beim ersten oeffen), wird ein FileDialog geoeffnet,
+//	 * um die zu verwendente Datei zu bestimmen. Wird die Dateiauswahl abgebrochen wird ein Default File verwendet. 
+//	 * 
+//	 */
+//	private void loadPropertiesFile() {
+//		if (mPropertiesFile == null){
+//			mPropertiesFile = PropertyService.choosePropertiesFile();
+//			if (mPropertiesFile != null){
+//				isDefaultPropertiesFile = false;
+//			} else {
+//				isDefaultPropertiesFile = true;
+//				actionUpdateStatusBar(MessageType.HINT, FAMessages.MSG_DEFAULT_PROPERTY);
+//			}
+//		}
+//	}	
 	
 	/**
 	 * Start App

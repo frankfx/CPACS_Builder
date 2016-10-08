@@ -14,10 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
-
 import de.business.SoccerwayMatchModel;
-import de.business.TipicoModel;
 
 public class SWAufgabenPanel extends JPanel{
 
