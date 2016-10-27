@@ -308,8 +308,4 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	 * END GETTER AND SETTER
 	 * ========================
 	 */	
-	
-	public SWResultTableModel getSWResultTableModel() {
-		return mSWResultPanel.getSWResultTableModel();
-	}
 }

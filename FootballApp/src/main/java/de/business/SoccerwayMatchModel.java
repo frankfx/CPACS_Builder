@@ -11,8 +11,9 @@ public class SoccerwayMatchModel {
 	private String mTeam1;
 	private String mTeam2;
 	private String mResult;
+	private boolean mAccept;
 
-	public SoccerwayMatchModel(String pTeamID, String pDay, LocalDate pDate, String pCompetition, String pTeam1, String pTeam2, String pResult) {
+	public SoccerwayMatchModel(String pTeamID, String pDay, LocalDate pDate, String pCompetition, String pTeam1, String pTeam2, String pResult, boolean pAccept) {
 		mTeamID = pTeamID;
 		mDay = pDay;
 		mDate = pDate;
@@ -20,14 +21,15 @@ public class SoccerwayMatchModel {
 		mTeam1 = pTeam1;
 		mTeam2 = pTeam2;
 		mResult = pResult;
+		mAccept = pAccept;
 	}
 
 	public SoccerwayMatchModel(String pTeamID) {
-		this(pTeamID, null, LocalDate.MIN, null, null, null, null);
+		this(pTeamID, null, LocalDate.MIN, null, null, null, null, false);
 	}	
 	
 	public SoccerwayMatchModel() {
-		this(null,null, LocalDate.MIN, null, null, null, null);
+		this(null,null, LocalDate.MIN, null, null, null, null, false);
 	}
 
 	public String getTeamID(){
@@ -89,6 +91,14 @@ public class SoccerwayMatchModel {
 
 	public void setResult(String pResult) {
 		this.mResult = pResult;
+	}
+	
+	public boolean getAccept(){
+		return mAccept;
+	}
+	
+	public void setAccept(boolean pAccept){
+		this.mAccept = pAccept;
 	}
 	
 	@Override

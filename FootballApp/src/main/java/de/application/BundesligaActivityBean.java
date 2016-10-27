@@ -198,7 +198,7 @@ public class BundesligaActivityBean {
 					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{mPropertiesFile}).requestInputData();
 					if (res != null && res[0].equals(PropertyService.PROPERTIES_CHANGED)){
 						createAufgaben(null);
-						createResults();
+						createResults(null);
 					}
 				} else 
 					PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_NO_PROPERTIES_FILE);
@@ -215,7 +215,7 @@ public class BundesligaActivityBean {
 				if (choosenFile != null){
 					mPropertiesFile = choosenFile;
 					createAufgaben(null);
-					createResults();
+					createResults(null);
 				}
 			}
 		});		
@@ -236,7 +236,9 @@ public class BundesligaActivityBean {
 				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && mResultsNochNichtErzeugtFlag){
 //					if (!isPropertiesFileAvailalble())
 //						loadPropertiesFile();
-//					createResults();
+					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(0);
+					List<String> list = m.getTipicoOpenGameIDsFromDB();
+					createResults(list);
 				}
 				
 			}
@@ -289,14 +291,14 @@ public class BundesligaActivityBean {
 	}
 
 	private void createAufgaben(List<String> pIDList){
-		Iterator<SoccerwayMatchModel> iter;
+		Iterator<SoccerwayMatchModel> iter = null;
 		
 		mAufgabenNochNichtErzeugtFlag = false;
 		
 		try {
 			if (pIDList != null){
 				iter = SWJSONParser.getAufgabenBySWObserverIDs(pIDList, 7);
-			} else {
+			} else if (mPropertiesFile != null) {
 				iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
 			}
 		} catch (FileNotFoundException e) {
@@ -309,23 +311,30 @@ public class BundesligaActivityBean {
 		// add only one soccerwayMatchModel to each row (column 0)
 		Vector<SoccerwayMatchModel> vec;
 		SoccerwayMatchModel match;
-		while (iter.hasNext()){
-			match = iter.next();
-			vec = new Vector<SoccerwayMatchModel>();
-			vec.add(match);
-			mView.getAufgabenPanel().addToTable(vec);			
-		}
 		
-		mView.getAufgabenPanel().sortTableByDate();
+		if(iter != null){
+			while (iter.hasNext()){
+				match = iter.next();
+				vec = new Vector<SoccerwayMatchModel>();
+				vec.add(match);
+				mView.getAufgabenPanel().addToTable(vec);			
+			}
+			
+			mView.getAufgabenPanel().sortTableByDate();
+		}
 	}
 	
-	private void createResults(){
-		Iterator<SoccerwayMatchModel> iter;
+	private void createResults(List<String> pIDList){
+		Iterator<SoccerwayMatchModel> iter = null;
 		
 		mResultsNochNichtErzeugtFlag = false;
 		
 		try {
-			iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+			if (pIDList != null){
+				iter = SWJSONParser.getResultsBySWObserverIDs(pIDList, 7);
+			} else if (mPropertiesFile != null) {
+				iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+			}
 		} catch (FileNotFoundException e) {
 			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
 			return;
@@ -336,13 +345,14 @@ public class BundesligaActivityBean {
 		// add only one soccerwayMatchModel to each row (column 0)
 		SoccerwayMatchModel match;
 		
-		SWResultTableModel lTableModel = mView.getSWResultPanel().getSWResultTableModel();
-		while (iter.hasNext()){
-			match = iter.next();
-			lTableModel.addToTable(match);			
+		if(iter != null){
+			while (iter.hasNext()){
+				match = iter.next();
+				mView.getSWResultPanel().addToTable(match);			
+			}
+			
+			mView.getSWResultPanel().sortTableByDate();
 		}		
-		
-		mView.getSWResultPanel().sortTableByDate();		
 	}
 	
 //	private boolean isPropertiesFileAvailalble(){

@@ -26,7 +26,9 @@ public class SWResultPanel extends JPanel{
 	public SWResultPanel() {
 		this.setLayout(new BorderLayout());
 		
-		mResultTable = new JTable(new SWResultTableModel());
+		SWResultTableModel model = new SWResultTableModel();
+		
+		mResultTable = new JTable(model);
 		mAcceptButton = new JButton("Submit");
 		
 		TableColumnModel columnModel = mResultTable.getColumnModel();
@@ -38,18 +40,18 @@ public class SWResultPanel extends JPanel{
 		this.add(mAcceptButton, BorderLayout.SOUTH);
 	}
 
-
+	public void addToTable(SoccerwayMatchModel dataVec){
+		((SWResultTableModel) mResultTable.getModel()).addToTable(dataVec);
+	}
 	
 	public void updateTableMarker(String pID){
 		SWResultTableModel lModel = (SWResultTableModel) mResultTable.getModel();
 		ListSelectionModel selectionModel = mResultTable.getSelectionModel();
-		String id;
 
 		selectionModel.clearSelection();
 	
 		for (int row = 0; row < lModel.getRowCount(); row++){
-			id = ((SoccerwayMatchModel)lModel.getDataList().get(row).g.getTeamID().toString();
-			if (pID.equals(id)){
+			if (pID.equals(lModel.getSoccerwayMatchModel(row).getTeamID())){
 				selectionModel.addSelectionInterval(row, row);
 			}
 		}
@@ -69,9 +71,4 @@ public class SWResultPanel extends JPanel{
 			}
 		});
 	}
-	
-	public SWResultTableModel getSWResultTableModel(){
-		return (SWResultTableModel)mResultTable.getModel();
-	}
-
 }

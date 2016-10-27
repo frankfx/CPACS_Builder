@@ -10,28 +10,24 @@ import de.types.SWResultDataType;
 
 public class SWResultTableModel extends AbstractTableModel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	List<SoccerwayMatchModel> list;	
+	private List<SoccerwayMatchModel> mList;	
 	
 	public SWResultTableModel(){
 		this(null);
 	}
 
 	public SWResultTableModel(SoccerwayMatchModel [] entries){
-		list = new ArrayList<SoccerwayMatchModel>();
+		mList = new ArrayList<SoccerwayMatchModel>();
 		
 		if(entries != null)
-			for (int i = 0; i < entries.length; i++) {
-				list.add(entries[i]);
-			}
+			for (SoccerwayMatchModel lMatch : entries)
+				mList.add(lMatch);
 	}	
 	
 	@Override
 	public int getRowCount() {
-		return list.size();
+		return mList.size();
 	}
 
 	@Override
@@ -68,15 +64,17 @@ public class SWResultTableModel extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return list.get(rowIndex).getDate();
+			return mList.get(rowIndex).getDate();
 		case 1 :
-			return list.get(rowIndex).getCompetition();
+			return mList.get(rowIndex).getCompetition();
 		case 2 :
-			return list.get(rowIndex).getTeam1();
+			return mList.get(rowIndex).getTeam1();
 		case 3 :
-			return list.get(rowIndex).getTeam2();	
+			return mList.get(rowIndex).getTeam2();	
 		case 4 :
-			return list.get(rowIndex).getResult();
+			return mList.get(rowIndex).getResult();
+		case 5 :
+			return mList.get(rowIndex).getAccept();
 		default:
 			return null;
 		}
@@ -98,19 +96,12 @@ public class SWResultTableModel extends AbstractTableModel{
      */
 	@Override
 	public void setValueAt(Object value, int row, int col) {
-//		switch (col) {
-//		case 5 :  
-//			list.get(rowIndex).setID(aValue.toString()); break;
-//			
-//			break;
-//
-//		default:
-//			break;
-//		}
-//		
-//		mResultTable.getModel().setValueAt(aValue, rowIndex, columnIndex);
-//		rowData[row][col] = value;
-//       // fireTableCellUpdated(row, col);
+		switch (col) {
+		case 5 :  
+			mList.get(row).setAccept((boolean)value); break;
+		default:
+			break;
+		}
     }
 	
 	/**
@@ -119,15 +110,19 @@ public class SWResultTableModel extends AbstractTableModel{
 	 * @param dataVec data for one table row
 	 */
 	public void addToTable(SoccerwayMatchModel pModel){
-		if(!this.list.contains(pModel))
-			this.list.add(pModel);		
+		if(!this.mList.contains(pModel))
+			this.mList.add(pModel);		
+	}
+	
+	public SoccerwayMatchModel getSoccerwayMatchModel(int row){
+		return mList.get(row);
 	}
 	
 	public void clear(){
-		this.list.clear();
+		this.mList.clear();
 	}
 	
 	public List<SoccerwayMatchModel> getDataList(){
-		return list;
+		return mList;
 	}
 }
