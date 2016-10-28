@@ -322,19 +322,17 @@ public class TipicoActivityBean implements ISubController{
 				mInsertBetStmt.setString(3, pModel.getBetPrediction().toString());
 				mInsertBetStmt.setFloat(4, pModel.getWinValue());
 				mInsertBetStmt.setFloat(5, pModel.getExpenses());
-				mInsertBetStmt.setInt(6, pModel.getAttempts());
-				mInsertBetStmt.setDate(7, Date.valueOf(pModel.getDate()));
-				mInsertBetStmt.setBoolean(8, pModel.getSuccess());
-				mInsertBetStmt.setString(9, pModel.getTeam());	
-				mInsertBetStmt.setString(10, pModel.getBetPrediction().toString());
-				mInsertBetStmt.setFloat(11, pModel.getWinValue());
-				mInsertBetStmt.setFloat(12, pModel.getExpenses());
-				mInsertBetStmt.setInt(13, pModel.getAttempts());
-				mInsertBetStmt.setDate(14, Date.valueOf(pModel.getDate()));
-				mInsertBetStmt.setBoolean(15, pModel.getSuccess());
+				mInsertBetStmt.setDate(6, Date.valueOf(pModel.getDate()));
+				mInsertBetStmt.setBoolean(7, pModel.getSuccess());
+				mInsertBetStmt.setString(8, pModel.getTeam());	
+				mInsertBetStmt.setString(9, pModel.getBetPrediction().toString());
+				mInsertBetStmt.setFloat(10, pModel.getWinValue());
+				mInsertBetStmt.setFloat(11, pModel.getExpenses());
+				mInsertBetStmt.setDate(12, Date.valueOf(pModel.getDate()));
+				mInsertBetStmt.setBoolean(13, pModel.getSuccess());
 				
 				mInsertBetStmt.execute();	
-				mBundesligaListener.actionUpdateConsole("update successfull");
+				mBundesligaListener.actionUpdateConsole(FAMessages.MSG_DATABASE_UPDATE_SUCCESS);
 				return true;
 			} catch (SQLException e) {
 				lResult = e.getMessage();
@@ -442,21 +440,20 @@ public class TipicoActivityBean implements ISubController{
 	}	
 	
 	private List<String> getTipicoIDsFromDB(String pIDSearchCriterion) {
-		if (mDB!=null&&mDB.isConnected()){
-			List<String> list = new ArrayList<String>();
+		List<String> lResult = null;
+		if (mDB!=null && mDB.isConnected()){
+			lResult = new ArrayList<String>();
 			
 			mDB.query(pIDSearchCriterion);
-			
 			try {
 				while (mDB.getResultSet().next()) {
-					list.add(mDB.getResultSet().getString(1));
+					lResult.add(Utils.getIDWithoutSuffix(mDB.getResultSet().getString(1)));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			return list;
-		} else 
-			return null;
+		} 
+		return lResult;
 	}
 
 	private boolean readFromDatabaseToTableModel(TipicoTableModel pModel, String pSQL) {
@@ -476,9 +473,8 @@ public class TipicoActivityBean implements ISubController{
 						data.setBetPrediction(BetPredictionType.getType(mDB.getResultSet().getString(3)));
 						data.setWinValue(mDB.getResultSet().getFloat(4));
 						data.setExpenses(mDB.getResultSet().getFloat(5));
-						data.setAttempts(mDB.getResultSet().getInt(6));
-						data.setDate(mDB.getResultSet().getDate(7));
-						data.setSuccess(mDB.getResultSet().getBoolean(8));
+						data.setDate(mDB.getResultSet().getDate(6));
+						data.setSuccess(mDB.getResultSet().getBoolean(7));
 						data.setPersistenceType(PersistenceType.OTHER);
 						
 						pModel.addRow(data);
@@ -577,9 +573,8 @@ public class TipicoActivityBean implements ISubController{
 		pTipicoModel.setBetPrediction(BetPredictionType.getType(args[2]));
 		pTipicoModel.setWinValue(Float.parseFloat(args[3]));
 		pTipicoModel.setExpenses(Float.parseFloat(args[4]));
-		pTipicoModel.setAttempts(Integer.parseInt(args[5]));
-		pTipicoModel.setDate(LocalDate.parse(args[6]));
-		pTipicoModel.setSuccess(Boolean.parseBoolean(args[7]));
+		pTipicoModel.setDate(LocalDate.parse(args[5]));
+		pTipicoModel.setSuccess(Boolean.parseBoolean(args[6]));
 		pTipicoModel.setPersistenceType(PersistenceType.NEW);
 		return true;
 	}	
@@ -826,19 +821,20 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	public String createInternalID(String pID){
-		List<String> pIDsFromDB = getTipicoIDsFromDB();
-			
-		if (pIDsFromDB == null) {
-			return generateUniqueIDWithTimestamp(pID);
+		if (mDB != null && mDB.isConnected()){
+			PreparedStatement prepStmt;
+			try {
+				prepStmt = mDB.getConnection().prepareStatement(SQLService.SQL_CHECK_ID_EXISTS);
+				prepStmt.setString(1, pID);
+				prepStmt.execute();
+				if (mDB.getResultSet().next())
+					generateUniqueIDWithTimestamp(pID);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
-		 	for (int i=0; i<pIDsFromDB.size(); i++){
-		 		if ( Utils.getIDWithoutSuffix(pIDsFromDB.get(i)).equals(pID)){
-		 			return generateUniqueIDWithTimestamp(pID);
-		 		}
-		 	}
-		 }
-		 return pID+"";
+			return generateUniqueIDWithTimestamp(pID);
+		}
+		return pID;
 	}	
-	
-	
 }

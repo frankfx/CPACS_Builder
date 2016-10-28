@@ -229,6 +229,7 @@ public class BundesligaActivityBean {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
 					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(0);
 					List<String> list = m.getTipicoOpenGameIDsFromDB();
+					
 					createAufgaben(list);
 //					if (!isPropertiesFileAvailalble())
 //						loadPropertiesFile();

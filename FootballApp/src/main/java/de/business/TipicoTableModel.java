@@ -63,10 +63,8 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 4:
 			return Float.class;
 		case 5:
-			return Integer.class;
-		case 6:
 			return LocalDate.class;
-		case 7:
+		case 6:
 			return Boolean.class;
 		default:
 			return Boolean.class;
@@ -97,11 +95,7 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 4:
 			return list.get(rowIndex).getExpenses();
 		case 5:
-			return list.get(rowIndex).getAttempts();
-		case 6:
 			return list.get(rowIndex).getDate();
-		case 7:
-			return list.get(rowIndex).getSuccess();
 		default:
 			return null;
 		}		
@@ -121,11 +115,7 @@ public class TipicoTableModel extends AbstractTableModel {
 		case 4:
 			list.get(rowIndex).setExpenses((Float) aValue); break;
 		case 5:
-			list.get(rowIndex).setAttempts((Integer) aValue); break;
-		case 6:
 			list.get(rowIndex).setDate((LocalDate) aValue); break;
-		case 7:
-			list.get(rowIndex).setSuccess((Boolean) aValue); break;
 		}		
 	}
 

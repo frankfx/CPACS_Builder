@@ -53,7 +53,6 @@ public class TipicoPrintService {
 			hm.put("team", lTipicoModel.getTeam());
 			hm.put("winValue", lTipicoModel.getWinValue() + "");
 			hm.put("expenses", lTipicoModel.getExpenses() + "");
-			hm.put("attempts", lTipicoModel.getAttempts() + "");
 			hm.put("date", lTipicoModel.getDate().toString());
 			hm.put("success", lTipicoModel.getSuccess() + "");
 			fields.add(hm);

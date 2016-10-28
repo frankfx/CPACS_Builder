@@ -12,30 +12,28 @@ public class TipicoModel {
 	private BetPredictionType mBetPrediction;
 	private float mWinValue;
 	private float mExpenses;
-	private int mAttempts;
 	private LocalDate mDate;
 	private boolean mSuccess;
 	private PersistenceType mPersistenceType;
 
 	public TipicoModel() {
-		this(null, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, 0, LocalDate.now(), false, PersistenceType.NEW);
+		this(null, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, LocalDate.now(), false, PersistenceType.NEW);
 	}
 	
 	public TipicoModel(String pID){
 		this.mID = pID;
 	}
 	
-	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess){
-		this(pID, pTeam, pPrediction, pWinValue, pExpenses, pAttempts, pDate, pSuccess, PersistenceType.NEW);
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess){
+		this(pID, pTeam, pPrediction, pWinValue, pExpenses, pDate, pSuccess, PersistenceType.NEW);
 	}
 	
-	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, int pAttempts, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
 		this.mID = pID;
 		this.mTeam = pTeam;
 		this.mBetPrediction = pPrediction;
 		this.mWinValue = pWinValue;
 		this.mExpenses = pExpenses;
-		this.mAttempts = pAttempts;
 		this.mDate = pDate;
 		this.mSuccess = pSuccess;
 		this.mPersistenceType = pPersistenceType;
@@ -70,12 +68,6 @@ public class TipicoModel {
 	}
 	public void setExpenses(float pExpenses) {
 		this.mExpenses = pExpenses;
-	}
-	public int getAttempts() {
-		return mAttempts;
-	}
-	public void setAttempts(int lAttempts) {
-		this.mAttempts = lAttempts;
 	}
 	public LocalDate getDate() {
 		return mDate;
@@ -115,6 +107,6 @@ public class TipicoModel {
 	
 	@Override
 	public String toString(){
-		return "[" + mID + ", " + mTeam + ", " + mBetPrediction + ", " + mWinValue + ", " + mExpenses + ", " + mAttempts + ", " + mDate + ", " + mSuccess + "]" ;
+		return "[" + mID + ", " + mTeam + ", " + mBetPrediction + ", " + mWinValue + ", " + mExpenses + ", " + mDate + ", " + mSuccess + "]" ;
 	}
 }

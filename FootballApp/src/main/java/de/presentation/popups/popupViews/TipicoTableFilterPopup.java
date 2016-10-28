@@ -177,7 +177,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		for (TipicoTableFilterModel lModel: mTipicoTableFilterModels){
 			TipicoDataType lDataType = lModel.getFilterDataType();
 			boolean isNumericalDataType = lDataType.equals(TipicoDataType.WINVALUE) || 
-					lDataType.equals(TipicoDataType.EXPENSES) || lDataType.equals(TipicoDataType.ATTEMPTS);
+					lDataType.equals(TipicoDataType.EXPENSES);
 			
 			boolean isInvalidNumericalValue = isNumericalDataType && Float.isNaN(lModel.getFilterValueAsFloat());
 			boolean isInvalidStringValue = !isNumericalDataType && (lModel.getFilterValue() == null);

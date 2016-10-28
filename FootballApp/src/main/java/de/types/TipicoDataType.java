@@ -1,7 +1,7 @@
 package de.types;
 
 public enum TipicoDataType{
-	ID, TEAM, BET, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS;
+	ID, TEAM, BET, WINVALUE, EXPENSES, DATE;
 	
 	public static TipicoDataType getDataType(int pPosition) {
 		switch(pPosition){
@@ -10,9 +10,7 @@ public enum TipicoDataType{
 		case 2 : return BET;
 		case 3 : return WINVALUE;
 		case 4 : return EXPENSES;
-		case 5 : return ATTEMPTS;
-		case 6 : return DATE;
-		case 7 : return SUCCESS;
+		case 5 : return DATE;
 		default : return null;
 		}
 	}

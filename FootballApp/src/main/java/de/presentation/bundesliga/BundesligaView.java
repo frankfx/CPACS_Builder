@@ -63,7 +63,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		createGUIElements();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setMinimumSize(new Dimension(600, 500));
-		pack();
+		setSize(850,500);
 		setVisible(true);
 	}
 

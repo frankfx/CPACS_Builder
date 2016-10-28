@@ -15,6 +15,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import de.business.SoccerwayMatchModel;
+import de.utils.Utils;
 
 public class SWAufgabenPanel extends JPanel{
 
@@ -97,13 +98,16 @@ public class SWAufgabenPanel extends JPanel{
 	public void updateTableMarker(String pID){
 		DefaultTableModel lModel = (DefaultTableModel) mFixtureTable.getModel();
 		ListSelectionModel selectionModel = mFixtureTable.getSelectionModel();
-		String id;
-
+		
+		String lFixtureIds, lSelectedId;
+		lSelectedId = Utils.getIDWithoutSuffix(pID);
+		
 		selectionModel.clearSelection();
 	
 		for (int row = 0; row < lModel.getRowCount(); row++){
-			id = ((SoccerwayMatchModel)lModel.getValueAt(row, 0)).getTeamID().toString();
-			if (pID.equals(id)){
+			lFixtureIds = ((SoccerwayMatchModel)lModel.getValueAt(row, 0)).getTeamID().toString();
+			
+			if (lSelectedId.equals(lFixtureIds)){
 				selectionModel.addSelectionInterval(row, row);
 			}
 		}

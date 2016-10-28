@@ -30,7 +30,6 @@ public class TipicoTableFilterModel {
 		mTableColumn.addItem(TipicoDataType.TEAM);
 		mTableColumn.addItem(TipicoDataType.EXPENSES);
 		mTableColumn.addItem(TipicoDataType.WINVALUE);
-		mTableColumn.addItem(TipicoDataType.SUCCESS);
 		
 		mFilterOperation = new JComboBox<FilterOperationType>();
 		mFilterOperation.addItem(FilterOperationType.EQUAL);
