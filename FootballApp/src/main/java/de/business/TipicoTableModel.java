@@ -53,21 +53,17 @@ public class TipicoTableModel extends AbstractTableModel {
 	public Class<?> getColumnClass(int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return Integer.class;
-		case 1:
 			return String.class;
-		case 2:
+		case 1:
 			return BetPredictionType.class;			
+		case 2:
+			return Float.class;
 		case 3:
 			return Float.class;
 		case 4:
-			return Float.class;
-		case 5:
 			return LocalDate.class;
-		case 6:
-			return Boolean.class;
 		default:
-			return Boolean.class;
+			return null;
 		}
 	}
 
@@ -85,16 +81,14 @@ public class TipicoTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return list.get(rowIndex).getID();
-		case 1:
 			return list.get(rowIndex).getTeam();
-		case 2:
+		case 1:
 			return list.get(rowIndex).getBetPrediction();
-		case 3:
+		case 2:
 			return list.get(rowIndex).getWinValue();
-		case 4:
+		case 3:
 			return list.get(rowIndex).getExpenses();
-		case 5:
+		case 4:
 			return list.get(rowIndex).getDate();
 		default:
 			return null;
@@ -105,18 +99,20 @@ public class TipicoTableModel extends AbstractTableModel {
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			list.get(rowIndex).setID(aValue.toString()); break;
-		case 1:
 			list.get(rowIndex).setTeam(aValue.toString()); break;
-		case 2:
+		case 1:
 			list.get(rowIndex).setBetPrediction((BetPredictionType) aValue); break;
-		case 3:
+		case 2:
 			list.get(rowIndex).setWinValue((Float) aValue); break;
-		case 4:
+		case 3:
 			list.get(rowIndex).setExpenses((Float) aValue); break;
-		case 5:
+		case 4:
 			list.get(rowIndex).setDate((LocalDate) aValue); break;
 		}		
+	}
+	
+	public String getIDByIndex(int idx){
+		return list.get(idx).getID();
 	}
 
 	public void addRow(TipicoModel pModel){
@@ -137,37 +133,6 @@ public class TipicoTableModel extends AbstractTableModel {
 		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
 	}
 	
-	public int generateValidID(List<String> pIDsFromDB) {
-		int lMaxTnr;
-
-		if (pIDsFromDB != null && !pIDsFromDB.isEmpty()) {
-			lMaxTnr = pIDsFromDB.stream().mapToInt(i -> Integer.parseInt(Utils.getIDWithoutSuffix(i))).max().getAsInt() + 1;
-		} else {
-			lMaxTnr = list.size() + 1;
-		}
-
-		return rec_generateValidID(lMaxTnr);
-	}
-	
-	private int rec_generateValidID(int id){
-		if(isIDValid(id))
-			return id;
-		else
-			return rec_generateValidID(id+1);
-	}	
-	
-	public boolean isIDValid(int pID){
-		for(TipicoModel item : list)
-			if(Integer.parseInt(Utils.getIDWithoutSuffix(item.getID())) == pID)
-				return false;
-		return true;
-	}	
-	
-	@Override
-	public String toString(){
-		return this.list.toString();
-	}
-	
 	public List<TipicoModel> getAsList(){
 		return list;
 	}
@@ -180,11 +145,8 @@ public class TipicoTableModel extends AbstractTableModel {
 		return list.toArray(new TipicoModel[list.size()]);
 	}
 
-	public List<TipicoModel> getFilterBackupList() {
-		return mBackupListPtr;
-	}
-
-	public void setFilterBackupList(List<TipicoModel> pFilterList) {
-		this.mBackupListPtr = new ArrayList<TipicoModel>(pFilterList);
+	@Override
+	public String toString(){
+		return this.list.toString();
 	}
 }

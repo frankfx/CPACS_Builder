@@ -56,10 +56,11 @@ de\application\TipicoActivityBean$7.class
 de\presentation\popups\popupViews\TipicoNewPopup$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$4$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$4.class
+de\services\LoggerService.class
 de\presentation\ButtonPanelContainer.class
 de\utils\FAMessages.class
 de\utils\Tupel.class
-de\business\Database.class
+de\services\Database.class
 de\application\BundesligaActivityBean$4.class
 de\application\TipicoActivityBean$13.class
 de\application\BundesligaActivityBean$11.class

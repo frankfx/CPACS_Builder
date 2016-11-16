@@ -1,6 +1,7 @@
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\SWJSONParser.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\IPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\HyperlinkService.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\Database.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\TipicoActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\TeamIDInputVerifier.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\AbstractPanelContainer.java
@@ -54,8 +55,8 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundeslig
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\printing\TipicoPrintService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\SWResultDataType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SpinnerTemporalModel.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\LoggerService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\TipicoBetView.java
-C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\Database.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\SWAufgabenPanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\SQLService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\IDefaultGUI.java

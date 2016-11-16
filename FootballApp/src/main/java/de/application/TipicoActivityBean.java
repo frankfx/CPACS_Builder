@@ -11,13 +11,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import de.business.Database;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
@@ -26,7 +27,9 @@ import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.printing.TipicoPrintService;
+import de.services.Database;
 import de.services.FilterService;
+import de.services.LoggerService;
 import de.services.SQLService;
 import de.types.BetPredictionType;
 import de.types.MessageType;
@@ -41,7 +44,10 @@ public class TipicoActivityBean implements ISubController{
 	private Database mDB = null;
 	private TipicoBetView mView;
 
+	final static Logger logger = LoggerService.getInstance().getLogger();
+	
 	public TipicoActivityBean(TipicoBetView pView) {
+		logger.setLevel(Level.ALL);
 		this.mView = pView;
 		this.addListener();
 	}
@@ -136,7 +142,7 @@ public class TipicoActivityBean implements ISubController{
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
-					actionFilterTableData();
+					actionStartSQLPrompt();
 				}
 			}
 		});
@@ -147,8 +153,12 @@ public class TipicoActivityBean implements ISubController{
 				if(e.getValueIsAdjusting()){
 					int row_idx = mView.getTable().getSelectedRow();
 					if (row_idx != -1){
-						mBundesligaListener.actionUpdateFixturesTable(mView.getTable().getValueAt(mView.getTable().getSelectedRow(), 0).toString());
-						mBundesligaListener.actionUpdateResultsTable(mView.getTable().getValueAt(mView.getTable().getSelectedRow(), 0).toString());
+						String id =((TipicoTableModel) mView.getTable().getModel()).getIDByIndex( mView.getTable().convertRowIndexToModel(row_idx));
+						
+						logger.log(Level.INFO, "message 1");
+						
+						mBundesligaListener.actionUpdateFixturesTable(id);
+						mBundesligaListener.actionUpdateResultsTable(id);
 					}
 				} else {
 					System.out.println("leave");
@@ -568,7 +578,7 @@ public class TipicoActivityBean implements ISubController{
 		if(args == null || pTipicoModel == null)
 			return false;
 		
-		pTipicoModel.setID(isNewEntry ? this.createInternalID(args[0]) : args[0]);
+		pTipicoModel.setID(isNewEntry ? Utils.createInternalID(args[0], mDB) : args[0]);
 		pTipicoModel.setTeam(args[1]);
 		pTipicoModel.setBetPrediction(BetPredictionType.getType(args[2]));
 		pTipicoModel.setWinValue(Float.parseFloat(args[3]));
@@ -583,32 +593,8 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN ACTION
  // ========================
 	
-//	private ICriteria createFilteredList(Node<IExpression> pNode) {
-//		if (pNode == null)
-//			return null;
-//
-//		ExpressionType exp = ExpressionType.getType(pNode.getData());
-//
-//		switch (exp) {
-//		case AND:
-//			return new AndCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
-//		case OR:
-//			return new OrCriteria(createFilteredList(pNode.getLeftChild()), createFilteredList(pNode.getRightChild()));
-//		case VALUE:
-//			String[] mExpression = pNode.getData().split(";");
-//			if (mExpression[0].equalsIgnoreCase(ExpressionType.EXPENSES.toString())) {
-//				return new CriteriaExpenses(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-//			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.WINVALUE.toString())) {
-//				return new CriteriaWinValue(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-//			} else if (mExpression[0].equalsIgnoreCase(ExpressionType.ID.toString())) {
-//				return new CriteriaID(Float.parseFloat(mExpression[2]), ExpressionType.getType(mExpression[1]));
-//			}
-//		default:
-//			return null;
-//		}
-//	}
 
-	private void actionFilterTableData() {
+	private void actionStartSQLPrompt() {
       	// call child widget to get the filter assertions
 		final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
       	List<?> lFilterExpressions = popup.requestInputDataAsObjectList();
@@ -616,7 +602,6 @@ public class TipicoActivityBean implements ISubController{
       	// filter list with the filter expressions given in the child popup widget
 		if (lFilterExpressions != null) {
 			// revert table list for unfilter operation (empty lFilterExpressions) 
-	      	mView.getTableModel().setList(mView.getTableModel().getFilterBackupList());			
 			
 			// creates the complete coherent filter expression
 			ICriteria lCriteria = FilterService.getCompleteCriteriaExpressionRec(lFilterExpressions);
@@ -692,7 +677,7 @@ public class TipicoActivityBean implements ISubController{
 			if (lModel == null) {
 				lModel = new TipicoModel();
 				
-				lModel.setID(mView.getTableModel().generateValidID(this.getTipicoIDsFromDB())+"");
+				lModel.setID(Utils.generateValidID(this.getTipicoIDsFromDB())+"");
 				mView.getTableModel().addRow(lModel);
 			}
 			lModel.setWinValue(Float.parseFloat(arr[0]));
@@ -815,26 +800,7 @@ public class TipicoActivityBean implements ISubController{
  // END FUNCTION
  // ========================
 	
-	private static String generateUniqueIDWithTimestamp(String pID){
-		// Erstellen der ID : Instant timestamp = Instant.now(); (Java 8)
-		return pID + "_" + Instant.now().toEpochMilli();
-	}
 	
-	public String createInternalID(String pID){
-		if (mDB != null && mDB.isConnected()){
-			PreparedStatement prepStmt;
-			try {
-				prepStmt = mDB.getConnection().prepareStatement(SQLService.SQL_CHECK_ID_EXISTS);
-				prepStmt.setString(1, pID);
-				prepStmt.execute();
-				if (mDB.getResultSet().next())
-					generateUniqueIDWithTimestamp(pID);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} else {
-			return generateUniqueIDWithTimestamp(pID);
-		}
-		return pID;
-	}	
+	
+	
 }
