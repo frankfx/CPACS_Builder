@@ -193,14 +193,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     	this.menuItemSaveCSV.addActionListener(l);
     }    
     
-    public void setMenuItemCommitDBListener(ActionListener l){
-    	this.menuItemCommitDB.addActionListener(l);
-    }    
-
-    public void setMenuItemPullDBListener(ActionListener l){
-    	this.menuItemPullDB.addActionListener(l);
-    }     
-    
 	public void setMenuItemExitListener(ActionListener l){
     	this.menuItemExit.addActionListener(l);
     }  

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
@@ -24,6 +26,7 @@ import de.services.PropertyService;
 import de.services.SWJSONParser;
 import de.types.MessageType;
 import de.services.HyperlinkService;
+import de.services.LoggerService;
 import de.utils.FAMessages;
 
 public class BundesligaActivityBean {
@@ -35,6 +38,8 @@ public class BundesligaActivityBean {
 	private final static int TAB_INDEX_SW_RESULTS = 2;	
 	private File mPropertiesFile;
 
+	private final static Logger logger = LoggerService.getInstance().getLogger();
+	
 	/**
 	 * Controller 
 	 * 
@@ -85,7 +90,7 @@ public class BundesligaActivityBean {
 		mView.setProgressbarListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				System.out.println("progress bar changed");
+				logger.info(FAMessages.MSG_PROGRESS_BAR_CHANGED);
 			}
 		});
 
@@ -99,28 +104,14 @@ public class BundesligaActivityBean {
 		mView.setMenuItemLoadCSVListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Load CSV");
+				PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_NOT_IMPLEMENTED_YET);
 			}
 		});
 
 		mView.setMenuItemSaveCSVListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Save CSV");
-			}
-		});
-
-		mView.setMenuItemCommitDBListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Commit DB");
-			}
-		});
-
-		mView.setMenuItemPullDBListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//actionRunPython();
+				PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_NOT_IMPLEMENTED_YET);
 			}
 		});
 

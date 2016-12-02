@@ -39,7 +39,6 @@ import de.utils.Utils;
 
 public class TipicoActivityBean implements ISubController{
 
-	private PreparedStatement mInsertBetStmt = null;
 	private BundesligaActivityBean mBundesligaListener;
 	private Database mDB = null;
 	private TipicoBetView mView;
@@ -325,7 +324,7 @@ public class TipicoActivityBean implements ISubController{
 			lResult = FAMessages.MSG_NO_DATABASE;
 		else{
 			try {
-				mInsertBetStmt = mDB.getConnection().prepareStatement(pSql);
+				PreparedStatement mInsertBetStmt = mDB.getConnection().prepareStatement(pSql);
 
 				mInsertBetStmt.setString(1, pModel.getID());
 				mInsertBetStmt.setString(2, pModel.getTeam());

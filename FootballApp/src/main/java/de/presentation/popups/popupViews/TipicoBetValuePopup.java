@@ -22,7 +22,7 @@ public class TipicoBetValuePopup implements IPopup {
 	public TipicoBetValuePopup(Object[] pParams) {
 		lSpinWinValue = new JSpinner(new SpinnerNumberModel((float) pParams[0], 1, 100, 0.1));
 		lSpinOdds = new JSpinner(new SpinnerNumberModel(3.0, 1, 40, 0.1));
-		lSpinExpenses = new JSpinner(new SpinnerNumberModel((float) pParams[1], 0, 100, 0.1));
+		lSpinExpenses = new JSpinner(new SpinnerNumberModel((float) pParams[1], 0, 1000, 0.1));
 		lBetValueCompution = new JTextField("");
 		lBetValueCompution.setEditable(false);
 

@@ -4,7 +4,6 @@ de\utils\DoubleInputVerifier.class
 de\business\TipicoTableModel.class
 de\utils\math\MathTipico.class
 de\services\ResourceService.class
-de\application\BundesligaActivityBean$18.class
 de\application\TipicoActivityBean$12.class
 de\services\SWJSONParser.class
 de\application\BundesligaActivityBean$10.class
@@ -113,4 +112,3 @@ de\printing\TipicoPrintService.class
 de\application\TipicoActivityBean$11.class
 de\presentation\popups\PopupType.class
 de\presentation\JSplitButton.class
-de\application\BundesligaActivityBean$19.class

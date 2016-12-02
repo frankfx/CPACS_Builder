@@ -13,6 +13,8 @@ public class FAMessages {
 	public final static String MSG_NO_PROPERTIES_FILE = "No properties file found";
 	public final static String MSG_SUCCESS = "Operation successful";
 	public final static String MSG_FAIL = "Operation fail";	
+	public final static String MSG_PROGRESS_BAR_CHANGED = "progress bar changed";
+	public final static String MSG_NOT_IMPLEMENTED_YET = "not implemented yet";
 	
 	// database
 	public final static String MSG_DATABASE_UPDATE_SUCCESS = "update successful";
