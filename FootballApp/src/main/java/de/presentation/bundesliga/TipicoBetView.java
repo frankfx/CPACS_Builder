@@ -4,18 +4,24 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -23,6 +29,7 @@ import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
 import de.presentation.JSplitButton;
+import de.services.ResourceService;
 import de.types.PersistenceType;
 
 public class TipicoBetView extends AbstractPanelContainer {
@@ -31,7 +38,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private JTable mTable;
+	private TipicoBetTable mTable;
 	private TipicoTableModel mTableModel;
 	private JScrollPane mTablePane;	
 	private JButton mBtnBetValue;
@@ -39,7 +46,6 @@ public class TipicoBetView extends AbstractPanelContainer {
 	private JButton mBtnModify;	
 	private JButton mBtnDelete;
 	private JSplitButton mBtnDBSplit;
-	private JMenuItem mMenuClearSelection = new JMenuItem("clear selection");
 	
 	public TipicoBetView() {	
 		// create an default panel
@@ -64,7 +70,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 		c.weighty=0.1;		
 
 		mTableModel = new TipicoTableModel();
-		mTable = createNewJTable();
+		mTable = new TipicoBetTable(mTableModel);
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         
@@ -98,76 +104,6 @@ public class TipicoBetView extends AbstractPanelContainer {
 		this.add(mBtnDBSplit, c);
 	}
 
-	/*
-	 * Method to create a JTable with colored rows and a context menu
-	 */
-	private JTable createNewJTable() {
-		// initialize JTable and set background rendering
-		final JTable lTable = new JTable(mTableModel) {
-			private static final long serialVersionUID = 1L;
-
-//			@Override
-//			public TableCellEditor getCellEditor(int row, int column) {
-//			   Object value = super.getValueAt(row, column);
-//			   if(value != null) {
-//			      if(value instanceof JComboBox) {
-//			           return new DefaultCellEditor((JComboBox<BetPredictionType>)value);
-//			      }
-//			            return getDefaultEditor(value.getClass());
-//			   }
-//			   return super.getCellEditor(row, column);
-//			}	
-			
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer, int row, int column){
-				Component c = super.prepareRenderer(renderer, row, column);
-				
-				if (!isRowSelected(row)) {
-					int modelRow = convertRowIndexToModel(row);
-					TipicoModel lModel = ((TipicoTableModel) getModel()).getTipicoModelAtRow(modelRow);
-					
-					if (lModel.getPersistenceType().equals(PersistenceType.NEW))
-						c.setBackground(Color.YELLOW);
-					else if (lModel.getSuccess())
-						c.setBackground(Color.GREEN);
-					else if (LocalDate.now().isAfter(lModel.getDate()))
-						c.setBackground(Color.MAGENTA);
-					else
-						c.setBackground(getBackground());
-				}
-
-				return c;
-			}
-		};
-		
-		
-		// set mouse listener for context menu
-		lTable.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-				if (SwingUtilities.isRightMouseButton(e)) {
-					int r = lTable.rowAtPoint(e.getPoint());
-
-					if (r >= 0 && r < lTable.getRowCount()) {
-						lTable.setRowSelectionInterval(r, r);
-					} else {
-						lTable.clearSelection();
-					}
-
-					int rowindex = lTable.getSelectedRow();
-
-					if (rowindex >= 0 && e.getComponent() instanceof JTable) {
-						JPopupMenu popup = createPopUp();
-						popup.show(e.getComponent(), e.getX(), e.getY());
-					}
-				}
-			}
-		});
-		
-		return lTable;
-	}
-
 	/**
 	 * Updates the Tipico JTable
 	 */		
@@ -178,7 +114,6 @@ public class TipicoBetView extends AbstractPanelContainer {
     	//mTable.invalidate();
     	//mTablePane.repaint();		
 	}
-
 	
 	/**
 	 * ========================
@@ -230,7 +165,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 	}
 
 	public void setMenuClearSelectionListener(ActionListener l) {
-		this.mMenuClearSelection.addActionListener(l);
+		this.mTable.setMenuClearSelectionListener(l);
 	}
 
 	public void setFilterPopupListener(MouseAdapter l) {
@@ -288,7 +223,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 		return mTable;
 	}
 	
-	public void setTable(JTable pTable) {
+	public void setTable(TipicoBetTable pTable) {
 		this.mTable = pTable;
 	}
 	
@@ -305,12 +240,4 @@ public class TipicoBetView extends AbstractPanelContainer {
 	 * END GETTER AND SETTER
 	 * ========================
 	 */
-
-	public JPopupMenu createPopUp() {
-		JPopupMenu lPopup = new JPopupMenu("Test");
-		lPopup.add(mMenuClearSelection);
-
-		// Add submenu to popup menu
-		return lPopup;
-	}
 }

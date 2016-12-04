@@ -684,6 +684,8 @@ public class TipicoActivityBean implements ISubController{
 			lModel.setDate(LocalDate.now());
 			lModel.setPersistenceType(PersistenceType.NEW);
 			
+			logger.info(lModel.getID() + " : " + lModel.getTeam() + " : " + Float.parseFloat(arr[1]));
+			
 			lResult = FAMessages.MSG_SUCCESS;
 			this.updateTable();
 		} else {

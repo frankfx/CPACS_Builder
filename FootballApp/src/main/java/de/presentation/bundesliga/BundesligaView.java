@@ -119,8 +119,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 		pane.add(mSplitPaneVertikal, c);
 		
-
-
 		getContentPane().add(pane, BorderLayout.CENTER);
 		//getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 		getContentPane().add(mStatusMessagePanel, BorderLayout.SOUTH);
