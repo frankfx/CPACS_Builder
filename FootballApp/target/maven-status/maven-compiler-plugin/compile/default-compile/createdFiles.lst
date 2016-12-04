@@ -1,6 +1,7 @@
 de\types\MessageType.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$3.class
 de\utils\DoubleInputVerifier.class
+de\presentation\bundesliga\TipicoBetTable.class
 de\business\TipicoTableModel.class
 de\utils\math\MathTipico.class
 de\services\ResourceService.class
@@ -15,7 +16,7 @@ de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
 de\presentation\bundesliga\SWAufgabenPanel$2.class
 de\application\BundesligaActivityBean$8.class
 de\presentation\filter\CriteriaWinValue.class
-de\presentation\bundesliga\TipicoBetView$2.class
+de\presentation\bundesliga\TipicoBetTable$1.class
 de\presentation\bundesliga\SWAufgabenPanel$1.class
 de\application\TipicoActivityBean$9.class
 de\presentation\bundesliga\StatusPanel.class
@@ -90,7 +91,6 @@ de\business\SoccerwayMatchModel.class
 de\presentation\JSplitButton$1.class
 de\presentation\popups\PopupFactory$1.class
 de\application\BundesligaActivityBean$2.class
-de\presentation\bundesliga\TipicoBetView$1.class
 de\presentation\filter\CriteriaExpenses$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$1.class
 de\presentation\bundesliga\SWAufgabenPanel.class
