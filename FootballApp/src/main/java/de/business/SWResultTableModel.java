@@ -3,6 +3,7 @@ package de.business;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -124,5 +125,9 @@ public class SWResultTableModel extends AbstractTableModel{
 	
 	public List<SoccerwayMatchModel> getDataList(){
 		return mList;
+	}
+	
+	public List<String> getDataListWithValueAccepted(){
+		return mList.stream().filter(match -> match.getAccept()).map(match -> match.getTeamID()).collect(Collectors.<String>toList());
 	}
 }

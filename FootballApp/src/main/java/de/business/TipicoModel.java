@@ -92,6 +92,11 @@ public class TipicoModel {
 		this.mSuccess = lSuccess;
 	}
 	
+	public void setSuccessTrue(){
+		this.mSuccess = true;
+		setPersistenceType(PersistenceType.NEW);
+	}
+	
 	public PersistenceType getPersistenceType() {
 		return mPersistenceType;
 	}

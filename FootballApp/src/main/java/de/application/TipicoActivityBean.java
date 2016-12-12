@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -796,6 +795,11 @@ public class TipicoActivityBean implements ISubController{
 			mView.getTableModel().setList(pList);
 		}
 		updateTable();
+	}
+	
+	public void setTipicoModelsToSuccess(List<String> pTipicoIDs){
+		List<TipicoModel> lBets = mView.getTableModel().getAsList();
+		pTipicoIDs.stream().forEach(lId -> lBets.stream().filter(lModel -> lModel.getID().equals(lId)).forEach(lModel -> lModel.setSuccessTrue()));
 	}
  // ========================
  // END FUNCTION

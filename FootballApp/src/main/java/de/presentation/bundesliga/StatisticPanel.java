@@ -3,12 +3,14 @@ package de.presentation.bundesliga;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeListener;
 
 import de.presentation.AbstractPanelContainer;
 
@@ -107,4 +109,10 @@ public class StatisticPanel extends AbstractPanelContainer {
 	private long getDaysOfWork() {
 		return ChronoUnit.DAYS.between(LocalDate.of(2016, 4, 6), LocalDate.now());
 	}
+	
+	// Listener
+	//=============	
+    public void setProgressbarListener(ChangeListener l){
+    	mProgressbar.addChangeListener(l);
+    }    	
 }

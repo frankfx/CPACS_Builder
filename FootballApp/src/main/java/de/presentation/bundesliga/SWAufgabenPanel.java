@@ -81,7 +81,6 @@ public class SWAufgabenPanel extends JPanel{
 		columnModel.getColumn(1).setMaxWidth(55);
 		columnModel.getColumn(1).setResizable(false);
 		
-		this.add(mFixtureTable.getTableHeader(), BorderLayout.PAGE_START);
 		this.add(new JScrollPane(mFixtureTable), BorderLayout.CENTER);
 	}
 

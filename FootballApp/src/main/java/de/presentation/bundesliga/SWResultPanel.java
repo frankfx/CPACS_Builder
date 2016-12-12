@@ -1,7 +1,10 @@
 package de.presentation.bundesliga;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -35,7 +38,6 @@ public class SWResultPanel extends JPanel{
 		columnModel.getColumn(1).setMaxWidth(55);
 		columnModel.getColumn(1).setResizable(false);
 		
-		this.add(mResultTable.getTableHeader(), BorderLayout.NORTH);
 		this.add(new JScrollPane(mResultTable), BorderLayout.CENTER);
 		this.add(mAcceptButton, BorderLayout.SOUTH);
 	}
@@ -60,6 +62,14 @@ public class SWResultPanel extends JPanel{
 	public void clearTable(){
 		((SWResultTableModel) mResultTable.getModel()).clear();
 		mResultTable.revalidate();
+	}
+
+	public JButton getSubmitButton() {
+		return mAcceptButton;
+	}	
+	
+	public List<String> getDataListWithAcceptedValues(){
+		return ((SWResultTableModel) mResultTable.getModel()).getDataListWithValueAccepted();
 	}
 	
 	public void sortTableByDate(){

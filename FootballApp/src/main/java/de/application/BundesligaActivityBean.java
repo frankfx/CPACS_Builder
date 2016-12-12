@@ -6,18 +6,18 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import de.business.SWResultTableModel;
 import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.popups.PopupFactory;
@@ -25,19 +25,30 @@ import de.presentation.popups.PopupType;
 import de.services.PropertyService;
 import de.services.SWJSONParser;
 import de.types.MessageType;
+import de.types.PersistenceType;
 import de.services.HyperlinkService;
 import de.services.LoggerService;
 import de.utils.FAMessages;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
-	private List<ISubController> mSubController;
+	private Map<String,ISubController> mSubController;
 	private boolean mAufgabenNochNichtErzeugtFlag = true;
 	private boolean mResultsNochNichtErzeugtFlag = true;
 	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
 	private final static int TAB_INDEX_SW_RESULTS = 2;	
 	private File mPropertiesFile;
 
+	private static String TIPICO_CONTROLLER_KEY ;
+	private static String SOCCERWAY_CONTROLLER_KEY;
+	private static String STATISTIC_CONTROLLER_KEY;
+	
+	static{
+		SOCCERWAY_CONTROLLER_KEY = "sw_contr";
+		TIPICO_CONTROLLER_KEY = "tipico_contr";
+		STATISTIC_CONTROLLER_KEY = "statistic_contr";
+	};
+	
 	private final static Logger logger = LoggerService.getInstance().getLogger();
 	
 	/**
@@ -48,7 +59,7 @@ public class BundesligaActivityBean {
 	 */
 	public BundesligaActivityBean(BundesligaView pView) {
 		this.mView = pView;
-		this.mSubController = new ArrayList<ISubController>();
+		this.mSubController = new HashMap<String,ISubController>();
 	}
 
 	/**
@@ -56,8 +67,8 @@ public class BundesligaActivityBean {
 	 * 
 	 * @param pController adds a new sub controller to a controller list
 	 */
-	public void addSubController(ISubController pController) {
-		this.mSubController.add(pController);
+	public void addSubController(String pKey, ISubController pController) {
+		this.mSubController.put(pKey, pController);
 	}
 
 	/**
@@ -65,49 +76,37 @@ public class BundesligaActivityBean {
 	 * 
 	 * @param pController adds a new sub controller to a controller list
 	 */
-	public void removeSubController(ISubController pController) {
-		this.mSubController.remove(pController);
+	public void removeSubController(String pKey) {
+		this.mSubController.remove(pKey);
 	}
 
 	/**
 	 * Add Listener
 	 */
 	private void addListener() {
-		mView.setButtonExitListener(new ActionListener() {
+		/**
+		 * Exit
+		 */
+		mView.setMenuItemExitListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				actionClose();
 			}
 		});
 
-		mView.setButtonClearListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mView.getConsolenPanel().clearConsole();
-			}
-		});
-
-		mView.setProgressbarListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				logger.info(FAMessages.MSG_PROGRESS_BAR_CHANGED);
-			}
-		});
-
-		mView.setMenuItemExitListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mView.dispose();
-			}
-		});
-
+		/**
+		 * CSV loading
+		 */
 		mView.setMenuItemLoadCSVListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PopupFactory.getPopup(PopupType.HINT, FAMessages.MSG_NOT_IMPLEMENTED_YET);
 			}
-		});
+		});		
 
+		/**
+		 * CSV saving
+		 */		
 		mView.setMenuItemSaveCSVListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -115,13 +114,15 @@ public class BundesligaActivityBean {
 			}
 		});
 
+		/**
+		 * Tipico printing
+		 */		
 		this.mView.setMenuItemPrintListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (ISubController s : mSubController)
-					s.print();
+				mSubController.get(TIPICO_CONTROLLER_KEY).print();
 			}
-		});
+		});		
 
 		/**
 		 * Database connection
@@ -131,17 +132,17 @@ public class BundesligaActivityBean {
 			public void actionPerformed(ActionEvent e) {
 				String[] arr = PopupFactory.getPopup(PopupType.DATABASE_CONNECTION_POPUP, null).requestInputData();
 				if (arr != null)
-					mSubController.get(0).initBean(arr);
+					mSubController.get(TIPICO_CONTROLLER_KEY).initBean(arr);
 			}
 		});
 
 		/**
-		 * Database Disconnection
+		 * Database disconnection
 		 */
 		mView.setMenuItemDBDisconnectListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mSubController.get(0).updateBean();
+				mSubController.get(TIPICO_CONTROLLER_KEY).updateBean();
 			}
 		});
 
@@ -164,7 +165,6 @@ public class BundesligaActivityBean {
 				HyperlinkService.openUrlInBrowser("http://de.soccerway.com/");
 			}
 		});		
-
 		
 		/**
 		 * About frame
@@ -186,7 +186,7 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent pE) {
 				if (!mAufgabenNochNichtErzeugtFlag){
-					String [] res =PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{mPropertiesFile}).requestInputData();
+					String [] res = PopupFactory.getPopup(PopupType.PROPERTIES_POPUP, new Object[]{mPropertiesFile}).requestInputData();
 					if (res != null && res[0].equals(PropertyService.PROPERTIES_CHANGED)){
 						createAufgaben(null);
 						createResults(null);
@@ -210,6 +210,34 @@ public class BundesligaActivityBean {
 				}
 			}
 		});		
+		
+		/**
+		 * Exit by button
+		 */
+		mView.setButtonExitListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionClose();
+			}
+		});
+
+		/**
+		 * Apply soccerway result to tipico
+		 */		
+		mView.setButtonSubmitSelectedResultsListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<String> lResultList = mView.getSWResultPanel().getDataListWithAcceptedValues();
+				
+				if(!lResultList.isEmpty()){
+					// TODO ueber gebe an subcontroller
+					TipicoActivityBean mTipicoController = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
+					
+					mTipicoController.setTipicoModelsToSuccess(lResultList);
+					mTipicoController.updateTable();
+				}
+			}
+		});
 
 		/**
 		 * Creates match tasks when tab was changed the first time 
@@ -218,7 +246,7 @@ public class BundesligaActivityBean {
 			@Override
 			public void stateChanged(ChangeEvent pE) {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && mAufgabenNochNichtErzeugtFlag){
-					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(0);
+					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
 					List<String> list = m.getTipicoOpenGameIDsFromDB();
 					
 					createAufgaben(list);
@@ -228,7 +256,7 @@ public class BundesligaActivityBean {
 				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && mResultsNochNichtErzeugtFlag){
 //					if (!isPropertiesFileAvailalble())
 //						loadPropertiesFile();
-					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(0);
+					TipicoActivityBean m = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
 					List<String> list = m.getTipicoOpenGameIDsFromDB();
 					createResults(list);
 				}
@@ -239,15 +267,17 @@ public class BundesligaActivityBean {
 		/**
 		 * Observer pattern to trigger this.actionUpdateConsole from the subcontroller
 		 */
-		for (ISubController lController : mSubController)
-			lController.setUpdateListener(this);
+		Iterator<Entry<String, ISubController>> iter = mSubController.entrySet().iterator();
+		while(iter.hasNext()){
+			iter.next().getValue().setUpdateListener(this);
+		}
 	}
 
 	/**
 	 * Action Events
 	 */
 	public void actionUpdateConsole(String pMessage) {
-		mView.getConsolenPanel().appendConsole(pMessage);
+		((SoccerwayActivityBean) mSubController.get(SOCCERWAY_CONTROLLER_KEY)).appendConsole(pMessage);
 	}
 	
 	public void actionUpdateFixturesTable(String pID){
@@ -272,11 +302,8 @@ public class BundesligaActivityBean {
 	}
 
 	public void actionUpdateStatistics(float pBalance) {
-		mView.getStatisticPanel().setBalanceValue(pBalance);
-		int n = (int) (mView.getStatisticPanel().getProgressBar().getValue() + mView.getStatisticPanel().getBalanceValue()) / 10;
-		mView.getStatisticPanel().getProgressBar().setValue(n);
+		((StatisticActivityBean) mSubController.get(STATISTIC_CONTROLLER_KEY)).updateStatisticByBalance(pBalance);
 	}
-
 
 	public void actionClose() {
 		mView.dispose();
@@ -377,11 +404,13 @@ public class BundesligaActivityBean {
 			@Override
 			public void run() {
 				mView.initView();
-				addSubController(new TipicoActivityBean(mView.getTipicoPanel()));
+				addSubController(TIPICO_CONTROLLER_KEY, new TipicoActivityBean(mView.getTipicoPanel()));
+				addSubController(SOCCERWAY_CONTROLLER_KEY, new SoccerwayActivityBean(mView.getConsolenPanel()));
+				addSubController(STATISTIC_CONTROLLER_KEY, new StatisticActivityBean(mView.getStatisticPanel()));
 				addListener();
 
 				//BEGIN FAST DATABASE ACCESS ONLY FOR TESTING
-				//mSubController.get(0).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
+				//mSubController.get(TIPICO_CONTROLLER_KEY).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
 				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
 		});
