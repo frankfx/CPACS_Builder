@@ -48,6 +48,7 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\TeamIDKeyAdapter
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabasePullDetailPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\FilterOperationType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\TipicoTableModel.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\SoccerwayActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabaseBrowserPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\filter\CriteriaExpenses.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\JSplitButton.java
@@ -57,6 +58,7 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\printing\TipicoPrintSe
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\SWResultDataType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SpinnerTemporalModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\LoggerService.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\StatisticActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\TipicoBetView.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\SWAufgabenPanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\SQLService.java

@@ -30,6 +30,7 @@ de\types\PersistenceType.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup.class
 de\application\BundesligaActivityBean$15.class
 de\presentation\bundesliga\BundesligaView.class
+de\application\StatisticActivityBean$1.class
 de\presentation\popups\popupViews\SWPropertyPopup.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$2.class
 de\application\TipicoActivityBean$3.class
@@ -64,12 +65,12 @@ de\services\Database.class
 de\application\BundesligaActivityBean$4.class
 de\application\TipicoActivityBean$13.class
 de\application\BundesligaActivityBean$11.class
-de\application\BundesligaActivityBean$17.class
 de\types\TipicoDataType.class
 de\application\BundesligaActivityBean.class
 de\business\TipicoModel.class
 de\services\PropertyService.class
 de\application\ISubController.class
+de\application\StatisticActivityBean.class
 de\Main.class
 de\application\BundesligaActivityBean$1.class
 de\application\TipicoActivityBean$1.class
@@ -85,6 +86,7 @@ de\services\SQLService.class
 de\presentation\popups\popupViews\DatabasePullDetailPopup.class
 de\utils\DoubleKeyAdapter.class
 de\presentation\filter\OrCriteria.class
+de\application\SoccerwayActivityBean$1.class
 de\types\BetPredictionType.class
 de\application\TipicoActivityBean$5.class
 de\business\SoccerwayMatchModel.class
@@ -97,6 +99,7 @@ de\presentation\bundesliga\SWAufgabenPanel.class
 de\presentation\filter\AndCriteria.class
 de\presentation\filter\ICriteria.class
 de\application\BundesligaActivityBean$13.class
+de\application\SoccerwayActivityBean.class
 de\presentation\popups\IPopup.class
 de\types\SWResultDataType.class
 de\presentation\popups\popupViews\SWPropertyPopup$1.class
