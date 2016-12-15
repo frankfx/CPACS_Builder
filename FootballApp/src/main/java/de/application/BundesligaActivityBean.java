@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
+import de.presentation.bundesliga.StakeOverviewDialog;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.services.PropertyService;
@@ -29,6 +31,7 @@ import de.types.PersistenceType;
 import de.services.HyperlinkService;
 import de.services.LoggerService;
 import de.utils.FAMessages;
+import de.utils.math.MathTipico;
 
 public class BundesligaActivityBean {
 	private BundesligaView mView;
@@ -147,6 +150,29 @@ public class BundesligaActivityBean {
 		});
 
 		/**
+		 * Commit DB
+		 */
+		mView.setMenuItemCommitDB(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mView.getStatisticPanel().setVisible(!mView.getStatisticPanel().isVisible());
+				mView.getPanelLeftHorizontal().setVisible(!mView.getPanelLeftHorizontal().isVisible());
+			}
+		});		
+
+		/**
+		 * pull DB
+		 */
+		mView.setMenuItemPullDB(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipicoActivityBean mTipicoController = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
+				List<Object[]> lPredictions = MathTipico.getFinancialBetPrediction(mTipicoController.getModelsOfSelectedRows());
+		    	new StakeOverviewDialog(mView, "Test", 100, 100, lPredictions);
+			}
+		});			
+		
+		/**
 		 * Link to tipico
 		 */
 		mView.setMenuItemLinkTipico(new ActionListener() {
@@ -230,7 +256,6 @@ public class BundesligaActivityBean {
 				List<String> lResultList = mView.getSWResultPanel().getDataListWithAcceptedValues();
 				
 				if(!lResultList.isEmpty()){
-					// TODO ueber gebe an subcontroller
 					TipicoActivityBean mTipicoController = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
 					
 					mTipicoController.setTipicoModelsToSuccess(lResultList);

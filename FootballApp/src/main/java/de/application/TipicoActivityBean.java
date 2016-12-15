@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -519,6 +520,17 @@ public class TipicoActivityBean implements ISubController{
 		}
 			
 		return Integer.parseInt(mView.getTable().getModel().getValueAt(lSelectedRow, 0).toString());		
+	}
+	
+	public List<TipicoModel> getModelsOfSelectedRows(){
+		List<TipicoModel> lResult = new ArrayList<TipicoModel>();
+		int [] rows = mView.getTable().getSelectedRows();
+		
+		for (int i : rows){
+			lResult.add(mView.getTableModel().getTipicoModelAtRow(i));
+		}
+		
+		return lResult;
 	}
 	
 	/**

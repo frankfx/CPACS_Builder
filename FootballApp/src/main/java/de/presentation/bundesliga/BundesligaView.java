@@ -38,6 +38,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private ButtonPanelContainer mButtonPanel;
 	private StatusPanel mStatusMessagePanel;
 	private JSplitPane mSplitPaneVertikal;
+	private JPanel mPanelLeftHorizontal;
 
 	// Menu items
 	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
@@ -96,7 +97,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mTabbedPane.addTab("Fixtures", mAufgabenPanel);
 		mTabbedPane.addTab("Results", mSWResultPanel);
 		
-		JPanel mPanelLeftHorizontal = new JPanel();
+		mPanelLeftHorizontal = new JPanel();
 		mPanelLeftHorizontal.setLayout(new GridBagLayout());
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -196,6 +197,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     public void setMenuItemDBDisconnectListener(ActionListener l){
     	this.menuItemDBDisConnect.addActionListener(l);
     }     
+
+	public void setMenuItemCommitDB(ActionListener l) {
+		this.menuItemCommitDB.addActionListener(l);
+	}    
+	
+	public void setMenuItemPullDB(ActionListener l){
+		this.menuItemPullDB.addActionListener(l);
+	}
     
 	public void setMenuItemLinkTipico(ActionListener l) {
 		this.menuItemLinkTipico.addActionListener(l);
@@ -286,6 +295,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 	public void setStatusMessagePanel(StatusPanel pStatusMessagePanel) {
 		this.mStatusMessagePanel = pStatusMessagePanel;
+	}	
+	
+	public JPanel getPanelLeftHorizontal() {
+		return mPanelLeftHorizontal;
 	}	
 	/**
 	 * ========================
