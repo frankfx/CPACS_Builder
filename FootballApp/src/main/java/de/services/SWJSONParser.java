@@ -310,7 +310,7 @@ public class SWJSONParser {
 		return lResultList.iterator();
 	}	
 	
-	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverIDs(List<String> pIDList, int pDuration){
+	public static Iterator<SoccerwayMatchModel> getFixturesBySWObserverIDs(List<String> pIDList, int pDuration){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 			
 		LocalDate lToday = LocalDate.now(); 

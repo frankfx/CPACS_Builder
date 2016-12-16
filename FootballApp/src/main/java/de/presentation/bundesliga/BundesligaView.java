@@ -41,12 +41,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JPanel mPanelLeftHorizontal;
 
 	// Menu items
-	private JMenuItem menuItemLoadCSV = new JMenuItem("Load CSV");
-	private JMenuItem menuItemSaveCSV = new JMenuItem("Save CSV");
 	private JMenuItem menuItemDBConnect = new JMenuItem("Connect DB");	
 	private JMenuItem menuItemDBDisConnect = new JMenuItem("Disconnect DB");
-	private JMenuItem menuItemCommitDB = new JMenuItem("Commit DB");	
-	private JMenuItem menuItemPullDB = new JMenuItem("Pull DB");		
+	private JMenuItem menuItemMinimizeView = new JMenuItem("Minimize");	
+	private JMenuItem menuItemPredictionDialog = new JMenuItem("Bet prediction");		
 	private JMenuItem menuItemPrint = new JMenuItem("Print");
 	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
 	private JMenuItem menuItemLinkTipico = new JMenuItem("tipico.de");
@@ -122,7 +120,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		//getContentPane().add(mButtonPanel, BorderLayout.SOUTH);
 		getContentPane().add(mStatusMessagePanel, BorderLayout.SOUTH);
 		
-		
 		createMenuBar();
 	}
 
@@ -133,13 +130,9 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		JMenu menuConfig = new JMenu("Configure");
 		JMenu menuProperties = new JMenu("Properties");
 		JMenu menuLinks = new JMenu("Links");
+		JMenu menuExtras = new JMenu("Extras");
 		JMenu menuHelp = new JMenu("Help");
 		
-		menuFile.add(menuItemLoadCSV);
-		menuFile.add(menuItemSaveCSV);
-		menuFile.addSeparator();
-		menuFile.add(menuItemCommitDB);
-		menuFile.add(menuItemPullDB);
 		menuFile.addSeparator();
 		menuFile.add(menuItemPrint);
 		menuFile.addSeparator();
@@ -154,12 +147,16 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		menuLinks.add(menuItemLinkTipico);
 		menuLinks.add(menuItemLinkSoccerway);
 
+		menuExtras.add(menuItemMinimizeView);
+		menuExtras.add(menuItemPredictionDialog);
+		
 		menuHelp.add(menuItemAbout);
 		
 		bar.add(menuFile);
 		bar.add(menuConfig);
 		bar.add(menuProperties);
 		bar.add(menuLinks);
+		bar.add(menuExtras);
 		bar.add(menuHelp);
 		
 		this.setJMenuBar(bar);		
@@ -178,14 +175,6 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     	this.mSWResultPanel.getSubmitButton().addActionListener(l);
     }
 
-    public void setMenuItemLoadCSVListener(ActionListener l){
-    	this.menuItemLoadCSV.addActionListener(l);
-    }  	
-
-    public void setMenuItemSaveCSVListener(ActionListener l){
-    	this.menuItemSaveCSV.addActionListener(l);
-    }    
-    
 	public void setMenuItemExitListener(ActionListener l){
     	this.menuItemExit.addActionListener(l);
     }  
@@ -198,12 +187,12 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
     	this.menuItemDBDisConnect.addActionListener(l);
     }     
 
-	public void setMenuItemCommitDB(ActionListener l) {
-		this.menuItemCommitDB.addActionListener(l);
+	public void setMenuItemMinimizeView(ActionListener l) {
+		this.menuItemMinimizeView.addActionListener(l);
 	}    
 	
-	public void setMenuItemPullDB(ActionListener l){
-		this.menuItemPullDB.addActionListener(l);
+	public void setMenuItemBetPrediction(ActionListener l){
+		this.menuItemPredictionDialog.addActionListener(l);
 	}
     
 	public void setMenuItemLinkTipico(ActionListener l) {
@@ -277,7 +266,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		this.mConsolenPanel = lConsolenPanel;
 	}
 	
-	public SWAufgabenPanel getAufgabenPanel(){
+	public SWAufgabenPanel getFixturesPanel(){
 		return mAufgabenPanel;
 	}
 	
@@ -299,6 +288,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	
 	public JPanel getPanelLeftHorizontal() {
 		return mPanelLeftHorizontal;
+	}	
+	
+	public JSplitPane getSplitPaneVertikal() {
+		return mSplitPaneVertikal;
 	}	
 	/**
 	 * ========================

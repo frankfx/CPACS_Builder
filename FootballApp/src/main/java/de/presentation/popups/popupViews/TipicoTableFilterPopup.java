@@ -1,5 +1,6 @@
 package de.presentation.popups.popupViews;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -13,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import com.mysql.jdbc.StringUtils;
 
 import de.business.TipicoTableFilterModel;
 import de.presentation.popups.IPopup;
@@ -36,6 +39,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	
 	public TipicoTableFilterPopup(Object[] pParams) {
 		// the parent must wait for the dialog
+		mResultType = (Boolean) pParams[0] ? MessageType.FILTERED : MessageType.UNFILTERED;
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		// creates the dialog
 		this.initView();
@@ -50,14 +54,12 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 		JButton lExitButton = createExitButton();
         JButton lAddButton = createAddNewFilterRowButton();
 		JButton lFilterButton = createFilterButton();
-		JButton lUnFilterButton = createUnFilterButton();
 
 		// Add control panel to add new filter rows or close the window
 		JPanel lControlPanel = new JPanel();
-		lControlPanel.setLayout(new GridLayout(1, 4));
+		lControlPanel.setLayout(new GridLayout(1, 3));
 		lControlPanel.add(lAddButton);
 		lControlPanel.add(lFilterButton);
-		lControlPanel.add(lUnFilterButton);
 		lControlPanel.add(lExitButton);
 
 		this.getContentPane().add(lControlPanel);        
@@ -73,34 +75,26 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
         this.setVisible(true);		
 	}
 
-	private JButton createUnFilterButton() {
-		JButton lUnfilterButton = new JButton("Unfiltered");
-		
-		lUnfilterButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mResultType = MessageType.UNFILTERED;
-				dispose();
-			}
-		});
-		
-		return lUnfilterButton;
-	}
-
 	private JButton createFilterButton() {
-		JButton lOKButton = new JButton("Filter");
-	
-		lOKButton.addActionListener(new ActionListener() {
+		JButton lFilterButton = new JButton(mResultType.equals(MessageType.FILTERED) ? "UNFILTER" : "FILTER");
+		
+		if (mResultType.equals(MessageType.FILTERED))
+			lFilterButton.setBackground(new Color(100, 125, 250).brighter().brighter());
+
+		lFilterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(validateFilterInput()){
+				if (mResultType.equals(MessageType.FILTERED)){
+					mResultType = MessageType.UNFILTERED;
+					dispose();
+				} else if(validateFilterInput()){
 					mResultType = MessageType.FILTERED;
 					dispose();
 				}
 			}
 		});
 		
-		return lOKButton;
+		return lFilterButton;
 	}
 
 	private JButton createExitButton(){
@@ -180,7 +174,7 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 					lDataType.equals(TipicoDataType.EXPENSES);
 			
 			boolean isInvalidNumericalValue = isNumericalDataType && Float.isNaN(lModel.getFilterValueAsFloat());
-			boolean isInvalidStringValue = !isNumericalDataType && (lModel.getFilterValue() == null);
+			boolean isInvalidStringValue = !isNumericalDataType && (StringUtils.isNullOrEmpty(lModel.getFilterValue()));
 
 			if (isInvalidNumericalValue || isInvalidStringValue){
 				PopupFactory.getPopup(PopupType.ERROR, FAMessages.MSG_WRONG_FILTER_INPUT_VALUE + " (\"" + lModel.getFilterValue() +"\")");
@@ -195,9 +189,8 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	public String[] requestInputData() {
 		if (mResultType.equals(MessageType.FILTERED)){
 			return mTipicoTableFilterModels.stream().map(i -> i.toString()).toArray(String[]::new);
-		} else if (mResultType.equals(MessageType.UNFILTERED)){
-			mTipicoTableFilterModels.removeAll(mTipicoTableFilterModels);
-			return mTipicoTableFilterModels.stream().map(i -> i.toString()).toArray(String[]::new);
+		} else if (mResultType.equals(MessageType.UNFILTERED)) {
+			return new String[]{};
 		} else {
 			return null;
 		}
@@ -207,10 +200,10 @@ public class TipicoTableFilterPopup extends JDialog implements IPopup {
 	public List<TipicoTableFilterModel> requestInputDataAsObjectList() {
 		if (mResultType.equals(MessageType.FILTERED)){
 			return mTipicoTableFilterModels;
-		} else if (mResultType.equals(MessageType.UNFILTERED)){
-			mTipicoTableFilterModels.removeAll(mTipicoTableFilterModels);
-			return mTipicoTableFilterModels;
-		} else
+		} else if (mResultType.equals(MessageType.UNFILTERED)) {
+			return new ArrayList<TipicoTableFilterModel>();
+		} else {
 			return null;
+		}
 	}
 }

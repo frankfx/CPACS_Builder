@@ -1,36 +1,20 @@
 package de.presentation.bundesliga;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
 import de.presentation.JSplitButton;
-import de.services.ResourceService;
-import de.types.PersistenceType;
 
 public class TipicoBetView extends AbstractPanelContainer {
 	/**
@@ -40,6 +24,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 	
 	private TipicoBetTable mTable;
 	private TipicoTableModel mTableModel;
+	private TableRowSorter<TipicoTableModel> mSorter;
 	private JScrollPane mTablePane;	
 	private JButton mBtnBetValue;
 	private JButton mBtnNew;
@@ -74,8 +59,8 @@ public class TipicoBetView extends AbstractPanelContainer {
 		mTable.setPreferredScrollableViewportSize(mTable.getPreferredSize());
         mTable.setFillsViewportHeight(true);		
         
-		TableRowSorter<TipicoTableModel> sorter = new TableRowSorter<TipicoTableModel>(mTableModel);
-		mTable.setRowSorter(sorter);
+		mSorter = new TableRowSorter<TipicoTableModel>(mTableModel);
+		mTable.setRowSorter(mSorter);
 		
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
@@ -226,6 +211,14 @@ public class TipicoBetView extends AbstractPanelContainer {
 	public void setTable(TipicoBetTable pTable) {
 		this.mTable = pTable;
 	}
+	
+	public TableRowSorter<TipicoTableModel> getSorter() {
+		return mSorter;
+	}
+
+	public void setSorter(TableRowSorter<TipicoTableModel> mSorter) {
+		this.mSorter = mSorter;
+	}	
 	
 	public TipicoTableModel getTableModel() {
 		return mTableModel;

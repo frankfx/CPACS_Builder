@@ -1,6 +1,7 @@
 package de.business;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
@@ -8,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.RowFilter.ComparisonType;
 
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
@@ -16,6 +18,7 @@ import de.types.FilterConnectionType;
 import de.types.FilterOperationType;
 import de.types.TipicoDataType;
 import de.utils.FAMessages;
+import de.utils.Tupel;
 
 public class TipicoTableFilterModel {
 	private JPanel mMainPanel;
@@ -35,9 +38,7 @@ public class TipicoTableFilterModel {
 		mFilterOperation.addItem(FilterOperationType.EQUAL);
 		mFilterOperation.addItem(FilterOperationType.UNEQUAL);
 		mFilterOperation.addItem(FilterOperationType.LESS);
-		mFilterOperation.addItem(FilterOperationType.LESS_OR_EQUAL);
 		mFilterOperation.addItem(FilterOperationType.GREATER);
-		mFilterOperation.addItem(FilterOperationType.GREATER_OR_EQUAL);
 		
 		mFilterConnector = new JComboBox<FilterConnectionType>();
 		mFilterConnector.addItem(FilterConnectionType.AND);
@@ -45,7 +46,6 @@ public class TipicoTableFilterModel {
 		mFilterConnector.setVisible(false);
 		
 		mFilterValue = new JTextField();
-		
 		mRemoveButton = new JButton();
 		
 		mMainPanel = new JPanel();
@@ -79,6 +79,23 @@ public class TipicoTableFilterModel {
 	public TipicoDataType getFilterDataType(){
 		return (TipicoDataType)mTableColumn.getSelectedItem();
 	}
+	
+	public Tupel<ComparisonType, Float> getFilterOperationAsTupelComparisonTypeFloat(){
+		FilterOperationType lFilterType = getFilterOperation();
+		
+		switch (lFilterType) {
+		case EQUAL: 
+			return new Tupel<ComparisonType, Float>(ComparisonType.EQUAL, getFilterValueAsFloat());
+		case UNEQUAL:
+			return new Tupel<ComparisonType, Float>(ComparisonType.NOT_EQUAL, getFilterValueAsFloat());
+		case LESS:
+			return new Tupel<ComparisonType, Float>(ComparisonType.BEFORE, getFilterValueAsFloat());
+		case GREATER:
+			return new Tupel<ComparisonType, Float>(ComparisonType.AFTER, getFilterValueAsFloat());
+		default:
+			return null;
+		}
+	}	
 
 	public float getFilterValueAsFloat(){
 		try{

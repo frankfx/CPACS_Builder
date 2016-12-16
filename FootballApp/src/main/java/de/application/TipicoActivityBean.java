@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,7 +22,6 @@ import javax.swing.event.ListSelectionListener;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
-import de.presentation.filter.ICriteria;
 import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
@@ -42,6 +41,8 @@ public class TipicoActivityBean implements ISubController{
 	private BundesligaActivityBean mBundesligaListener;
 	private Database mDB = null;
 	private TipicoBetView mView;
+	
+	private boolean mFilterActivated = false; 
 
 	final static Logger logger = LoggerService.getInstance().getLogger();
 	
@@ -141,7 +142,7 @@ public class TipicoActivityBean implements ISubController{
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
-					actionStartSQLPrompt();
+					actionStartFilterDialog();
 				}
 			}
 		});
@@ -563,7 +564,7 @@ public class TipicoActivityBean implements ISubController{
 		} else{
 			String[] lValues = PopupFactory.getPopup(PopupType.TIPICO_NEW_POPUP, new Object[] { pTipicoModel }).requestInputData();
 			if (lValues == null){
-				mBundesligaListener.actionUpdateStatusBar(MessageType.ERROR, FAMessages.MSG_NO_VALID_INPUT);
+				mBundesligaListener.actionUpdateStatusBar(MessageType.ERROR, FAMessages.MSG_NO_VALID_INPUT, 5000);
 				return false;
 			} else if(!updateTipicoEntry(pTipicoModel, lValues, isNewEntry)){
 				lResult = FAMessages.MSG_NO_VALID_INPUT;
@@ -603,24 +604,23 @@ public class TipicoActivityBean implements ISubController{
  // BEGIN ACTION
  // ========================
 	
-
-	private void actionStartSQLPrompt() {
+	private void actionStartFilterDialog() {
       	// call child widget to get the filter assertions
-		final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, null); 
+		final IPopup popup = PopupFactory.getPopup(PopupType.TIPICO_TABLE_FILTER_POPUP, new Object[]{mFilterActivated}); 
       	List<?> lFilterExpressions = popup.requestInputDataAsObjectList();
       	
       	// filter list with the filter expressions given in the child popup widget
 		if (lFilterExpressions != null) {
-			// revert table list for unfilter operation (empty lFilterExpressions) 
-			
-			// creates the complete coherent filter expression
-			ICriteria lCriteria = FilterService.getCompleteCriteriaExpressionRec(lFilterExpressions);
-				
-			List<TipicoModel> lResultList = lCriteria == null ? null : lCriteria.matchedCriteria(mView.getTableModel().getAsList());
-				
-			updateTableInFilterMode(lResultList);
-		}	
-	}
+			if (lFilterExpressions.isEmpty()){
+				mView.getSorter().setRowFilter(null);
+				mFilterActivated = false;
+			} else {
+				// creates the complete coherent filter expression
+				mView.getSorter().setRowFilter(FilterService.getCompleteCriteriaExpressionRec(lFilterExpressions));
+				mFilterActivated = true;
+			}
+		} 
+	}	
 
 	/**
 	 * Local table function to create a new entry

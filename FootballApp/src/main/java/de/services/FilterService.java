@@ -1,49 +1,65 @@
 package de.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
+
 import de.business.TipicoTableFilterModel;
-import de.presentation.filter.AndCriteria;
-import de.presentation.filter.CriteriaExpenses;
-import de.presentation.filter.CriteriaWinValue;
-import de.presentation.filter.ICriteria;
-import de.presentation.filter.OrCriteria;
+import de.business.TipicoTableModel;
+import de.types.TipicoDataType;
+import de.utils.Tupel;
 
 public class FilterService {
-	private static ICriteria getCriteriaByTipicoDataType(TipicoTableFilterModel pModel){
-//		ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
+	private static RowFilter<TipicoTableModel, Object> getCriteriaByTipicoDataType(TipicoTableFilterModel pModel){
+		// ID, TEAM, WINVALUE, EXPENSES, ATTEMPTS, DATE, SUCCESS
+		Tupel<ComparisonType, Float> tupel;
+		
 		switch (pModel.getFilterDataType()) {
+		case TEAM:
+			return RowFilter.regexFilter(pModel.getFilterValue(), TipicoDataType.TEAM.ordinal());
 		case WINVALUE: 
-			return new CriteriaWinValue(pModel.getFilterValueAsFloat(), pModel.getFilterOperation());
+			tupel = pModel.getFilterOperationAsTupelComparisonTypeFloat();
+			return RowFilter.numberFilter(tupel.getFirst(), tupel.getSecond(), TipicoDataType.WINVALUE.ordinal()); 
 		case EXPENSES: 
-			return new CriteriaExpenses(pModel.getFilterValueAsFloat(), pModel.getFilterOperation());
+			tupel = pModel.getFilterOperationAsTupelComparisonTypeFloat();
+			return RowFilter.numberFilter(tupel.getFirst(), tupel.getSecond(), TipicoDataType.EXPENSES.ordinal()); 
 		default:
 			return null;
 		}		
-	}
+	}	
 	
-	public static ICriteria getCompleteCriteriaExpressionRec(List<?> pList){
+	public static RowFilter<TipicoTableModel, Object> getCompleteCriteriaExpressionRec(List<?> pList){
 		if (pList != null && !pList.isEmpty())
 			return getCompleteCriteriaExpressionRec(0, pList.size(), pList);
 		return null;
 	}
 	
-	private static ICriteria getCompleteCriteriaExpressionRec(int curPos, int max, List<?> pList){
+	private static RowFilter<TipicoTableModel, Object> getCompleteCriteriaExpressionRec(int curPos, int max, List<?> pList){
 		boolean isLastFilterRow = max <= curPos + 1;
 		TipicoTableFilterModel lModel = (TipicoTableFilterModel) pList.get(curPos);
-		ICriteria curFilterCriteria = getCriteriaByTipicoDataType( (TipicoTableFilterModel) pList.get(curPos)); 
+		
+		RowFilter<TipicoTableModel, Object> curRowFilter = getCriteriaByTipicoDataType( lModel );
 		
 		if (isLastFilterRow){
-			return curFilterCriteria;
+			return curRowFilter;
 		} else {
 			switch(lModel.getFilterConnectorType()){
 			case AND : 
-				return new AndCriteria(curFilterCriteria, getCompleteCriteriaExpressionRec(curPos+1, max, pList));
+				List<RowFilter<TipicoTableModel, Object>> list = new ArrayList<RowFilter<TipicoTableModel, Object>>();
+				list.add(curRowFilter);
+				list.add(getCompleteCriteriaExpressionRec(curPos+1, max, pList));
+				return RowFilter.andFilter(list);
 			case OR : 
-				return new OrCriteria(curFilterCriteria, getCompleteCriteriaExpressionRec(curPos+1, max, pList));
+				list = new ArrayList<RowFilter<TipicoTableModel, Object>>();
+				list.add(curRowFilter);
+				list.add(getCompleteCriteriaExpressionRec(curPos+1, max, pList));
+				return RowFilter.orFilter(list);
 			default:
 				return null;
 			}
 		}
-	}
+	}	
+	
 }
