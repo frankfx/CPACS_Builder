@@ -145,8 +145,7 @@ public class BundesligaActivityBean {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TipicoActivityBean mTipicoController = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
-				List<Object[]> lPredictions = MathTipico.getFinancialBetPrediction(mTipicoController.getModelsOfSelectedRows());
-		    	new StakeOverviewDialog(mView, "Test", 100, 100, lPredictions);
+		    	new StakeOverviewDialog(mView, "Test", 100, 100, MathTipico.getFinancialBetPrediction(mTipicoController.getTipicoModelsAsList()));
 			}
 		});			
 		

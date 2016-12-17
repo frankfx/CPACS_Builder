@@ -2,18 +2,21 @@ package de.presentation.bundesliga;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -33,8 +36,8 @@ public class StakeOverviewDialog extends JDialog{
 	private JTable mTable;
 	private JTable mHeaderTable;
 	
-	private final int TABLE_ROW = 1; 
-	private final int TABLE_COL = 1; 
+	private final int TABLE_ROW = 0; 
+	private final int TABLE_COL = 0; 
 	
 	// should be final because of its usage to initialize a rowSortListener in initView()
 	private final boolean mSortLineNumber = true;
@@ -67,14 +70,6 @@ public class StakeOverviewDialog extends JDialog{
 			model.addRow(lRowData);
 		}
 	}
-	
-	private void actionAddNewRow() {
-		DefaultTableModel model = (DefaultTableModel) mTable.getModel();
-		model.addRow(new Integer[]{1, 2, 2});
-		
-		((AbstractTableModel) mHeaderTable.getModel()).fireTableDataChanged();
-	}	
-	
 	
 	public void initView(){
 		mTable = new JTable(TABLE_ROW, TABLE_COL);
@@ -154,14 +149,9 @@ public class StakeOverviewDialog extends JDialog{
 			});
 		}
 		
-		// button to a new row
-		JButton mButtonAddRow = new JButton("add row");
-		mButtonAddRow.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent pArg0) {
-				actionAddNewRow();
-			}
-		});
+		JTextField lTextFieldFilterTeam = new JTextField();
+		JLabel lLabelFilterTeam = new JLabel(" Team <Filter> : ");
+		lLabelFilterTeam.setLabelFor(lTextFieldFilterTeam);
 		
 		// button to filter the table content
 		JButton mButtonFilter = new JButton("Toggle filter");
@@ -183,20 +173,30 @@ public class StakeOverviewDialog extends JDialog{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (sorter.getRowFilter() != null) {
-					sorter.setRowFilter(null);
-					sorter.setRowFilter(RowFilter.regexFilter("t"));
-				} else {
-					sorter.setRowFilter(filter);
-				}
+				sorter.setRowFilter(RowFilter.regexFilter(lTextFieldFilterTeam.getText(),0));
+				// sorter.setRowFilter(sorter.getRowFilter() != null ? null : filter);
+			}
+		});
+		
+		// Exit Button
+		JButton lButtonExit = new JButton("Exit");
+		lButtonExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 		
 		JScrollPane pane = new JScrollPane(mTable);
 		pane.setRowHeaderView(mHeaderTable);
 		
-		getContentPane().add(pane);
-		getContentPane().add(mButtonFilter, BorderLayout.PAGE_END);
-		getContentPane().add(mButtonAddRow, BorderLayout.WEST);
+		Container box = Box.createHorizontalBox();
+	    box.add(lLabelFilterTeam);
+	    box.add(lTextFieldFilterTeam);
+	    box.add(mButtonFilter);
+		
+		getContentPane().add(box, BorderLayout.NORTH);
+		getContentPane().add(pane, BorderLayout.CENTER);
+		getContentPane().add(lButtonExit, BorderLayout.SOUTH);
 	}
 }

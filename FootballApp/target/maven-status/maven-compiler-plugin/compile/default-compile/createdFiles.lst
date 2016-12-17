@@ -57,6 +57,7 @@ de\presentation\popups\popupViews\SWPropertyPopup$2.class
 de\business\SpinnerTemporalModel.class
 de\types\SoccerwayMatchType.class
 de\application\TipicoActivityBean$7.class
+de\presentation\bundesliga\StakeOverviewDialog$5$1.class
 de\presentation\popups\popupViews\TipicoNewPopup$1.class
 de\presentation\bundesliga\StakeOverviewDialog$5.class
 de\services\LoggerService.class
@@ -83,7 +84,6 @@ de\application\TipicoActivityBean$10.class
 de\presentation\popups\popupViews\DatabaseBrowserPopup.class
 de\application\TipicoActivityBean.class
 de\presentation\bundesliga\ConsolenPanel.class
-de\presentation\bundesliga\StakeOverviewDialog$6$1.class
 de\application\BundesligaActivityBean$12.class
 de\presentation\bundesliga\TipicoBetView.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$2.class

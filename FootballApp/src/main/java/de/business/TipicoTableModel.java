@@ -133,7 +133,7 @@ public class TipicoTableModel extends AbstractTableModel {
 		return pRowIndex >= 0 && pRowIndex < list.size() ? list.get(pRowIndex) : null;
 	}
 	
-	public List<TipicoModel> getAsList(){
+	public List<TipicoModel> getTipicoModelsAsList(){
 		return list;
 	}
 

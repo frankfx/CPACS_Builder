@@ -533,6 +533,10 @@ public class TipicoActivityBean implements ISubController{
 		
 		return lResult;
 	}
+
+	public List<TipicoModel> getTipicoModelsAsList(){
+		return mView.getTableModel().getTipicoModelsAsList();
+	}	
 	
 	/**
 	 * get index of the selected table row
@@ -777,7 +781,7 @@ public class TipicoActivityBean implements ISubController{
 	
 	@Override
 	public void print() {
-		TipicoPrintService.printTipicoTableModel(mView.getTableModel().getAsList());
+		TipicoPrintService.printTipicoTableModel(getTipicoModelsAsList());
 	}
 
  // ========================
@@ -810,7 +814,7 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	public void setTipicoModelsToSuccess(List<String> pTipicoIDs){
-		List<TipicoModel> lBets = mView.getTableModel().getAsList();
+		List<TipicoModel> lBets = getTipicoModelsAsList();
 		pTipicoIDs.stream().forEach(lId -> lBets.stream().filter(lModel -> lModel.getID().equals(lId)).forEach(lModel -> lModel.setSuccessTrue()));
 	}
  // ========================
