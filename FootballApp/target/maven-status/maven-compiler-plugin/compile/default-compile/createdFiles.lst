@@ -91,12 +91,14 @@ de\services\SQLService.class
 de\presentation\popups\popupViews\DatabasePullDetailPopup.class
 de\utils\DoubleKeyAdapter.class
 de\application\SoccerwayActivityBean$1.class
+de\services\FilterService$MyDateFilter.class
 de\types\BetPredictionType.class
 de\application\TipicoActivityBean$5.class
 de\business\SoccerwayMatchModel.class
 de\presentation\JSplitButton$1.class
 de\presentation\popups\PopupFactory$1.class
 de\application\BundesligaActivityBean$2.class
+de\presentation\bundesliga\TipicoBetView$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$1.class
 de\presentation\bundesliga\SWAufgabenPanel.class
 de\application\BundesligaActivityBean$13.class

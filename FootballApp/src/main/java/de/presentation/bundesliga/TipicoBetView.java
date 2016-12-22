@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.util.Comparator;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -12,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.AbstractPanelContainer;
 import de.presentation.JSplitButton;
@@ -216,10 +218,6 @@ public class TipicoBetView extends AbstractPanelContainer {
 		return mSorter;
 	}
 
-	public void setSorter(TableRowSorter<TipicoTableModel> mSorter) {
-		this.mSorter = mSorter;
-	}	
-	
 	public TipicoTableModel getTableModel() {
 		return mTableModel;
 	}
@@ -233,4 +231,12 @@ public class TipicoBetView extends AbstractPanelContainer {
 	 * END GETTER AND SETTER
 	 * ========================
 	 */
+	public void sortTableByDate(){
+		getTableModel().getTipicoModelsAsList().sort(new Comparator<TipicoModel>() {
+			@Override
+			public int compare(TipicoModel o1, TipicoModel o2) {
+				return o1.getDate().compareTo(o2.getDate());
+			}
+		});
+	}	
 }

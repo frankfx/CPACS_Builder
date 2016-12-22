@@ -2,16 +2,11 @@ package de.presentation.bundesliga;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -21,7 +16,6 @@ import javax.swing.table.TableCellRenderer;
 
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
-import de.services.ResourceService;
 import de.types.PersistenceType;
 
 public class TipicoBetTable extends JTable{

@@ -156,6 +156,7 @@ public class StakeOverviewDialog extends JDialog{
 		// button to filter the table content
 		JButton mButtonFilter = new JButton("Toggle filter");
 		mButtonFilter.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
 			private RowFilter<TableModel, Object> filter = new RowFilter<TableModel, Object>() {
 				
 				@Override

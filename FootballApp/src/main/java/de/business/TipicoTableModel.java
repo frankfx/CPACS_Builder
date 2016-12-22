@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 
 import de.types.BetPredictionType;
 import de.types.TipicoDataType;
-import de.utils.Utils;
 
 public class TipicoTableModel extends AbstractTableModel {
 

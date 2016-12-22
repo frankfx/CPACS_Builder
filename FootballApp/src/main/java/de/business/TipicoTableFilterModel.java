@@ -1,8 +1,8 @@
 package de.business;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,8 +31,10 @@ public class TipicoTableFilterModel {
 	public TipicoTableFilterModel(boolean pShowRemoveButton) {
 		mTableColumn = new JComboBox<TipicoDataType>();
 		mTableColumn.addItem(TipicoDataType.TEAM);
+		mTableColumn.addItem(TipicoDataType.BET_PREDICTION);
 		mTableColumn.addItem(TipicoDataType.EXPENSES);
 		mTableColumn.addItem(TipicoDataType.WINVALUE);
+		mTableColumn.addItem(TipicoDataType.DATE);
 		
 		mFilterOperation = new JComboBox<FilterOperationType>();
 		mFilterOperation.addItem(FilterOperationType.EQUAL);
@@ -81,22 +83,31 @@ public class TipicoTableFilterModel {
 	}
 	
 	public Tupel<ComparisonType, Float> getFilterOperationAsTupelComparisonTypeFloat(){
+		return getFilterOperationAsTupelCompamparisonType(getFilterValueAsFloat());
+	}	
+	
+	public Tupel<ComparisonType, LocalDate> getFilterOperationAsTupelComparisonTypeDate(){
+		return this.getFilterOperationAsTupelCompamparisonType(LocalDate.parse(mFilterValue.getText()));
+	}
+	
+	private <E> Tupel<ComparisonType, E> getFilterOperationAsTupelCompamparisonType(E pFilterValue){
 		FilterOperationType lFilterType = getFilterOperation();
 		
 		switch (lFilterType) {
 		case EQUAL: 
-			return new Tupel<ComparisonType, Float>(ComparisonType.EQUAL, getFilterValueAsFloat());
+			return new Tupel<ComparisonType, E>(ComparisonType.EQUAL, pFilterValue);
 		case UNEQUAL:
-			return new Tupel<ComparisonType, Float>(ComparisonType.NOT_EQUAL, getFilterValueAsFloat());
+			return new Tupel<ComparisonType, E>(ComparisonType.NOT_EQUAL, pFilterValue);
 		case LESS:
-			return new Tupel<ComparisonType, Float>(ComparisonType.BEFORE, getFilterValueAsFloat());
+			return new Tupel<ComparisonType, E>(ComparisonType.BEFORE, pFilterValue);
 		case GREATER:
-			return new Tupel<ComparisonType, Float>(ComparisonType.AFTER, getFilterValueAsFloat());
+			return new Tupel<ComparisonType, E>(ComparisonType.AFTER, pFilterValue);
 		default:
 			return null;
 		}
-	}	
-
+		
+	}
+	
 	public float getFilterValueAsFloat(){
 		try{
 			return Float.parseFloat(mFilterValue.getText());
@@ -104,7 +115,7 @@ public class TipicoTableFilterModel {
 			return Float.NaN;
 		}
 	}
-	
+
 	public String getFilterValue() {
 		return mFilterValue.getText();
 	}

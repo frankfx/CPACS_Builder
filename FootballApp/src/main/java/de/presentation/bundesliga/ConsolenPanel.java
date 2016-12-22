@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -34,6 +32,7 @@ public class ConsolenPanel extends AbstractPanelContainer {
 	@Override
 	public void initView() {
 		mConsole = new JTextArea();
+		mConsole.setEditable(false);
 		mBtnClear = new JButton("Clear");
 
 		JScrollPane scroll = new JScrollPane(mConsole);

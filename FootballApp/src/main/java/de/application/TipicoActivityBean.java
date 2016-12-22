@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -429,6 +428,7 @@ public class TipicoActivityBean implements ISubController{
 	 */		
 	public void actionInitTable(){
 		if (readFromDatabaseToTableModel(mView.getTableModel(), SQLService.SQL_SELECT_ALL_FROM_TIPICO)) {
+			mView.sortTableByDate();
 			mView.getTableModel().fireTableDataChanged();
 		}
 	}	
