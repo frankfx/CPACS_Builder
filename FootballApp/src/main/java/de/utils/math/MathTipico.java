@@ -47,6 +47,7 @@ public class MathTipico {
 		while (lExpenses < pThreshold){
 			lBetValue = MathTipico.computeBetValue(pTipicoModel.getWinValue(), lExpenses, pOdd);
 			lExpenses += lBetValue;
+			// [ <value to bet> -- <new total costs> ]
 			list.add("[" + Math.round(100f*lBetValue)/100f + " -- " +  Math.round(100f*lExpenses)/100f + "]");
 		}
 		

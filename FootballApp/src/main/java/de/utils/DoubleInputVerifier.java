@@ -26,7 +26,7 @@ public class DoubleInputVerifier extends InputVerifier {
 		}
 	}
 
-	public boolean isValid(String pInput) {
+	private boolean isValid(String pInput) {
 		return pInput.matches(pattern) || pInput.equals("");
 	}
 

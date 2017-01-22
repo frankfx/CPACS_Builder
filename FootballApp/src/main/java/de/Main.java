@@ -1,6 +1,7 @@
 package de;
 
 import de.application.BundesligaActivityBean;
+import de.application.IController;
 import de.presentation.bundesliga.BundesligaView;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 		//JFrame.setDefaultLookAndFeelDecorated(true);
 		BundesligaView view = new BundesligaView();
 		
-		BundesligaActivityBean controller = new BundesligaActivityBean(view);
+		IController controller = new BundesligaActivityBean(view);
 		controller.runApp();
 	}
 }

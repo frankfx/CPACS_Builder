@@ -6,12 +6,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
@@ -31,9 +28,8 @@ import de.services.LoggerService;
 import de.utils.FAMessages;
 import de.utils.math.MathTipico;
 
-public class BundesligaActivityBean {
+public class BundesligaActivityBean implements IController{
 	private BundesligaView mView;
-	private Map<String,ISubController> mSubController;
 	private boolean mFixturesErzeugtFlag = false;
 	private boolean mResultsErzeugtFlag = false;
 	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
@@ -60,25 +56,6 @@ public class BundesligaActivityBean {
 	 */
 	public BundesligaActivityBean(BundesligaView pView) {
 		this.mView = pView;
-		this.mSubController = new HashMap<String,ISubController>();
-	}
-
-	/**
-	 * Add a child controller
-	 * 
-	 * @param pController adds a new sub controller to a controller list
-	 */
-	public void addSubController(String pKey, ISubController pController) {
-		this.mSubController.put(pKey, pController);
-	}
-
-	/**
-	 * Remove a child controller
-	 * 
-	 * @param pController adds a new sub controller to a controller list
-	 */
-	public void removeSubController(String pKey) {
-		this.mSubController.remove(pKey);
 	}
 
 	/**
@@ -344,14 +321,10 @@ public class BundesligaActivityBean {
 
 		mView.getFixturesPanel().clearTable();
 		
-		// add only one soccerwayMatchModel to each row (column 0)
-		Vector<SoccerwayMatchModel> vec;
-		// TODO create own model to avoid Vector (see createResults)
 		if(iter != null){
 			while (iter.hasNext()){
-				vec = new Vector<SoccerwayMatchModel>();
-				vec.add(iter.next());
-				mView.getFixturesPanel().addToTable(vec);			
+				// add only one soccerwayMatchModel to each row (column 0)
+				mView.getFixturesPanel().addToTable(iter.next());			
 			}
 			mView.getFixturesPanel().sortTableByDate();
 		}
@@ -385,9 +358,10 @@ public class BundesligaActivityBean {
 	}
 	
 	/**
-	 * Start App
+	 * implement abstract method of IController to initialize controller
 	 */
-	public void runApp() {
+	@Override
+	public void initRunnable() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -403,6 +377,6 @@ public class BundesligaActivityBean {
 				//mSubController.get(TIPICO_CONTROLLER_KEY).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
 				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
-		});
+		});		
 	}
 }

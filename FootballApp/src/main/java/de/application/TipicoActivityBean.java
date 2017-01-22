@@ -777,7 +777,6 @@ public class TipicoActivityBean implements ISubController{
  // ========================
  // END ACTION
  // ========================
- 
 	
 	@Override
 	public void print() {
@@ -806,13 +805,6 @@ public class TipicoActivityBean implements ISubController{
 		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}
 	
-	public void updateTableInFilterMode(List<TipicoModel> pList){
-		if (pList != null){
-			mView.getTableModel().setList(pList);
-		}
-		updateTable();
-	}
-	
 	public void setTipicoModelsToSuccess(List<String> pTipicoIDs){
 		List<TipicoModel> lBets = getTipicoModelsAsList();
 		pTipicoIDs.stream().forEach(lId -> lBets.stream().filter(lModel -> lModel.getID().equals(lId)).forEach(lModel -> lModel.setSuccessTrue()));
@@ -820,8 +812,4 @@ public class TipicoActivityBean implements ISubController{
  // ========================
  // END FUNCTION
  // ========================
-	
-	
-	
-	
 }

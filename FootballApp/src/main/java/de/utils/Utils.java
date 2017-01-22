@@ -57,7 +57,7 @@ public class Utils {
 		}
 	}
 	
-	private static String generateUniqueIDWithTimestamp(String pID){
+	public static String generateUniqueIDWithTimestamp(String pID){
 		// Erstellen der ID : Instant timestamp = Instant.now(); (Java 8)
 		return pID + "_" + Instant.now().toEpochMilli();
 	}	

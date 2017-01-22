@@ -17,7 +17,6 @@ public class TipicoTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	// storing the objects in list
 	List<TipicoModel> list;
-	List<TipicoModel> mBackupListPtr;
 	
 	public TipicoTableModel(){
 		this(null);
@@ -30,7 +29,6 @@ public class TipicoTableModel extends AbstractTableModel {
 			for (int i = 0; i < entries.length; i++) {
 				list.add(entries[i]);
 			}
-		mBackupListPtr = list;
 	}
 	
 	@Override
