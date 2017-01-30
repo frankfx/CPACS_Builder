@@ -12,6 +12,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import de.business.SWFixtureTableModel;
+import de.business.SWResultTableModel;
 import de.business.SoccerwayMatchModel;
 import de.utils.Utils;
 
@@ -43,21 +44,16 @@ public class SWFixturePanel extends JPanel{
 	}
 	
 	public void updateTableMarker(String pID){
-		DefaultTableModel lModel = (DefaultTableModel) mFixtureTable.getModel();
+		SWFixtureTableModel lModel = (SWFixtureTableModel) mFixtureTable.getModel();
 		ListSelectionModel selectionModel = mFixtureTable.getSelectionModel();
-		
-		String lFixtureIds, lSelectedId;
-		lSelectedId = Utils.getIDWithoutSuffix(pID);
 		
 		selectionModel.clearSelection();
 	
 		for (int row = 0; row < lModel.getRowCount(); row++){
-			lFixtureIds = ((SoccerwayMatchModel)lModel.getValueAt(row, 0)).getTeamID().toString();
-			
-			if (lSelectedId.equals(lFixtureIds)){
+			if (pID.equals(lModel.getSoccerwayMatchModel(row).getTeamID())){
 				selectionModel.addSelectionInterval(row, row);
 			}
-		}
+		}		
 	}	
 	
 	public void clearTable(){
@@ -67,11 +63,11 @@ public class SWFixturePanel extends JPanel{
 	
 	@SuppressWarnings("unchecked")
 	public void sortTableByDate(){
-		DefaultTableModel lModel = (DefaultTableModel) mFixtureTable.getModel();
-		lModel.getDataVector().sort(new Comparator<Vector<SoccerwayMatchModel>>() {
+		SWFixtureTableModel lModel = (SWFixtureTableModel) mFixtureTable.getModel();
+		lModel.getDataList().sort(new Comparator<SoccerwayMatchModel>() {
 			@Override
-			public int compare(Vector<SoccerwayMatchModel> o1, Vector<SoccerwayMatchModel> o2) {
-				return o1.get(0).getDate().compareTo(o2.get(0).getDate());
+			public int compare(SoccerwayMatchModel o1, SoccerwayMatchModel o2) {
+				return o1.getDate().compareTo(o2.getDate());
 			}
 		});
 	}

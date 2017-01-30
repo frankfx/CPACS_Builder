@@ -11,13 +11,16 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\FilterService
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\DoubleInputVerifier.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\math\MathTipico.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\SoccerwayMatchType.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\IController.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SoccerwayMatchModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\TipicoTableFilterModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\TipicoBetTable.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\SWResultPanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabaseConnectionPopup.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SWFixtureTableModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\DefaultPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\SWPropertyPopup.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\SWFixturePanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\MessageType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\BetPredictionType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\FAMessages.java
@@ -43,6 +46,7 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\Po
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\utils\TeamIDKeyAdapter.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabasePullDetailPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\FilterOperationType.java
+C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\SWDataType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\TipicoTableModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\SoccerwayActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\DatabaseBrowserPopup.java
@@ -50,12 +54,10 @@ C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\JSplitBut
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\popups\popupViews\TipicoNewPopup.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\ConsolenPanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\printing\TipicoPrintService.java
-C:\Users\frank\workspace\git\FootballApp\src\main\java\de\types\SWResultDataType.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\business\SpinnerTemporalModel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\StakeOverviewDialog.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\LoggerService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\application\StatisticActivityBean.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\TipicoBetView.java
-C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\bundesliga\SWAufgabenPanel.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\services\SQLService.java
 C:\Users\frank\workspace\git\FootballApp\src\main\java\de\presentation\IDefaultGUI.java

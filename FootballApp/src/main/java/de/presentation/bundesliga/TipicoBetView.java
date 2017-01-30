@@ -3,13 +3,17 @@ package de.presentation.bundesliga;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.Comparator;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
@@ -33,6 +37,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 	private JButton mBtnModify;	
 	private JButton mBtnDelete;
 	private JSplitButton mBtnDBSplit;
+	private JTextArea mTextDescription;
 	
 	public TipicoBetView() {	
 		// create an default panel
@@ -47,6 +52,7 @@ public class TipicoBetView extends AbstractPanelContainer {
 		mBtnModify = new JButton("Modify");
 		mBtnDelete = new JButton("Delete");
 		mBtnDBSplit = new JSplitButton("DB");
+		mTextDescription = new JTextArea(3,1);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -67,26 +73,34 @@ public class TipicoBetView extends AbstractPanelContainer {
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
 	    
+        mTextDescription.setBorder(BorderFactory.createTitledBorder("Description"));
+        mTextDescription.setEditable(false);
+        
 		this.add(mTablePane, c);
-		
+		c.gridx=0;
+		c.gridy=1;
+		c.gridwidth=5;
+		c.weightx=0.1;
+		c.weighty=0.0;	
+		c.insets.set(0, 0, 10, 0); 
+		this.add(mTextDescription, c);
 		c.fill = GridBagConstraints.HORIZONTAL;		
 		c.gridwidth = 1;
 		c.gridx = 0;
-		c.gridy = 1;
-		c.weightx=0.1;
-		c.weighty=0.0;
+		c.gridy = 2;
+		c.insets.set(0,0,0,0);
 		this.add(mBtnBetValue, c);
 		c.gridx = 1;
-		c.gridy = 1;
+		c.gridy = 2;
 		this.add(mBtnModify, c);
 		c.gridx = 2;
-		c.gridy = 1;
+		c.gridy = 2;
 		this.add(mBtnNew, c);
 		c.gridx = 3;
-		c.gridy = 1;
+		c.gridy = 2;
 		this.add(mBtnDelete, c);
 		c.gridx = 4;
-		c.gridy = 1;		
+		c.gridy = 2;		
 		c.weightx = 0.0;
 		this.add(mBtnDBSplit, c);
 	}
@@ -226,6 +240,13 @@ public class TipicoBetView extends AbstractPanelContainer {
 		this.mTableModel = pTableModel;
 	}	
 	
+	public void setDescriptionValue(String pText){
+		mTextDescription.setText(pText);
+	}
+	
+	public String getDescriptionValue(){
+		return mTextDescription.getText();
+	}
 	/**
 	 * ========================
 	 * END GETTER AND SETTER

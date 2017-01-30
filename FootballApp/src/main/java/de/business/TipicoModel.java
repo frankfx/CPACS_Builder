@@ -14,21 +14,22 @@ public class TipicoModel {
 	private float mExpenses;
 	private LocalDate mDate;
 	private boolean mSuccess;
+	private String mDescription;
 	private PersistenceType mPersistenceType;
 
 	public TipicoModel() {
-		this(null, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, LocalDate.now(), false, PersistenceType.NEW);
+		this(null, "Default", BetPredictionType.DRAW, 1.0f, 0.0f, LocalDate.now(), false, null, PersistenceType.NEW);
 	}
 	
 	public TipicoModel(String pID){
 		this.mID = pID;
 	}
 	
-	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess){
-		this(pID, pTeam, pPrediction, pWinValue, pExpenses, pDate, pSuccess, PersistenceType.NEW);
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess, String pDescription){
+		this(pID, pTeam, pPrediction, pWinValue, pExpenses, pDate, pSuccess, pDescription, PersistenceType.NEW);
 	}
 	
-	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess, PersistenceType pPersistenceType){
+	public TipicoModel(String pID, String pTeam, BetPredictionType pPrediction, float pWinValue, float pExpenses, LocalDate pDate, boolean pSuccess, String pDescription, PersistenceType pPersistenceType){
 		this.mID = pID;
 		this.mTeam = pTeam;
 		this.mBetPrediction = pPrediction;
@@ -36,6 +37,7 @@ public class TipicoModel {
 		this.mExpenses = pExpenses;
 		this.mDate = pDate;
 		this.mSuccess = pSuccess;
+		this.mDescription = pDescription;
 		this.mPersistenceType = pPersistenceType;
 	}
 	
@@ -96,6 +98,14 @@ public class TipicoModel {
 		this.mSuccess = true;
 		setPersistenceType(PersistenceType.NEW);
 	}
+	
+	public String getDescription() {
+		return mDescription;
+	}
+
+	public void setDescription(String pDescription) {
+		this.mDescription = pDescription;
+	}	
 	
 	public PersistenceType getPersistenceType() {
 		return mPersistenceType;

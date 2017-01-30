@@ -8,18 +8,19 @@ de\utils\math\MathTipico.class
 de\services\ResourceService.class
 de\application\TipicoActivityBean$12.class
 de\services\SWJSONParser.class
+de\presentation\bundesliga\SWFixturePanel.class
 de\application\BundesligaActivityBean$10.class
+de\types\SWDataType.class
 de\services\HyperlinkService.class
+de\presentation\bundesliga\SWFixturePanel$1.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup$1.class
 de\utils\Utils.class
 de\application\TipicoActivityBean$8.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
-de\presentation\bundesliga\SWAufgabenPanel$2.class
 de\application\BundesligaActivityBean$8.class
 de\presentation\bundesliga\StakeOverviewDialog$6.class
 de\presentation\bundesliga\TipicoBetTable$1.class
 de\presentation\bundesliga\StakeOverviewDialog$3.class
-de\presentation\bundesliga\SWAufgabenPanel$1.class
 de\application\TipicoActivityBean$9.class
 de\presentation\bundesliga\StatusPanel.class
 de\application\BundesligaActivityBean$5.class
@@ -35,6 +36,7 @@ de\presentation\bundesliga\BundesligaView.class
 de\application\StatisticActivityBean$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$3$1.class
 de\presentation\popups\popupViews\SWPropertyPopup.class
+de\application\IController.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$2.class
 de\application\TipicoActivityBean$3.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup.class
@@ -65,6 +67,7 @@ de\presentation\ButtonPanelContainer.class
 de\utils\FAMessages.class
 de\utils\Tupel.class
 de\services\Database.class
+de\business\SWFixtureTableModel.class
 de\presentation\bundesliga\StakeOverviewDialog$2.class
 de\application\BundesligaActivityBean$4.class
 de\application\TipicoActivityBean$13.class
@@ -75,6 +78,7 @@ de\business\TipicoModel.class
 de\services\PropertyService.class
 de\application\ISubController.class
 de\application\StatisticActivityBean.class
+de\types\SWDataType$1.class
 de\Main.class
 de\application\BundesligaActivityBean$1.class
 de\presentation\bundesliga\StakeOverviewDialog.class
@@ -100,11 +104,9 @@ de\presentation\popups\PopupFactory$1.class
 de\application\BundesligaActivityBean$2.class
 de\presentation\bundesliga\TipicoBetView$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$1.class
-de\presentation\bundesliga\SWAufgabenPanel.class
 de\application\BundesligaActivityBean$13.class
 de\application\SoccerwayActivityBean.class
 de\presentation\popups\IPopup.class
-de\types\SWResultDataType.class
 de\presentation\popups\popupViews\SWPropertyPopup$1.class
 de\utils\TeamIDInputVerifier.class
 de\application\BundesligaActivityBean$3.class

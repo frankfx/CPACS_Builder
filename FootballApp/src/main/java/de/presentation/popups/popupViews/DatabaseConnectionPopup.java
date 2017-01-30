@@ -42,16 +42,18 @@ public class DatabaseConnectionPopup implements IPopup {
 		lTemplates.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (!(lTemplates.getSelectedItem() == null)) {
-					if (lTemplates.getSelectedItem().toString().equals("localhost")) {
-						lHostname.setText("localhost");
-						lDatabase.setText("TestData");
-						lUser.setText("root");
-					} else if (lTemplates.getSelectedItem().toString().equals("db4free")) {
-						lHostname.setText("85.10.205.173");
-						lDatabase.setText("testdb_tipico");
-						lUser.setText("frankfx");
-					}
+				if (lTemplates.getSelectedItem() == null) {
+					lHostname.setText(null);
+					lDatabase.setText(null);
+					lUser.setText(null);
+				} else if (lTemplates.getSelectedItem().toString().equals("localhost")) {
+					lHostname.setText("localhost");
+					lDatabase.setText("TestData");
+					lUser.setText("root");
+				} else if (lTemplates.getSelectedItem().toString().equals("db4free")) {
+					lHostname.setText("85.10.205.173");
+					lDatabase.setText("testdb_tipico");
+					lUser.setText("frankfx");
 				}
 			}
 		});

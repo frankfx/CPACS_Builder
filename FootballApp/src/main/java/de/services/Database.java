@@ -200,9 +200,13 @@ public class Database {
 		Database db = new Database();
 		
 		//if (db.connect("localhost", "3306", "TestData", "root", "")){
-		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "130386")){
+		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "")){
 
 			//db.updateDB("alter table Tipico add betPrediction varchar(20) after team");
+			
+			db.updateDB("alter table Tipico add description varchar(100) after success");
+			
+			
 			//db.updateDB("alter table Tipico drop column attempts");
 			
 			

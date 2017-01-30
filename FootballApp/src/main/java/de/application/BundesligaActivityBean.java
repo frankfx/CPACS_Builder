@@ -32,7 +32,7 @@ public class BundesligaActivityBean implements IController{
 	private BundesligaView mView;
 	private boolean mFixturesErzeugtFlag = false;
 	private boolean mResultsErzeugtFlag = false;
-	private final static int TAB_INDEX_SW_AUFGABEN = 1;	
+	private final static int TAB_INDEX_SW_FIXTURES = 1;	
 	private final static int TAB_INDEX_SW_RESULTS = 2;	
 	private File mPropertiesFile;
 
@@ -224,7 +224,7 @@ public class BundesligaActivityBean implements IController{
 		mView.addTabChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent pE) {
-				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_AUFGABEN && !mFixturesErzeugtFlag){
+				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_FIXTURES && !mFixturesErzeugtFlag){
 					TipicoActivityBean lTipico = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
 					createFixtures( lTipico.getTipicoOpenGameIDsFromDB() );
 				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && !mResultsErzeugtFlag){
@@ -355,6 +355,11 @@ public class BundesligaActivityBean implements IController{
 			}
 			mView.getSWResultPanel().sortTableByDate();
 		}		
+	}
+	
+	public boolean isTabFixturesOrResultsFocused (){
+		int lIndex = mView.getTabbedPane().getSelectedIndex();
+		return lIndex == TAB_INDEX_SW_FIXTURES || lIndex == TAB_INDEX_SW_RESULTS;
 	}
 	
 	/**

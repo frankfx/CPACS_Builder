@@ -150,19 +150,27 @@ public class TipicoActivityBean implements ISubController{
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if(e.getValueIsAdjusting()){
-					int row_idx = mView.getTable().getSelectedRow();
-					if (row_idx != -1){
-						String id =((TipicoTableModel) mView.getTable().getModel()).getIDByIndex( mView.getTable().convertRowIndexToModel(row_idx));
-						
-						logger.log(Level.INFO, "message 1");
-						
-						mBundesligaListener.actionUpdateFixturesTable(id);
-						mBundesligaListener.actionUpdateResultsTable(id);
+
+					// update description with the selected model
+					List<TipicoModel> lSelectedModels = getModelsOfSelectedRows();
+					if(!lSelectedModels.isEmpty())
+						mView.setDescriptionValue( lSelectedModels.get(0).getDescription());
+					
+					// select fixture or result of the selected model
+					if (mBundesligaListener.isTabFixturesOrResultsFocused()){
+						int row_idx = mView.getTable().getSelectedRow();
+						if (row_idx != -1){
+							String id =((TipicoTableModel) mView.getTable().getModel()).getIDByIndex( mView.getTable().convertRowIndexToModel(row_idx));
+							
+							logger.log(Level.INFO, "message 1");
+							
+							mBundesligaListener.actionUpdateFixturesTable(id);
+							mBundesligaListener.actionUpdateResultsTable(id);
+						}
 					}
-				} else {
-					System.out.println("leave");
+				} else if (mView.getTable().getSelectedRowCount() < 1) {
+					mView.setDescriptionValue("");
 				}
-				
 			}
 		});
 	}
@@ -333,12 +341,14 @@ public class TipicoActivityBean implements ISubController{
 				mInsertBetStmt.setFloat(5, pModel.getExpenses());
 				mInsertBetStmt.setDate(6, Date.valueOf(pModel.getDate()));
 				mInsertBetStmt.setBoolean(7, pModel.getSuccess());
-				mInsertBetStmt.setString(8, pModel.getTeam());	
-				mInsertBetStmt.setString(9, pModel.getBetPrediction().toString());
-				mInsertBetStmt.setFloat(10, pModel.getWinValue());
-				mInsertBetStmt.setFloat(11, pModel.getExpenses());
-				mInsertBetStmt.setDate(12, Date.valueOf(pModel.getDate()));
-				mInsertBetStmt.setBoolean(13, pModel.getSuccess());
+				mInsertBetStmt.setString(8, pModel.getDescription());
+				mInsertBetStmt.setString(9, pModel.getTeam());	
+				mInsertBetStmt.setString(10, pModel.getBetPrediction().toString());
+				mInsertBetStmt.setFloat(11, pModel.getWinValue());
+				mInsertBetStmt.setFloat(12, pModel.getExpenses());
+				mInsertBetStmt.setDate(13, Date.valueOf(pModel.getDate()));
+				mInsertBetStmt.setBoolean(14, pModel.getSuccess());
+				mInsertBetStmt.setString(15, pModel.getDescription());
 				
 				mInsertBetStmt.execute();	
 				mBundesligaListener.actionUpdateConsole(FAMessages.MSG_DATABASE_UPDATE_SUCCESS);
@@ -437,6 +447,7 @@ public class TipicoActivityBean implements ISubController{
 		String[] arr = PopupFactory.getPopup(PopupType.DATABASE_PULLDETAIL_POPUP, null).requestInputData();
 
 		if (arr != null && readFromDatabaseToTableModel(mView.getTableModel(), arr[0])) {
+			mView.sortTableByDate();
 			mView.getTableModel().fireTableDataChanged();
 		}
 	}
@@ -485,6 +496,7 @@ public class TipicoActivityBean implements ISubController{
 						data.setExpenses(mDB.getResultSet().getFloat(5));
 						data.setDate(mDB.getResultSet().getDate(6));
 						data.setSuccess(mDB.getResultSet().getBoolean(7));
+						data.setDescription(mDB.getResultSet().getString(8));
 						data.setPersistenceType(PersistenceType.OTHER);
 						
 						pModel.addRow(data);
@@ -528,7 +540,8 @@ public class TipicoActivityBean implements ISubController{
 		int [] rows = mView.getTable().getSelectedRows();
 		
 		for (int i : rows){
-			lResult.add(mView.getTableModel().getTipicoModelAtRow(i));
+			int l = mView.getTable().convertRowIndexToModel(i);
+			lResult.add(mView.getTableModel().getTipicoModelAtRow(l));
 		}
 		
 		return lResult;
@@ -600,6 +613,7 @@ public class TipicoActivityBean implements ISubController{
 		pTipicoModel.setExpenses(Float.parseFloat(args[4]));
 		pTipicoModel.setDate(LocalDate.parse(args[5]));
 		pTipicoModel.setSuccess(Boolean.parseBoolean(args[6]));
+		pTipicoModel.setDescription(args[7]);
 		pTipicoModel.setPersistenceType(PersistenceType.NEW);
 		return true;
 	}	

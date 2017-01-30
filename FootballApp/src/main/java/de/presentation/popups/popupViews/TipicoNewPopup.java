@@ -9,7 +9,9 @@ import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
@@ -32,7 +34,9 @@ public class TipicoNewPopup implements IPopup {
 	private JSpinner mSpinDate;
 	private JTextField mTeam;
 	private JComboBox<Boolean> mSuccess;
-
+	private JTextArea mTextDescription;
+	private JScrollPane lScrollDescription;
+	
 	private String mPrevTeamID;
 	
 	public TipicoNewPopup(Object [] pParams){
@@ -50,6 +54,13 @@ public class TipicoNewPopup implements IPopup {
 		mSuccess.addItem(false);
 		mSuccess.addItem(true);
 		mSuccess.setSelectedItem(lTipicoModel.getSuccess());
+		mTextDescription = new JTextArea(6, 1);
+		mTextDescription.setText(lTipicoModel.getDescription());
+		mTextDescription.setLineWrap(true);
+		mTextDescription.setWrapStyleWord(false);
+		lScrollDescription= new JScrollPane( mTextDescription );
+		
+		
 		
 		mTeam = new JTextField();
 		mTeamID = new JTextField();
@@ -88,7 +99,7 @@ public class TipicoNewPopup implements IPopup {
 	@Override
 	public String[] requestInputData() {
 		Object[] message = { "TNr.", mTeamID, "Team", mTeam, "Bet prediction", mComboBetPrediction , "Win Value", mSpinWinValue,
-				"Expenses", mSpinExpenses, "Date", mSpinDate, "Successfull", mSuccess };
+				"Expenses", mSpinExpenses, "Date", mSpinDate, "Successfull", mSuccess, "Description", lScrollDescription };
 
 		JOptionPane pane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 	                
@@ -111,7 +122,7 @@ public class TipicoNewPopup implements IPopup {
 			}
 			
 			return new String[] { mTeamID.getText(), mTeam.getText(), mComboBetPrediction.getSelectedItem().toString(), mSpinWinValue.getValue().toString(),
-					mSpinExpenses.getValue().toString(), mSpinDate.getValue().toString(), mSuccess.getSelectedItem().toString() };
+					mSpinExpenses.getValue().toString(), mSpinDate.getValue().toString(), mSuccess.getSelectedItem().toString(), mTextDescription.getText() };
 		} else {
 			return null;
 		}

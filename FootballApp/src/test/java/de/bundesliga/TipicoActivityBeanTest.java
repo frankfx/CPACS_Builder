@@ -12,8 +12,6 @@ import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
 import de.presentation.popups.IPopup;
-import de.presentation.popups.PopupFactory;
-import de.presentation.popups.PopupType;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.spy;
