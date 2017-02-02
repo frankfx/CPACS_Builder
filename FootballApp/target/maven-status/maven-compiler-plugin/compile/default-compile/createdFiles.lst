@@ -11,6 +11,7 @@ de\services\SWJSONParser.class
 de\presentation\bundesliga\SWFixturePanel.class
 de\application\BundesligaActivityBean$10.class
 de\types\SWDataType.class
+de\Context.class
 de\services\HyperlinkService.class
 de\presentation\bundesliga\SWFixturePanel$1.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup$1.class
@@ -18,6 +19,7 @@ de\utils\Utils.class
 de\application\TipicoActivityBean$8.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
 de\application\BundesligaActivityBean$8.class
+de\presentation\bundesliga\LoginDialog.class
 de\presentation\bundesliga\StakeOverviewDialog$6.class
 de\presentation\bundesliga\TipicoBetTable$1.class
 de\presentation\bundesliga\StakeOverviewDialog$3.class
@@ -27,6 +29,7 @@ de\application\BundesligaActivityBean$5.class
 de\presentation\bundesliga\StatisticPanel.class
 de\application\TipicoActivityBean$2.class
 de\services\FilterService.class
+de\LoginDialog$1.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$1.class
 de\presentation\bundesliga\SWResultPanel$1.class
 de\types\PersistenceType.class
@@ -40,8 +43,10 @@ de\application\IController.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$2.class
 de\application\TipicoActivityBean$3.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup.class
+de\presentation\bundesliga\LoginDialog$2.class
 de\application\BundesligaActivityBean$16.class
 de\presentation\AbstractPanelContainer.class
+de\application\TipicoActivityBean$14.class
 de\presentation\popups\DefaultPopup.class
 de\presentation\bundesliga\StakeOverviewDialog$4.class
 de\types\FilterOperationType.class
@@ -57,9 +62,12 @@ de\application\TipicoActivityBean$4.class
 de\business\TipicoTableFilterModel.class
 de\presentation\popups\popupViews\SWPropertyPopup$2.class
 de\business\SpinnerTemporalModel.class
+de\LoginDialog$2.class
 de\types\SoccerwayMatchType.class
 de\application\TipicoActivityBean$7.class
+de\presentation\bundesliga\LoginDialog$1.class
 de\presentation\bundesliga\StakeOverviewDialog$5$1.class
+de\LoginDialog.class
 de\presentation\popups\popupViews\TipicoNewPopup$1.class
 de\presentation\bundesliga\StakeOverviewDialog$5.class
 de\services\LoggerService.class

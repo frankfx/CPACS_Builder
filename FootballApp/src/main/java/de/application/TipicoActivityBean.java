@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import de.Context;
 import de.business.TipicoModel;
 import de.business.TipicoTableModel;
 import de.presentation.bundesliga.TipicoBetView;
@@ -49,6 +51,7 @@ public class TipicoActivityBean implements ISubController{
 		logger.setLevel(Level.ALL);
 		this.mView = pView;
 		this.addListener();
+		mDB = Context.getInstance().mDB;
 	}
 	
  // ========================
@@ -149,13 +152,11 @@ public class TipicoActivityBean implements ISubController{
 		this.mView.setTableSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				// update description with the selected model
+				TipicoModel lSelectedModel = getModelOfSelectedRow();
+				mView.setDescriptionValue(lSelectedModel != null ? lSelectedModel.getDescription() : "");
+				
 				if(e.getValueIsAdjusting()){
-
-					// update description with the selected model
-					List<TipicoModel> lSelectedModels = getModelsOfSelectedRows();
-					if(!lSelectedModels.isEmpty())
-						mView.setDescriptionValue( lSelectedModels.get(0).getDescription());
-					
 					// select fixture or result of the selected model
 					if (mBundesligaListener.isTabFixturesOrResultsFocused()){
 						int row_idx = mView.getTable().getSelectedRow();
@@ -168,9 +169,7 @@ public class TipicoActivityBean implements ISubController{
 							mBundesligaListener.actionUpdateResultsTable(id);
 						}
 					}
-				} else if (mView.getTable().getSelectedRowCount() < 1) {
-					mView.setDescriptionValue("");
-				}
+				} 
 			}
 		});
 	}
@@ -535,16 +534,9 @@ public class TipicoActivityBean implements ISubController{
 		return Integer.parseInt(mView.getTable().getModel().getValueAt(lSelectedRow, 0).toString());		
 	}
 	
-	public List<TipicoModel> getModelsOfSelectedRows(){
-		List<TipicoModel> lResult = new ArrayList<TipicoModel>();
-		int [] rows = mView.getTable().getSelectedRows();
-		
-		for (int i : rows){
-			int l = mView.getTable().convertRowIndexToModel(i);
-			lResult.add(mView.getTableModel().getTipicoModelAtRow(l));
-		}
-		
-		return lResult;
+	public TipicoModel getModelOfSelectedRow(){
+		int lRow = mView.getTable().getSelectedRow();
+		return lRow != -1 ? mView.getTableModel().getTipicoModelAtRow(mView.getTable().convertRowIndexToModel(lRow)) : null;
 	}
 
 	public List<TipicoModel> getTipicoModelsAsList(){
@@ -563,6 +555,22 @@ public class TipicoActivityBean implements ISubController{
 		}
 
 		return mView.getTable().convertRowIndexToModel(lSelectedRow);
+	}
+	
+	private Iterator<Integer> getSelectedRows(){
+		return new Iterator<Integer>() {
+			int [] lRows = mView.getTable().getSelectedRows();
+			int i = 0;
+			@Override
+			public boolean hasNext() {
+				return i<lRows.length;
+			}
+
+			@Override
+			public Integer next() {
+				return lRows[i++];
+			}
+		};
 	}
 	
  // ============================
@@ -656,16 +664,14 @@ public class TipicoActivityBean implements ISubController{
 	 * Local function to delete to selected row
 	 */		
 	private void actionDelete(){
-		int lStart = getSelectedRow(); 
-		int lEnd = lStart + mView.getTable().getSelectedRowCount();				
-
-		for(int i = lStart; i<lEnd; i++){
-			mView.getTableModel().removeRow(lStart);
-		}		
+		Iterator<Integer> lRowIter = getSelectedRows();
 		
-//		if(mView.getTable().getRowCount() == 0)
-//			mView.getTable().getSelectionModel().clearSelection();
-
+		if(lRowIter.hasNext())
+			mView.getTableModel().removeRow(lRowIter.next());
+		
+		while(lRowIter.hasNext()){
+			mView.getTableModel().removeRow(lRowIter.next()-1);
+		}
 		updateTable();		
 	}	
 	
@@ -728,14 +734,14 @@ public class TipicoActivityBean implements ISubController{
 	 * Database function to commit to selected row
 	 */	
 	private void actionCommit() {
-		int lStart = getSelectedRow(); 
-		int lEnd = lStart + mView.getTable().getSelectedRowCount();
+		Iterator<Integer> lRowIter = getSelectedRows();
 		
-		for(int i = lStart; i<lEnd; i++){
-			TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(i);
+		while(lRowIter.hasNext()){
+			TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(lRowIter.next());
 			if(insertOrUpdateRowInTipico(lModel))
-				lModel.setPersistenceType(PersistenceType.OTHER);
+				lModel.setPersistenceType(PersistenceType.OTHER);			
 		}
+		
 		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}	
 
@@ -756,25 +762,31 @@ public class TipicoActivityBean implements ISubController{
 	 * Database function to remove item from database
 	 */		
 	private void actionRemove(){
-		int lStart = getSelectedRow(); 
-		int lEnd = lStart + mView.getTable().getSelectedRowCount();		
+		Iterator<Integer> lRows = getSelectedRows();
 		
-		for(int i = lStart; i<lEnd; i++){
-			TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(i);
-			
-			if (!lModel.getPersistenceType().equals(PersistenceType.NEW)){
-
-				if (JOptionPane.showConfirmDialog(null, "Remove from Database ... are you sure?", "WARNING",
-				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-				    // yes option
-					if(deleteRowInTipico(lModel.getID()))
-						lModel.setPersistenceType(PersistenceType.NEW);
-				}
-			}
+		if (lRows.hasNext())
+			removeFromDB(lRows.next());
+		
+		while (lRows.hasNext()){
+			removeFromDB(lRows.next());
 		}
 		mBundesligaListener.actionUpdateStatistics(getBalance());
 	}
 
+	private void removeFromDB(int pRow){
+		TipicoModel lModel = mView.getTableModel().getTipicoModelAtRow(pRow);
+		if (!lModel.getPersistenceType().equals(PersistenceType.NEW)){
+
+			if (JOptionPane.showConfirmDialog(null, "Remove from Database ... are you sure?", "WARNING",
+			        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			    // yes option
+				if(deleteRowInTipico(lModel.getID()))
+					lModel.setPersistenceType(PersistenceType.NEW);
+			}
+		}		
+	}
+	
+	
 	/**
 	 * Database function drop and recreate tipico table
 	 */		
