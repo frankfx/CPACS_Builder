@@ -203,8 +203,14 @@ public class Database {
 		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "")){
 
 			//db.updateDB("alter table Tipico add betPrediction varchar(20) after team");
+			//db.updateDB("create table TipicoConfig (accountBalance decimal);");
+			db.updateDB("insert into TipicoConfig(accountBalance) values (126.26);");
 			
-			db.updateDB("alter table Tipico add description varchar(100) after success");
+			
+			db.updateDB("update TipicoConfig set accountBalance=111;");
+			
+			
+//			db.updateDB("alter table Tipico add description varchar(100) after success");
 			
 			
 			//db.updateDB("alter table Tipico drop column attempts");

@@ -56,7 +56,9 @@ public class LoginDialog extends JDialog {
  
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (Context.getInstance().authenticate(getUsername(), getPassword())) {
+            	Context lContext = Context.getInstance();
+                if (lContext.authenticate(getUsername(), getPassword())) {
+                	lContext.initDB();
                     succeeded = true;
                     dispose();
                 } else {
