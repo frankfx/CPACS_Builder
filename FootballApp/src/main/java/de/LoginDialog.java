@@ -57,12 +57,13 @@ public class LoginDialog extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	Context lContext = Context.getInstance();
+            	lContext.initDB();
                 if (lContext.authenticate(getUsername(), getPassword())) {
-                	lContext.initDB();
                     succeeded = true;
                     dispose();
                 } else {
-                    JOptionPane.showMessageDialog(LoginDialog.this,
+                	lContext.mDB = null;
+                	JOptionPane.showMessageDialog(LoginDialog.this,
                             "Invalid username or password",
                             "Login",
                             JOptionPane.ERROR_MESSAGE);
