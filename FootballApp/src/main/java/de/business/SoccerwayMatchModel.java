@@ -57,8 +57,10 @@ public class SoccerwayMatchModel {
 	}
 
 	public void setDate(String pDate){
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
-		this.mDate = LocalDate.parse(pDate, formatter);
+		if (!pDate.equals("") && pDate != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+			this.mDate = LocalDate.parse(pDate, formatter);
+		}
 	}
 
 	public String getCompetition() {

@@ -20,7 +20,7 @@ import com.mysql.jdbc.StringUtils;
 import de.business.SpinnerTemporalModel;
 import de.business.TipicoModel;
 import de.presentation.popups.IPopup;
-import de.services.SWJSONParser;
+import de.services.SWHTMLParser;
 import de.types.BetPredictionType;
 import de.utils.TeamIDInputVerifier;
 import de.utils.TeamIDKeyAdapter;
@@ -87,7 +87,7 @@ public class TipicoNewPopup implements IPopup {
 	public void actionComputeTeamByID(){
     	if ( !StringUtils.isNullOrEmpty(mTeamID.getText()) && 
     			(mPrevTeamID == null || !mPrevTeamID.equals(mTeamID.getText()))){
-    		String team = SWJSONParser.getTeamNameByID(mTeamID.getText());
+    		String team = SWHTMLParser.getTeamNameByID(mTeamID.getText());
     		mTeam.setText(team);
     		mTeam.setEditable(team == null);
     		mPrevTeamID = mTeam.getText();

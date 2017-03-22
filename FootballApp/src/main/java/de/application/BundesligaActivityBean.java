@@ -21,6 +21,7 @@ import de.presentation.bundesliga.StakeOverviewDialog;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.services.PropertyService;
+import de.services.SWHTMLParser;
 import de.services.SWJSONParser;
 import de.types.MessageType;
 import de.services.HyperlinkService;
@@ -312,7 +313,7 @@ public class BundesligaActivityBean implements IController{
 			if (pIDList != null){
 				iter = SWJSONParser.getFixturesBySWObserverIDs(pIDList, 7);
 			} else if (mPropertiesFile != null) {
-				iter = SWJSONParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+				iter = SWHTMLParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
 			}
 		} catch (FileNotFoundException e) {
 			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
@@ -337,9 +338,9 @@ public class BundesligaActivityBean implements IController{
 		
 		try {
 			if (pIDList != null){
-				iter = SWJSONParser.getResultsBySWObserverIDs(pIDList, 7);
+				iter = SWHTMLParser.getResultsBySWObserverIDs(pIDList, 7);
 			} else if (mPropertiesFile != null) {
-				iter = SWJSONParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+				iter = SWHTMLParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
 			}
 		} catch (FileNotFoundException e) {
 			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());

@@ -3,7 +3,9 @@ package de.utils;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -78,5 +80,20 @@ public class Utils {
 			return generateUniqueIDWithTimestamp(pID);
 		}
 		return pID;
+	}	
+	
+	/**
+	 * Converts a unix timestamp to LocalDate
+	 * 
+	 * @param lTimestampStr
+	 * @return
+	 */
+	public static LocalDate getLocalDateByUnixTimestamp(String lTimestampStr) {
+		if (lTimestampStr != null && !lTimestampStr.isEmpty()) {
+            Timestamp lTimestamp = new Timestamp(Long.parseLong(lTimestampStr)*1000);
+         	LocalDate lDate = lTimestamp.toLocalDateTime().toLocalDate();
+         	return lDate;
+     	}
+		return null;
 	}	
 }

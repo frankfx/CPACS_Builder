@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="src/main/resources/mysql-connector-java-5.1.28.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/libs/org.json.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/libs/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/libs/jsoup-1.10.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

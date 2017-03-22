@@ -31,10 +31,10 @@ public class SWJSONParser {
 	 * Handels the team data given by teamID and matchtype
 	 * [commands][0]['parameters']['content']
 	 */
-	public static String getTeamNameByID(String pTeamID) {
+	public static String getTeamNameByIDOLD(String pTeamID) {
 		try {
 			// Fetch the interesting part of inputted JSON obj
-			String content = new JSONObject(getJSONDataString(pTeamID, SoccerwayMatchType.home)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
+			String content = new JSONObject(getJSONDataStringOLD(pTeamID, SoccerwayMatchType.home)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
 			if (StringUtils.isNullOrEmpty(content)){
 				System.out.println("ID not available");
 				return null;
@@ -60,7 +60,7 @@ public class SWJSONParser {
 				String[] cols = p2.split(row);
 				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
 				if (colData.length > posOfHomeTeam) {
-					return parseHTMLTableCellContent( colData[posOfHomeTeam].replace("<[^<]+?>", "").trim() );
+					return parseHTMLTableCellContentOLD( colData[posOfHomeTeam].replace("<[^<]+?>", "").trim() );
 				}
 			}
 		} catch (JSONException | IOException e) {
@@ -74,12 +74,12 @@ public class SWJSONParser {
 	 * Handels the team data given by teamID and matchtype
 	 * [commands][0]['parameters']['content']
 	 */
-	public static Iterator<SoccerwayMatchModel> getTeamData(String pTeamID, SoccerwayMatchType pMatchType) {
+	public static Iterator<SoccerwayMatchModel> getTeamDataOLD(String pTeamID, SoccerwayMatchType pMatchType) {
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 
 		try {
 			// Fetch the interesting part of inputted JSON obj
-			String content = new JSONObject(getJSONDataString(pTeamID, pMatchType)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
+			String content = new JSONObject(getJSONDataStringOLD(pTeamID, pMatchType)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
 			if (StringUtils.isNullOrEmpty(content)){
 				System.out.println("ID not available");
 				return lResultList.iterator();
@@ -110,7 +110,7 @@ public class SWJSONParser {
 				SoccerwayMatchModel mSoccerwayModel = new SoccerwayMatchModel(pTeamID);
 
 				for (int i = 0; i < colData.length; i++) {
-					String val = parseHTMLTableCellContent( colData[i].replace("<[^<]+?>", "").trim() );
+					String val = parseHTMLTableCellContentOLD( colData[i].replace("<[^<]+?>", "").trim() );
 					
 					switch (i) {
 					case 1:
@@ -151,7 +151,7 @@ public class SWJSONParser {
 	/**
 	 * Connects to the internet und reads soccerway JSON-String 
 	 */
-	private static String getJSONDataString(String pTeamID, SoccerwayMatchType pMatchType) throws IOException {
+	private static String getJSONDataStringOLD(String pTeamID, SoccerwayMatchType pMatchType) throws IOException {
 
 		if (pTeamID != null && pMatchType != null) {
 			// Connect to the URL using java's native library
@@ -184,7 +184,7 @@ public class SWJSONParser {
 	 * @param str
 	 * @return
 	 */
-	private static String parseHTMLTableCellContent(String str) {
+	private static String parseHTMLTableCellContentOLD(String str) {
 		if (str == null)
 			return null;
 
@@ -210,7 +210,7 @@ public class SWJSONParser {
 		return sb.toString();
 	}
 
-	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFile(InputStream pPropertyInputStream){
+	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();
 
@@ -228,7 +228,7 @@ public class SWJSONParser {
 				key = lAllKeys.nextElement().toString();
 				if(key.startsWith("SW_TEAM_ID_")){
 					value = prop.getProperty(key);
-					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(value, SoccerwayMatchType.all);
+					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
 				
 					SoccerwayMatchModel lCurMatch;
 					while (iter.hasNext()){
@@ -249,7 +249,7 @@ public class SWJSONParser {
 		return lResultList.iterator();
 	}	
 
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFile(InputStream pPropertyInputStream){
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();
 
@@ -267,7 +267,7 @@ public class SWJSONParser {
 				key = lAllKeys.nextElement().toString();
 				if(key.startsWith("SW_TEAM_ID_")){
 					value = prop.getProperty(key);
-					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(value, SoccerwayMatchType.all);
+					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
 				
 					SoccerwayMatchModel lCurMatch;
 					while (iter.hasNext()){
@@ -288,14 +288,14 @@ public class SWJSONParser {
 		return lResultList.iterator();
 	}	
 
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverIDs(List<String> pIDList, int pDuration){
+	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverIDsOLD(List<String> pIDList, int pDuration){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 			
 		LocalDate lToday = LocalDate.now(); 
 		LocalDate lPastDate = lToday.minusDays(pDuration); 
 
 		for (int i = 0; i < pIDList.size(); i++) {
-			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(pIDList.get(i), SoccerwayMatchType.all);
+			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
 			SoccerwayMatchModel lCurMatch;
 			while (iter.hasNext()){
 				lCurMatch = iter.next();
@@ -317,7 +317,7 @@ public class SWJSONParser {
 		LocalDate lFinalDate = lToday.plusDays(pDuration); 
 
 		for (int i = 0; i < pIDList.size(); i++) {
-			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData(pIDList.get(i), SoccerwayMatchType.all);
+			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
 			SoccerwayMatchModel lCurMatch;
 			while (iter.hasNext()){
 				lCurMatch = iter.next();
@@ -335,9 +335,9 @@ public class SWJSONParser {
 
 	
 	public static void main(String[] args) {
-		System.out.println(getTeamNameByID("198"));
+		System.out.println(getTeamNameByIDOLD("198"));
 		
-		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamData("191", SoccerwayMatchType.all);
+		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD("191", SoccerwayMatchType.all);
 
 		while (iter.hasNext()) {
 			System.out.println(iter.next());
