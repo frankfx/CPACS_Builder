@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -558,8 +559,10 @@ public class TipicoActivityBean implements ISubController{
 	}
 	
 	private Iterator<Integer> getSelectedRows(){
+		int [] lRows = mView.getTable().getSelectedRows();
+		Arrays.sort(lRows);
+		
 		return new Iterator<Integer>() {
-			int [] lRows = mView.getTable().getSelectedRows();
 			int i = 0;
 			@Override
 			public boolean hasNext() {
@@ -666,11 +669,10 @@ public class TipicoActivityBean implements ISubController{
 	private void actionDelete(){
 		Iterator<Integer> lRowIter = getSelectedRows();
 		
-		if(lRowIter.hasNext())
-			mView.getTableModel().removeRow(lRowIter.next());
-		
+		int deletedRows = 0;
 		while(lRowIter.hasNext()){
-			mView.getTableModel().removeRow(lRowIter.next()-1);
+			mView.getTableModel().removeRow(lRowIter.next()-deletedRows);
+			deletedRows++;
 		}
 		updateTable();		
 	}	

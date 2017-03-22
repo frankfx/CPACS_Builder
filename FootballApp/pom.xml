@@ -88,6 +88,18 @@
 			<version>1.9.5</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/resources/libs/mockito-all-1.9.5.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>Jsoup-all</groupId>
+			<artifactId>org.jsoup</artifactId>
+			<version>1.10.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/libs/jsoup-1.10.2.jar</systemPath>
+		</dependency>	
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
 		</dependency>		
   </dependencies>
 </project>
