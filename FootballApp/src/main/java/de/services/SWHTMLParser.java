@@ -289,6 +289,7 @@ public class SWHTMLParser {
 	public static void main(String[] args) throws IOException {
 		Assert.assertTrue(getTeamNameByID("1001").equals("Hoffenheim"));
 		Assert.assertTrue(getTeamNameByID("2370").equals("Zwickau"));
+		Assert.assertTrue(getTeamNameByID("994").equals("Rot-Weiss Essen"));
 		
 		Iterator<?> iter = getTeamData("3434");
 		while (iter.hasNext()) {

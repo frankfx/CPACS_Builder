@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -311,11 +312,11 @@ public class BundesligaActivityBean implements IController{
 		
 		try {
 			if (pIDList != null){
-				iter = SWJSONParser.getFixturesBySWObserverIDs(pIDList, 7);
+				iter = SWHTMLParser.getFixturesBySWObserverIDs(pIDList, 7);
 			} else if (mPropertiesFile != null) {
 				iter = SWHTMLParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
 			}
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
 			return;
 		}

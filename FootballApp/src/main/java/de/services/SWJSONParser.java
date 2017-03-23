@@ -26,321 +26,321 @@ import de.presentation.popups.PopupType;
 import de.types.SoccerwayMatchType;
 
 public class SWJSONParser {
-
-	/**
-	 * Handels the team data given by teamID and matchtype
-	 * [commands][0]['parameters']['content']
-	 */
-	public static String getTeamNameByIDOLD(String pTeamID) {
-		try {
-			// Fetch the interesting part of inputted JSON obj
-			String content = new JSONObject(getJSONDataStringOLD(pTeamID, SoccerwayMatchType.home)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
-			if (StringUtils.isNullOrEmpty(content)){
-				System.out.println("ID not available");
-				return null;
-			}
-			
-			// Remove uninteresting header and footer data
-			content = content.substring(0, content.indexOf("</tbody>"));
-			content = content.substring(content.indexOf("<thead") + 7);
-
-			// Split content by <tr> -tags (tr is shorthand for table row)
-			Pattern p1 = Pattern.compile("<tr[^<]+?>");
-			String[] splitted = p1.split(content);
-
-			// Rest are the match info 
-			String[] data = Arrays.copyOfRange(splitted, 1, splitted.length);
-
-			// Split content by <td> -tags (table columns) and clean other tags
-			Pattern p2 = Pattern.compile("<td[^<]+?>");
-
-			int posOfHomeTeam = 4;
-			
-			for (String row : data) {
-				String[] cols = p2.split(row);
-				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
-				if (colData.length > posOfHomeTeam) {
-					return parseHTMLTableCellContentOLD( colData[posOfHomeTeam].replace("<[^<]+?>", "").trim() );
-				}
-			}
-		} catch (JSONException | IOException e) {
-			return e.getMessage();
-		}			
-		return null;
-	}
-	
-	
-	/**
-	 * Handels the team data given by teamID and matchtype
-	 * [commands][0]['parameters']['content']
-	 */
-	public static Iterator<SoccerwayMatchModel> getTeamDataOLD(String pTeamID, SoccerwayMatchType pMatchType) {
-		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
-
-		try {
-			// Fetch the interesting part of inputted JSON obj
-			String content = new JSONObject(getJSONDataStringOLD(pTeamID, pMatchType)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
-			if (StringUtils.isNullOrEmpty(content)){
-				System.out.println("ID not available");
-				return lResultList.iterator();
-			}
-				
-			// Remove uninteresting header and footer data
-			content = content.substring(0, content.indexOf("</tbody>"));
-			content = content.substring(content.indexOf("<thead") + 7);
-
-			// Split content by <tr> -tags (tr is shorthand for table row)
-			Pattern p1 = Pattern.compile("<tr[^<]+?>");
-			String[] splitted = p1.split(content);
-
-			// First row is the table header data
-			//String header = splitted[0];
-
-			// Rest are the match info 
-			String[] data = Arrays.copyOfRange(splitted, 1, splitted.length);
-
-			// Split content by <td> -tags (table columns) and clean other tags
-			Pattern p2 = Pattern.compile("<td[^<]+?>");
-
-			for (String row : data) {
-				String[] cols = p2.split(row);
-
-				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
-
-				SoccerwayMatchModel mSoccerwayModel = new SoccerwayMatchModel(pTeamID);
-
-				for (int i = 0; i < colData.length; i++) {
-					String val = parseHTMLTableCellContentOLD( colData[i].replace("<[^<]+?>", "").trim() );
-					
-					switch (i) {
-					case 1:
-						mSoccerwayModel.setDay(val);
-						break;
-					case 2:
-						mSoccerwayModel.setDate(val);
-						break;
-					case 3:
-						mSoccerwayModel.setCompetition(val);
-						break;
-					case 4:
-						mSoccerwayModel.setTeam1(val);
-						break;
-					case 5:
-						mSoccerwayModel.setResult(val);
-						break;
-					case 6:
-						mSoccerwayModel.setTeam2(val);
-						break;
-					default:
-						break;
-					}
-				}
-
-				if (colData.length > 0)
-					lResultList.add(mSoccerwayModel);
-			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			//PopupFactory.getPopup(PopupType.ERROR, "");
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return lResultList.iterator();
-	}
-
-	/**
-	 * Connects to the internet und reads soccerway JSON-String 
-	 */
-	private static String getJSONDataStringOLD(String pTeamID, SoccerwayMatchType pMatchType) throws IOException {
-
-		if (pTeamID != null && pMatchType != null) {
-			// Connect to the URL using java's native library
-			URL url = new URL("http://nr.soccerway.com/a/block_team_matches?block_id=page_team_1_block_team_matches_5" +
-					"&callback_params=%7B%22page%22%3A0%2C%22bookmaker_urls%22%3A%5B%5D%2C%22block_service_id" +
-					"%22%3A%22team_matches_block_teammatches%22%2C%22team_id%22%3A" + pTeamID + "%2C%22competition_id" +
-					"%22%3A0%2C%22filter%22%3A%22all%22%7D&action=filterMatches&params=%7B%22filter%22%3A%22" + pMatchType + "%22%7D");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-			// read data
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(connection.getInputStream()));
-
-			StringBuilder response = new StringBuilder();
-			String inputLine;
-
-			while ((inputLine = in.readLine()) != null)
-				response.append(inputLine);
-
-			in.close();
-
-			return response.toString();
-		}
-		return null;
-	}
-
-	/**
-	 * private method to parse a html line
-	 * 
-	 * @param str
-	 * @return
-	 */
-	private static String parseHTMLTableCellContentOLD(String str) {
-		if (str == null)
-			return null;
-
-		StringBuffer sb = new StringBuffer();
-		boolean flag = false;
-		char curChar;
-
-		for (int i = 0; i < str.length(); i++) {
-			curChar = str.charAt(i);
-
-			switch (curChar) {
-			case '<':
-				flag = false;
-				break;
-			case '>':
-				flag = true;
-				break;
-			default:
-				if (flag)
-					sb.append(curChar);
-			}
-		}
-		return sb.toString();
-	}
-
-	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
-		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
-		Properties prop = new Properties();
-
-		try {
-			prop.load(pPropertyInputStream);
-			int lDuration = Integer.parseInt(prop.getProperty("duration"));
-			
-			LocalDate lToday = LocalDate.now(); 
-			LocalDate lFinalDate = lToday.plusDays(lDuration); 
-			
-			String key , value;
-			Enumeration<Object> lAllKeys = prop.keys();
-			
-			while (lAllKeys.hasMoreElements()) {
-				key = lAllKeys.nextElement().toString();
-				if(key.startsWith("SW_TEAM_ID_")){
-					value = prop.getProperty(key);
-					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
-				
-					SoccerwayMatchModel lCurMatch;
-					while (iter.hasNext()){
-						lCurMatch = iter.next();
-						if (lCurMatch.getDate().isAfter(lFinalDate)){
-							// break the iteration to avoid reading all results (after the final date) 
-							break;
-						} else if (!lCurMatch.getDate().isBefore(lToday)){
-							lResultList.add(lCurMatch);
-					    }
-					}
-				}
-			}
-		} catch (IOException ex) {
-			PopupFactory.getPopup(PopupType.ERROR, ex.getMessage());
-		}
-		
-		return lResultList.iterator();
-	}	
-
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
-		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
-		Properties prop = new Properties();
-
-		try {
-			prop.load(pPropertyInputStream);
-			int lDuration = Integer.parseInt(prop.getProperty("duration"));
-			
-			LocalDate lToday = LocalDate.now(); 
-			LocalDate lPastDate = lToday.minusDays(lDuration); 
-			
-			String key , value;
-			Enumeration<Object> lAllKeys = prop.keys();
-			
-			while (lAllKeys.hasMoreElements()) {
-				key = lAllKeys.nextElement().toString();
-				if(key.startsWith("SW_TEAM_ID_")){
-					value = prop.getProperty(key);
-					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
-				
-					SoccerwayMatchModel lCurMatch;
-					while (iter.hasNext()){
-						lCurMatch = iter.next();
-						if (lCurMatch.getDate().isAfter(lToday)){
-							// break the iteration to avoid reading all results (after today)
-							break;
-						} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
-							lResultList.add(lCurMatch);
-					    }
-					}
-				}
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-		
-		return lResultList.iterator();
-	}	
-
-	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverIDsOLD(List<String> pIDList, int pDuration){
-		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
-			
-		LocalDate lToday = LocalDate.now(); 
-		LocalDate lPastDate = lToday.minusDays(pDuration); 
-
-		for (int i = 0; i < pIDList.size(); i++) {
-			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
-			SoccerwayMatchModel lCurMatch;
-			while (iter.hasNext()){
-				lCurMatch = iter.next();
-				if (lCurMatch.getDate().isAfter(lToday)){
-					// break the iteration to avoid reading all results (after today)
-					break;
-				} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
-					lResultList.add(lCurMatch);
-			    }
-			}
-		}
-		return lResultList.iterator();
-	}	
-	
-	public static Iterator<SoccerwayMatchModel> getFixturesBySWObserverIDs(List<String> pIDList, int pDuration){
-		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
-			
-		LocalDate lToday = LocalDate.now(); 
-		LocalDate lFinalDate = lToday.plusDays(pDuration); 
-
-		for (int i = 0; i < pIDList.size(); i++) {
-			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
-			SoccerwayMatchModel lCurMatch;
-			while (iter.hasNext()){
-				lCurMatch = iter.next();
-				if (lCurMatch.getDate().isAfter(lFinalDate)){
-					// break the iteration to avoid reading all results (after the final date) 
-					break;
-				} else if (!lCurMatch.getDate().isBefore(lToday)){
-					lResultList.add(lCurMatch);
-			    }
-			}
-		}
-		return lResultList.iterator();
-	}	
-	
-
-	
-	public static void main(String[] args) {
-		System.out.println(getTeamNameByIDOLD("198"));
-		
-		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD("191", SoccerwayMatchType.all);
-
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
-		}
-	}
+//
+//	/**
+//	 * Handels the team data given by teamID and matchtype
+//	 * [commands][0]['parameters']['content']
+//	 */
+//	public static String getTeamNameByIDOLD(String pTeamID) {
+//		try {
+//			// Fetch the interesting part of inputted JSON obj
+//			String content = new JSONObject(getJSONDataStringOLD(pTeamID, SoccerwayMatchType.home)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
+//			if (StringUtils.isNullOrEmpty(content)){
+//				System.out.println("ID not available");
+//				return null;
+//			}
+//			
+//			// Remove uninteresting header and footer data
+//			content = content.substring(0, content.indexOf("</tbody>"));
+//			content = content.substring(content.indexOf("<thead") + 7);
+//
+//			// Split content by <tr> -tags (tr is shorthand for table row)
+//			Pattern p1 = Pattern.compile("<tr[^<]+?>");
+//			String[] splitted = p1.split(content);
+//
+//			// Rest are the match info 
+//			String[] data = Arrays.copyOfRange(splitted, 1, splitted.length);
+//
+//			// Split content by <td> -tags (table columns) and clean other tags
+//			Pattern p2 = Pattern.compile("<td[^<]+?>");
+//
+//			int posOfHomeTeam = 4;
+//			
+//			for (String row : data) {
+//				String[] cols = p2.split(row);
+//				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
+//				if (colData.length > posOfHomeTeam) {
+//					return parseHTMLTableCellContentOLD( colData[posOfHomeTeam].replace("<[^<]+?>", "").trim() );
+//				}
+//			}
+//		} catch (JSONException | IOException e) {
+//			return e.getMessage();
+//		}			
+//		return null;
+//	}
+//	
+//	
+//	/**
+//	 * Handels the team data given by teamID and matchtype
+//	 * [commands][0]['parameters']['content']
+//	 */
+//	public static Iterator<SoccerwayMatchModel> getTeamDataOLD(String pTeamID, SoccerwayMatchType pMatchType) {
+//		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+//
+//		try {
+//			// Fetch the interesting part of inputted JSON obj
+//			String content = new JSONObject(getJSONDataStringOLD(pTeamID, pMatchType)).getJSONArray("commands").getJSONObject(0).getJSONObject("parameters").getString("content");
+//			if (StringUtils.isNullOrEmpty(content)){
+//				System.out.println("ID not available");
+//				return lResultList.iterator();
+//			}
+//				
+//			// Remove uninteresting header and footer data
+//			content = content.substring(0, content.indexOf("</tbody>"));
+//			content = content.substring(content.indexOf("<thead") + 7);
+//
+//			// Split content by <tr> -tags (tr is shorthand for table row)
+//			Pattern p1 = Pattern.compile("<tr[^<]+?>");
+//			String[] splitted = p1.split(content);
+//
+//			// First row is the table header data
+//			//String header = splitted[0];
+//
+//			// Rest are the match info 
+//			String[] data = Arrays.copyOfRange(splitted, 1, splitted.length);
+//
+//			// Split content by <td> -tags (table columns) and clean other tags
+//			Pattern p2 = Pattern.compile("<td[^<]+?>");
+//
+//			for (String row : data) {
+//				String[] cols = p2.split(row);
+//
+//				String[] colData = Arrays.copyOfRange(cols, 0, cols.length - 1);
+//
+//				SoccerwayMatchModel mSoccerwayModel = new SoccerwayMatchModel(pTeamID);
+//
+//				for (int i = 0; i < colData.length; i++) {
+//					String val = parseHTMLTableCellContentOLD( colData[i].replace("<[^<]+?>", "").trim() );
+//					
+//					switch (i) {
+//					case 1:
+//						mSoccerwayModel.setDay(val);
+//						break;
+//					case 2:
+//						mSoccerwayModel.setDate(val);
+//						break;
+//					case 3:
+//						mSoccerwayModel.setCompetition(val);
+//						break;
+//					case 4:
+//						mSoccerwayModel.setTeam1(val);
+//						break;
+//					case 5:
+//						mSoccerwayModel.setResult(val);
+//						break;
+//					case 6:
+//						mSoccerwayModel.setTeam2(val);
+//						break;
+//					default:
+//						break;
+//					}
+//				}
+//
+//				if (colData.length > 0)
+//					lResultList.add(mSoccerwayModel);
+//			}
+//		} catch (IOException e) {
+//			System.out.println(e.getMessage());
+//			//PopupFactory.getPopup(PopupType.ERROR, "");
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//		}
+//		return lResultList.iterator();
+//	}
+//
+//	/**
+//	 * Connects to the internet und reads soccerway JSON-String 
+//	 */
+//	private static String getJSONDataStringOLD(String pTeamID, SoccerwayMatchType pMatchType) throws IOException {
+//
+//		if (pTeamID != null && pMatchType != null) {
+//			// Connect to the URL using java's native library
+//			URL url = new URL("http://nr.soccerway.com/a/block_team_matches?block_id=page_team_1_block_team_matches_5" +
+//					"&callback_params=%7B%22page%22%3A0%2C%22bookmaker_urls%22%3A%5B%5D%2C%22block_service_id" +
+//					"%22%3A%22team_matches_block_teammatches%22%2C%22team_id%22%3A" + pTeamID + "%2C%22competition_id" +
+//					"%22%3A0%2C%22filter%22%3A%22all%22%7D&action=filterMatches&params=%7B%22filter%22%3A%22" + pMatchType + "%22%7D");
+//			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//
+//			// read data
+//			BufferedReader in = new BufferedReader(
+//					new InputStreamReader(connection.getInputStream()));
+//
+//			StringBuilder response = new StringBuilder();
+//			String inputLine;
+//
+//			while ((inputLine = in.readLine()) != null)
+//				response.append(inputLine);
+//
+//			in.close();
+//
+//			return response.toString();
+//		}
+//		return null;
+//	}
+//
+//	/**
+//	 * private method to parse a html line
+//	 * 
+//	 * @param str
+//	 * @return
+//	 */
+//	private static String parseHTMLTableCellContentOLD(String str) {
+//		if (str == null)
+//			return null;
+//
+//		StringBuffer sb = new StringBuffer();
+//		boolean flag = false;
+//		char curChar;
+//
+//		for (int i = 0; i < str.length(); i++) {
+//			curChar = str.charAt(i);
+//
+//			switch (curChar) {
+//			case '<':
+//				flag = false;
+//				break;
+//			case '>':
+//				flag = true;
+//				break;
+//			default:
+//				if (flag)
+//					sb.append(curChar);
+//			}
+//		}
+//		return sb.toString();
+//	}
+//
+//	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
+//		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+//		Properties prop = new Properties();
+//
+//		try {
+//			prop.load(pPropertyInputStream);
+//			int lDuration = Integer.parseInt(prop.getProperty("duration"));
+//			
+//			LocalDate lToday = LocalDate.now(); 
+//			LocalDate lFinalDate = lToday.plusDays(lDuration); 
+//			
+//			String key , value;
+//			Enumeration<Object> lAllKeys = prop.keys();
+//			
+//			while (lAllKeys.hasMoreElements()) {
+//				key = lAllKeys.nextElement().toString();
+//				if(key.startsWith("SW_TEAM_ID_")){
+//					value = prop.getProperty(key);
+//					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
+//				
+//					SoccerwayMatchModel lCurMatch;
+//					while (iter.hasNext()){
+//						lCurMatch = iter.next();
+//						if (lCurMatch.getDate().isAfter(lFinalDate)){
+//							// break the iteration to avoid reading all results (after the final date) 
+//							break;
+//						} else if (!lCurMatch.getDate().isBefore(lToday)){
+//							lResultList.add(lCurMatch);
+//					    }
+//					}
+//				}
+//			}
+//		} catch (IOException ex) {
+//			PopupFactory.getPopup(PopupType.ERROR, ex.getMessage());
+//		}
+//		
+//		return lResultList.iterator();
+//	}	
+//
+//	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverPropertyFileOLD(InputStream pPropertyInputStream){
+//		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+//		Properties prop = new Properties();
+//
+//		try {
+//			prop.load(pPropertyInputStream);
+//			int lDuration = Integer.parseInt(prop.getProperty("duration"));
+//			
+//			LocalDate lToday = LocalDate.now(); 
+//			LocalDate lPastDate = lToday.minusDays(lDuration); 
+//			
+//			String key , value;
+//			Enumeration<Object> lAllKeys = prop.keys();
+//			
+//			while (lAllKeys.hasMoreElements()) {
+//				key = lAllKeys.nextElement().toString();
+//				if(key.startsWith("SW_TEAM_ID_")){
+//					value = prop.getProperty(key);
+//					Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(value, SoccerwayMatchType.all);
+//				
+//					SoccerwayMatchModel lCurMatch;
+//					while (iter.hasNext()){
+//						lCurMatch = iter.next();
+//						if (lCurMatch.getDate().isAfter(lToday)){
+//							// break the iteration to avoid reading all results (after today)
+//							break;
+//						} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
+//							lResultList.add(lCurMatch);
+//					    }
+//					}
+//				}
+//			}
+//		} catch (IOException ex) {
+//			ex.printStackTrace();
+//		}
+//		
+//		return lResultList.iterator();
+//	}	
+//
+//	public static Iterator<SoccerwayMatchModel> getResultsBySWObserverIDsOLD(List<String> pIDList, int pDuration){
+//		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+//			
+//		LocalDate lToday = LocalDate.now(); 
+//		LocalDate lPastDate = lToday.minusDays(pDuration); 
+//
+//		for (int i = 0; i < pIDList.size(); i++) {
+//			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
+//			SoccerwayMatchModel lCurMatch;
+//			while (iter.hasNext()){
+//				lCurMatch = iter.next();
+//				if (lCurMatch.getDate().isAfter(lToday)){
+//					// break the iteration to avoid reading all results (after today)
+//					break;
+//				} else if (!lCurMatch.getDate().isAfter(lToday) && !lCurMatch.getDate().isBefore(lPastDate)){
+//					lResultList.add(lCurMatch);
+//			    }
+//			}
+//		}
+//		return lResultList.iterator();
+//	}	
+//	
+//	public static Iterator<SoccerwayMatchModel> getFixturesBySWObserverIDs(List<String> pIDList, int pDuration){
+//		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
+//			
+//		LocalDate lToday = LocalDate.now(); 
+//		LocalDate lFinalDate = lToday.plusDays(pDuration); 
+//
+//		for (int i = 0; i < pIDList.size(); i++) {
+//			Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD(pIDList.get(i), SoccerwayMatchType.all);
+//			SoccerwayMatchModel lCurMatch;
+//			while (iter.hasNext()){
+//				lCurMatch = iter.next();
+//				if (lCurMatch.getDate().isAfter(lFinalDate)){
+//					// break the iteration to avoid reading all results (after the final date) 
+//					break;
+//				} else if (!lCurMatch.getDate().isBefore(lToday)){
+//					lResultList.add(lCurMatch);
+//			    }
+//			}
+//		}
+//		return lResultList.iterator();
+//	}	
+//	
+//
+//	
+//	public static void main(String[] args) {
+//		System.out.println(getTeamNameByIDOLD("198"));
+//		
+//		Iterator<SoccerwayMatchModel> iter = SWJSONParser.getTeamDataOLD("191", SoccerwayMatchType.all);
+//
+//		while (iter.hasNext()) {
+//			System.out.println(iter.next());
+//		}
+//	}
 }
