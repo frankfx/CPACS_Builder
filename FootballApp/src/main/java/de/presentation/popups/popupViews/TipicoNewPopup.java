@@ -79,7 +79,7 @@ public class TipicoNewPopup implements IPopup {
 			});
 		}
 		
-		BetPredictionType [] predictions = new BetPredictionType [] {BetPredictionType.DRAW, BetPredictionType.HOME_WIN, BetPredictionType.AWAY_WIN, BetPredictionType.FST_DRAW, BetPredictionType.FST_HOME_WIN, BetPredictionType.FST_AWAY_WIN, BetPredictionType.SND_DRAW, BetPredictionType.SND_HOME_WIN, BetPredictionType.SND_AWAY_WIN};
+		BetPredictionType [] predictions = new BetPredictionType [] {BetPredictionType.WIN, BetPredictionType.LOSE, BetPredictionType.DRAW, BetPredictionType.FST_WIN, BetPredictionType.FST_LOSE, BetPredictionType.FST_DRAW, BetPredictionType.SND_WIN, BetPredictionType.SND_LOSE, BetPredictionType.SND_DRAW};
 		mComboBetPrediction = new JComboBox<BetPredictionType>(predictions); 
 		mComboBetPrediction.setSelectedItem(lTipicoModel.getBetPrediction());
 	}

@@ -204,10 +204,10 @@ public class Database {
 
 			//db.updateDB("alter table Tipico add betPrediction varchar(20) after team");
 			//db.updateDB("create table TipicoConfig (accountBalance decimal);");
-			db.updateDB("insert into TipicoConfig(accountBalance) values (126.26);");
+			//db.updateDB("insert into TipicoConfig(accountBalance) values (121.17);");
 			
 			
-			db.updateDB("update TipicoConfig set accountBalance=111;");
+			//db.updateDB("update TipicoConfig set accountBalance=76.6;");
 			
 			
 //			db.updateDB("alter table Tipico add description varchar(100) after success");
