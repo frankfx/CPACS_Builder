@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: de.bundesliga.TipicoActivityBeanTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 1.523 sec
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 1.59 sec

@@ -560,6 +560,7 @@ public class TipicoActivityBean implements ISubController{
 	
 	private Iterator<Integer> getSelectedRows(){
 		int [] lRows = mView.getTable().getSelectedRows();
+		
 		Arrays.sort(lRows);
 		
 		return new Iterator<Integer>() {
@@ -571,7 +572,7 @@ public class TipicoActivityBean implements ISubController{
 
 			@Override
 			public Integer next() {
-				return lRows[i++];
+				return mView.getTable().convertRowIndexToModel(lRows[i++]);
 			}
 		};
 	}
