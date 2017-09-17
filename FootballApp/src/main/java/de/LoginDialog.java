@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import de.utils.Utils;
  
 public class LoginDialog extends JDialog {
  
@@ -18,10 +20,12 @@ public class LoginDialog extends JDialog {
     private JButton btnLogin;
     private JButton btnCancel;
     private boolean succeeded;
+    private JDialog thisComponent;
  
     public LoginDialog(Frame parent) {
         super(parent, "Login", true);
         //
+        thisComponent = this;
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
  
@@ -56,27 +60,11 @@ public class LoginDialog extends JDialog {
  
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	Context lContext = Context.getInstance();
-            	lContext.initDB();
-                if (lContext.authenticate(getUsername(), getPassword())) {
-                    succeeded = true;
-                    dispose();
-                } else {
-                	lContext.mDB = null;
-                	JOptionPane.showMessageDialog(LoginDialog.this,
-                            "Invalid username or password",
-                            "Login",
-                            JOptionPane.ERROR_MESSAGE);
-                    // reset username and password
-                    tfUsername.setText("");
-                    pfPassword.setText("");
-                    succeeded = false;
-                }
+            	Utils.executeFunctionWithWaitingDialogHint(thisComponent, () -> actionLogin());
             }
         });
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
- 
             public void actionPerformed(ActionEvent e) {
                 dispose();
             }
@@ -104,4 +92,22 @@ public class LoginDialog extends JDialog {
     public boolean isSucceeded() {
         return succeeded;
     }
+    
+    private void actionLogin() {
+		Context lContext = Context.getInstance();
+    	lContext.initDB();
+        if (lContext.authenticate(getUsername(), getPassword())) {
+            succeeded = true;
+            dispose();
+        } else {
+        	JOptionPane.showMessageDialog(LoginDialog.this,
+                    "Invalid username or password",
+                    "Login",
+                    JOptionPane.ERROR_MESSAGE);
+            // reset username and password
+            tfUsername.setText("");
+            pfPassword.setText("");
+            succeeded = false;
+        }
+	}
 }

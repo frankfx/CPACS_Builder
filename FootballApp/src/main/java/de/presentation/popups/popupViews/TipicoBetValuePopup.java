@@ -58,9 +58,9 @@ public class TipicoBetValuePopup implements IPopup {
 
 		if (n == JOptionPane.OK_OPTION) {
 			return new String[] { lSpinWinValue.getValue().toString(), lBetValueCompution.getText() };
-		} else {
-			return null;
 		}
+		
+		return null;
 	}
 	
 	private void computeBetValue(){

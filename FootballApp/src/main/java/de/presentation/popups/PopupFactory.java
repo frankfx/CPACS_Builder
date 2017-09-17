@@ -6,6 +6,7 @@ import de.presentation.popups.popupViews.DatabaseBrowserPopup;
 import de.presentation.popups.popupViews.DatabaseConnectionPopup;
 import de.presentation.popups.popupViews.DatabasePullDetailPopup;
 import de.presentation.popups.popupViews.SWPropertyPopup;
+import de.presentation.popups.popupViews.TipicoAccountBalancePopup;
 import de.presentation.popups.popupViews.TipicoBetValuePopup;
 import de.presentation.popups.popupViews.TipicoNewPopup;
 import de.presentation.popups.popupViews.TipicoTableFilterPopup;
@@ -25,6 +26,8 @@ public class PopupFactory {
 			return new TipicoBetValuePopup(pParams);
 		case TIPICO_TABLE_FILTER_POPUP:
 			return new TipicoTableFilterPopup(pParams);
+		case TIPICO_ACCOUNT_BALANCE_POPUP :
+			return new TipicoAccountBalancePopup(pParams);
 		case DATABASE_CONNECTION_POPUP:
 			return new DatabaseConnectionPopup(pParams);
 		case DATABASE_BROWSER_POPUP:

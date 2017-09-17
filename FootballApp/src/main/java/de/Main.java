@@ -1,22 +1,28 @@
 package de;
 
 import de.application.BundesligaActivityBean;
-import de.application.IController;
 import de.presentation.bundesliga.BundesligaView;
 
 public class Main {
+	
+	private final static boolean sWITHLOGIN = true;
+	
 	public static void main(String[] args) {
-    	LoginDialog loginDlg = new LoginDialog(null);
-    	loginDlg.setVisible(true);
-                       
-    	// if logon not successfully
-    	if (loginDlg.isSucceeded()) {
-            //Make sure we have nice window decorations.
-    		//JFrame.setDefaultLookAndFeelDecorated(true);
-    		BundesligaView view = new BundesligaView();
-    		
-    		IController controller = new BundesligaActivityBean(view);
-    		controller.runApp();    		
-    	}		
+    	
+		if (sWITHLOGIN) {
+			
+			LoginDialog loginDlg = new LoginDialog(null);
+	    	loginDlg.setVisible(true);
+	                       
+	    	// if login successfully
+	    	if (loginDlg.isSucceeded()) {
+	            //Make sure we have nice window decorations.
+	    		//JFrame.setDefaultLookAndFeelDecorated(true);
+	    		new BundesligaActivityBean(new BundesligaView()).runApp();		
+	    	}		
+		
+		} else {
+    		new BundesligaActivityBean(new BundesligaView()).runApp();
+		}
 	}
 }

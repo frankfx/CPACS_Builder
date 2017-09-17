@@ -207,7 +207,8 @@ public class Database {
 			//db.updateDB("insert into TipicoConfig(accountBalance) values (121.17);");
 			
 			
-			//db.updateDB("update TipicoConfig set accountBalance=76.6;");
+//			db.updateDB("ALTER TABLE TipicoConfig MODIFY COLUMN accountBalance decimal(6,2);");
+//			db.updateDB("update TipicoConfig set accountBalance=83.5;");
 			
 			
 //			db.updateDB("alter table Tipico add description varchar(100) after success");

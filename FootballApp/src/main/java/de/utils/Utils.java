@@ -1,5 +1,7 @@
 package de.utils;
 
+import java.awt.BorderLayout;
+import java.awt.Window;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,8 +9,14 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Consumer;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.business.TipicoModel;
@@ -96,4 +104,75 @@ public class Utils {
      	}
 		return null;
 	}	
+	
+	public static void executeFunctionWithWaitingDialogHint (Window parentComponent, Consumer<List<String>> function, List<String> param) {
+		JDialog lLoading = createWaitingDialog(parentComponent);
+
+		SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
+			@Override
+			protected String doInBackground() throws InterruptedException {
+				/** Execute some operation */
+				function.accept(param);
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				lLoading.dispose();
+			}
+		};
+
+		worker.execute();
+		lLoading.setVisible(true);
+		try {
+			worker.get();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	public static void executeFunctionWithWaitingDialogHint (Window parentComponent, Runnable function) {
+		JDialog lLoading = createWaitingDialog(parentComponent);
+
+		SwingWorker<String, Void> worker = new SwingWorker<String, Void>() {
+			@Override
+			protected String doInBackground() throws InterruptedException {
+				/** Execute some operation */
+				function.run();
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				lLoading.dispose();
+			}
+		};
+
+		worker.execute();
+		lLoading.setVisible(true);
+		try {
+			worker.get();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+	}	
+	
+	private static JDialog createWaitingDialog(Window parentComponent) {
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setIndeterminate(true);
+
+		JDialog lLoading = new JDialog(parentComponent);
+		JPanel p1 = new JPanel(new BorderLayout());
+		//       p1.add(new JLabel("Please wait..."), BorderLayout.CENTER);
+		p1.add(progressBar, BorderLayout.CENTER);
+		p1.add(new JLabel("Please wait......."), BorderLayout.PAGE_START);
+
+		lLoading.setUndecorated(true);
+		lLoading.getContentPane().add(p1);
+		lLoading.pack();
+		lLoading.setLocationRelativeTo(parentComponent);
+		lLoading.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		lLoading.setModal(true);
+		return lLoading;
+	}
 }

@@ -28,6 +28,7 @@ import de.presentation.popups.IPopup;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
 import de.printing.TipicoPrintService;
+import de.services.AccountBalanceService;
 import de.services.Database;
 import de.services.FilterService;
 import de.services.LoggerService;
@@ -203,7 +204,7 @@ public class TipicoActivityBean implements ISubController{
 		if (mDB == null)
 			if(initDB(pCredentials[0], pCredentials[1], pCredentials[2], pCredentials[3], pCredentials[4])){
 				lResult = "connection successfull";
-				mBundesligaListener.actionUpdateStatistics(getBalance());
+				mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 			}
 			else {
 				lResult = "connection refused";
@@ -223,7 +224,7 @@ public class TipicoActivityBean implements ISubController{
 			mDB.disconnect();
 			mDB = null;
 			mBundesligaListener.actionUpdateConsole("disconnected");
-			mBundesligaListener.actionUpdateStatistics(getBalance());
+			mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 		}
 	}		
 		
@@ -502,7 +503,7 @@ public class TipicoActivityBean implements ISubController{
 						pModel.addRow(data);
 					}
 				}
-				mBundesligaListener.actionUpdateStatistics(getBalance());
+				mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 				return true;
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
@@ -745,7 +746,7 @@ public class TipicoActivityBean implements ISubController{
 				lModel.setPersistenceType(PersistenceType.OTHER);			
 		}
 		
-		mBundesligaListener.actionUpdateStatistics(getBalance());
+		mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 	}	
 
 	/**
@@ -773,7 +774,7 @@ public class TipicoActivityBean implements ISubController{
 		while (lRows.hasNext()){
 			removeFromDB(lRows.next());
 		}
-		mBundesligaListener.actionUpdateStatistics(getBalance());
+		mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 	}
 
 	private void removeFromDB(int pRow){
@@ -799,7 +800,7 @@ public class TipicoActivityBean implements ISubController{
 		    // yes option
 			if(dropTableTipico())
 				createTableTipico();
-			mBundesligaListener.actionUpdateStatistics(getBalance());
+			mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 		}		
 	}
 	
@@ -814,24 +815,10 @@ public class TipicoActivityBean implements ISubController{
 
  // ========================
  // BEGIN FUNCTION
- // ========================
-	public float getBalance(){
-		if (mDB != null) {
-			mDB.query(SQLService.SQL_SELECT_COMPUTE_BALANCE);
-
-			try{
-				return Float.parseFloat(mDB.getNextResult(1));
-			} catch (NumberFormatException e){
-				return Float.NaN;
-			}
-		} else {
-			return Float.NaN;
-		}
-	}
-	
+ // ========================	
 	public void updateTable(){
 		this.mView.updateTable();
-		mBundesligaListener.actionUpdateStatistics(getBalance());
+		mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
 	}
 	
 	public void setTipicoModelsToSuccess(List<String> pTipicoIDs){

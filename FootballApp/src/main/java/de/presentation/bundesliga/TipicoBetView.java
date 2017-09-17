@@ -3,14 +3,12 @@ package de.presentation.bundesliga;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.Comparator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -52,15 +50,9 @@ public class TipicoBetView extends AbstractPanelContainer {
 		mBtnModify = new JButton("Modify");
 		mBtnDelete = new JButton("Delete");
 		mBtnDBSplit = new JSplitButton("DB");
-		mTextDescription = new JTextArea(3,1);
+		mTextDescription = new JTextArea(4,0);
 		
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.BOTH;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 5;
-		c.weightx=0.1;
-		c.weighty=0.1;		
 
 		mTableModel = new TipicoTableModel();
 		mTable = new TipicoBetTable(mTableModel);
@@ -73,20 +65,26 @@ public class TipicoBetView extends AbstractPanelContainer {
         mTablePane = new JScrollPane(mTable);
         mTablePane.setVisible(true);
 	    
-        mTextDescription.setBorder(BorderFactory.createTitledBorder("Description"));
         mTextDescription.setEditable(false);
         
-		this.add(mTablePane, c);
-		c.gridx=0;
-		c.gridy=1;
-		c.gridwidth=5;
+        JScrollPane scroll = new JScrollPane(mTextDescription);
+        
+        scroll.setBackground(Color.WHITE);
+        
+//		scroll.setBounds(10, 11, 455, 549); // <-- THIS	
+		scroll.setBorder(BorderFactory.createTitledBorder("Description"));
+        
+		c.fill = GridBagConstraints.BOTH;
+		c.gridwidth = 5;
 		c.weightx=0.1;
+		c.weighty=0.1;	        
+		this.add(mTablePane, c);
+		c.gridy=1;
 		c.weighty=0.0;	
 		c.insets.set(0, 0, 10, 0); 
-		this.add(mTextDescription, c);
+		this.add(scroll, c);
 		c.fill = GridBagConstraints.HORIZONTAL;		
 		c.gridwidth = 1;
-		c.gridx = 0;
 		c.gridy = 2;
 		c.insets.set(0,0,0,0);
 		this.add(mBtnBetValue, c);

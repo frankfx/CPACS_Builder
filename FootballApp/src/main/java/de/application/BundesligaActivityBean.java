@@ -16,21 +16,25 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import de.Context;
 import de.business.SoccerwayMatchModel;
 import de.presentation.bundesliga.BundesligaView;
 import de.presentation.bundesliga.StakeOverviewDialog;
 import de.presentation.popups.PopupFactory;
 import de.presentation.popups.PopupType;
-import de.services.PropertyService;
-import de.services.SWHTMLParser;
-import de.services.SWJSONParser;
-import de.types.MessageType;
+import de.services.AccountBalanceService;
+import de.services.Database;
 import de.services.HyperlinkService;
 import de.services.LoggerService;
+import de.services.PropertyService;
+import de.services.SWHTMLParser;
+import de.types.MessageType;
 import de.utils.FAMessages;
+import de.utils.Utils;
 import de.utils.math.MathTipico;
 
 public class BundesligaActivityBean implements IController{
+	
 	private BundesligaView mView;
 	private boolean mFixturesErzeugtFlag = false;
 	private boolean mResultsErzeugtFlag = false;
@@ -126,7 +130,35 @@ public class BundesligaActivityBean implements IController{
 				TipicoActivityBean mTipicoController = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
 		    	new StakeOverviewDialog(mView, "Test", 100, 100, MathTipico.getFinancialBetPrediction(mTipicoController.getTipicoModelsAsList()));
 			}
-		});			
+		});
+		
+		/**
+		 * Open dialog to change the account balance
+		 */
+		//TODO
+		mView.setMenuItemAccountBalance(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Database lDB = Context.getInstance().mDB;
+				
+				float lBalance = AccountBalanceService.getDefaultBalanceValue(lDB);
+				
+				String[] arr = PopupFactory.getPopup(PopupType.TIPICO_ACCOUNT_BALANCE_POPUP, new Object[]{lBalance}).requestInputData();
+				if (arr != null) {
+					
+					lBalance = Float.parseFloat(arr[0]);
+					
+					// update default balance value
+					AccountBalanceService.updateDefaultBalanceValue(lDB, lBalance);
+
+					// compute balance with new default balance value and update the statistic panel
+					lBalance = AccountBalanceService.getBalance(lDB);
+					((StatisticActivityBean) mSubController.get(STATISTIC_CONTROLLER_KEY)).updateStatisticByBalance(lBalance);
+				}
+					
+			}
+		});
 		
 		/**
 		 * Link to tipico
@@ -228,10 +260,10 @@ public class BundesligaActivityBean implements IController{
 			public void stateChanged(ChangeEvent pE) {
 				if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_FIXTURES && !mFixturesErzeugtFlag){
 					TipicoActivityBean lTipico = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
-					createFixtures( lTipico.getTipicoOpenGameIDsFromDB() );
+					Utils.executeFunctionWithWaitingDialogHint(mView, x -> createFixtures(x), lTipico.getTipicoOpenGameIDsFromDB());
 				} else if (mView.getTabbedPane().getSelectedIndex() == TAB_INDEX_SW_RESULTS && !mResultsErzeugtFlag){
 					TipicoActivityBean lTipico = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
-					createResults( lTipico.getTipicoOpenGameIDsFromDB() );
+					Utils.executeFunctionWithWaitingDialogHint(mView, x -> createResults(x), lTipico.getTipicoOpenGameIDsFromDB());
 				}
 			}
 		});		
@@ -380,9 +412,6 @@ public class BundesligaActivityBean implements IController{
 				addListener();
 
 				logger.warning("init finished");
-				//BEGIN FAST DATABASE ACCESS ONLY FOR TESTING
-				//mSubController.get(TIPICO_CONTROLLER_KEY).initBean(new String[] { "85.10.205.173", "3306", "testdb_tipico", "frankfx", "" });
-				//END FAST DATABASE ACCESS ONLY FOR TESTING
 			}
 		});		
 	}

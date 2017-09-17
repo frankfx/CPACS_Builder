@@ -45,6 +45,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	private JMenuItem menuItemDBDisConnect = new JMenuItem("Disconnect DB");
 	private JMenuItem menuItemMinimizeView = new JMenuItem("Minimize");	
 	private JMenuItem menuItemPredictionDialog = new JMenuItem("Bet prediction");		
+	private JMenuItem menuItemAccountBalanceDialog = new JMenuItem("Account balance");	
 	private JMenuItem menuItemPrint = new JMenuItem("Print");
 	private JMenuItem menuItemAbout = new JMenuItem("About Football App");
 	private JMenuItem menuItemLinkTipico = new JMenuItem("tipico.de");
@@ -59,7 +60,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		setTitle("Tipico bet tool");
 		createGUIElements();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setMinimumSize(new Dimension(600, 500));
+		setMinimumSize(new Dimension(750, 500));
 		setSize(850,500);
 		setVisible(true);
 	}
@@ -149,6 +150,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 		menuExtras.add(menuItemMinimizeView);
 		menuExtras.add(menuItemPredictionDialog);
+		menuExtras.add(menuItemAccountBalanceDialog);
 		
 		menuHelp.add(menuItemAbout);
 		
@@ -194,6 +196,10 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	public void setMenuItemBetPrediction(ActionListener l){
 		this.menuItemPredictionDialog.addActionListener(l);
 	}
+	
+	public void setMenuItemAccountBalance(ActionListener l){
+		this.menuItemAccountBalanceDialog.addActionListener(l);
+	}	
     
 	public void setMenuItemLinkTipico(ActionListener l) {
 		this.menuItemLinkTipico.addActionListener(l);
