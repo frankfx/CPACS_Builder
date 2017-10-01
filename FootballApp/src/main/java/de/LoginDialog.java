@@ -48,7 +48,7 @@ public class LoginDialog extends JDialog {
         cs.gridy = 1;
         cs.gridwidth = 1;
         panel.add(lbPassword, cs);
- 
+        
         pfPassword = new JPasswordField(20);
         cs.gridx = 1;
         cs.gridy = 1;
@@ -56,6 +56,18 @@ public class LoginDialog extends JDialog {
         panel.add(pfPassword, cs);
         panel.setBorder(new LineBorder(Color.GRAY));
  
+        pfPassword.addActionListener( 
+        	ae -> {
+        		btnLogin.doClick();
+        	}
+        			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				
+//			}
+		);
+        
+        
         btnLogin = new JButton("Login");
  
         btnLogin.addActionListener(new ActionListener() {

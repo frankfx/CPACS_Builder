@@ -5,7 +5,7 @@ import de.presentation.bundesliga.BundesligaView;
 
 public class Main {
 	
-	private final static boolean sWITHLOGIN = true;
+	private final static boolean sWITHLOGIN = false;
 	
 	public static void main(String[] args) {
     	

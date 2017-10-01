@@ -50,8 +50,8 @@ public class TipicoBetView extends AbstractPanelContainer {
 		mBtnModify = new JButton("Modify");
 		mBtnDelete = new JButton("Delete");
 		mBtnDBSplit = new JSplitButton("DB");
-		mTextDescription = new JTextArea(4,0);
-		
+		mTextDescription = new JTextArea(4,1);
+			
 		GridBagConstraints c = new GridBagConstraints();
 
 		mTableModel = new TipicoTableModel();

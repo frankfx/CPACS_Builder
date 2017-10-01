@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -163,10 +164,11 @@ public class Utils {
 
 		JDialog lLoading = new JDialog(parentComponent);
 		JPanel p1 = new JPanel(new BorderLayout());
+		
 		//       p1.add(new JLabel("Please wait..."), BorderLayout.CENTER);
 		p1.add(progressBar, BorderLayout.CENTER);
 		p1.add(new JLabel("Please wait......."), BorderLayout.PAGE_START);
-
+		
 		lLoading.setUndecorated(true);
 		lLoading.getContentPane().add(p1);
 		lLoading.pack();
