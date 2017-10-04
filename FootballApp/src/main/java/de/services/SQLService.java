@@ -22,4 +22,8 @@ public class SQLService {
 	
 	public final static String SQL_CHECK_ID_EXISTS = "SELECT 1 FROM Tipico WHERE tnr=?";
 	
+	public final static String SQL_SELECT_ALL_SWIDS_FROM_TIPICOSW = "SELECT * FROM TipicoSoccerwayIDs;";
+	public final static String SQL_CHECK_SWID_EXISTS = "SELECT 1 FROM TipicoSoccerwayIDs WHERE id=?";
+	public final static String SQL_INSERT_NEW_SWID = "insert into TipicoSoccerwayIDs(id, team) values (?, ?);";
+	
 }

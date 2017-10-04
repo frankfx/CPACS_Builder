@@ -24,6 +24,7 @@ public class ResourceService {
 	public final BufferedImage IMAGE_ICON_ADD_GREEN;
 	public final BufferedImage IMAGE_ICON_REMOVE_RED;
 	public final BufferedImage IMAGE_ICON_FILTER;
+	public final BufferedImage IMAGE_ICON_HELP;
 	public final String SCRIPT_PYTHON_TEST = getResourceScripts("test.py");
 	public final String SCRIPT_PYTHON_SOCCERWAY = getResourceScripts("soccerway.py");
 	
@@ -37,6 +38,7 @@ public class ResourceService {
 		IMAGE_ICON_ADD_GREEN = getResourceImages("add_green.png");
 		IMAGE_ICON_REMOVE_RED = getResourceImages("minus_red.png");
 		IMAGE_ICON_FILTER = getResourceImages("filter.png");
+		IMAGE_ICON_HELP = getResourceImages("help.png");
 	}
 
 	//Get the only object available

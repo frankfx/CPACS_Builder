@@ -2,7 +2,7 @@ package de.presentation.popups;
 
 public enum PopupType {
 	// General popups
-	DEFAULT, HINT, ERROR, PROPERTIES_POPUP,
+	DEFAULT, HINT, ERROR, PROPERTIES_POPUP, SWIDS_POPUP,
 	// Tipico table popups
 	TIPICO_NEW_POPUP, TIPICO_BETVALUE_POPUP, TIPICO_TABLE_FILTER_POPUP,
 	// Tipico settings popups

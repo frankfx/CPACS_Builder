@@ -10,6 +10,7 @@ de\application\TipicoActivityBean$12.class
 de\services\SWJSONParser.class
 de\presentation\bundesliga\SWFixturePanel.class
 de\application\BundesligaActivityBean$10.class
+de\presentation\popups\popupViews\TipicoAccountBalancePopup.class
 de\types\SWDataType.class
 de\Context.class
 de\services\HyperlinkService.class
@@ -21,6 +22,7 @@ de\presentation\popups\popupViews\TipicoTableFilterPopup$3.class
 de\application\BundesligaActivityBean$8.class
 de\presentation\bundesliga\LoginDialog.class
 de\presentation\bundesliga\StakeOverviewDialog$6.class
+de\utils\Utils$1.class
 de\presentation\bundesliga\TipicoBetTable$1.class
 de\presentation\bundesliga\StakeOverviewDialog$3.class
 de\application\TipicoActivityBean$9.class
@@ -28,6 +30,7 @@ de\presentation\bundesliga\StatusPanel.class
 de\application\BundesligaActivityBean$5.class
 de\presentation\bundesliga\StatisticPanel.class
 de\application\TipicoActivityBean$2.class
+de\utils\ShowWaitAction$2.class
 de\services\FilterService.class
 de\LoginDialog$1.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$1.class
@@ -36,11 +39,13 @@ de\types\PersistenceType.class
 de\presentation\popups\popupViews\DatabaseConnectionPopup.class
 de\application\BundesligaActivityBean$15.class
 de\presentation\bundesliga\BundesligaView.class
+de\utils\Utils$2.class
 de\application\StatisticActivityBean$1.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup$3$1.class
 de\presentation\popups\popupViews\SWPropertyPopup.class
 de\application\IController.class
 de\presentation\popups\popupViews\TipicoBetValuePopup$2.class
+de\utils\ShowWaitAction$1.class
 de\services\SWHTMLParser.class
 de\application\TipicoActivityBean$3.class
 de\presentation\popups\popupViews\TipicoTableFilterPopup.class
@@ -81,10 +86,12 @@ de\presentation\bundesliga\StakeOverviewDialog$2.class
 de\application\BundesligaActivityBean$4.class
 de\application\TipicoActivityBean$13.class
 de\application\BundesligaActivityBean$11.class
+de\application\BundesligaActivityBean$17.class
 de\types\TipicoDataType.class
 de\application\BundesligaActivityBean.class
 de\business\TipicoModel.class
 de\services\PropertyService.class
+de\utils\ShowWaitAction.class
 de\application\ISubController.class
 de\application\StatisticActivityBean.class
 de\types\SWDataType$1.class
@@ -106,6 +113,7 @@ de\utils\DoubleKeyAdapter.class
 de\application\SoccerwayActivityBean$1.class
 de\services\FilterService$MyDateFilter.class
 de\types\BetPredictionType.class
+de\utils\PleaseWaitEg.class
 de\application\TipicoActivityBean$5.class
 de\business\SoccerwayMatchModel.class
 de\presentation\JSplitButton$1.class
@@ -116,6 +124,7 @@ de\presentation\popups\popupViews\TipicoTableFilterPopup$1.class
 de\application\BundesligaActivityBean$13.class
 de\application\SoccerwayActivityBean.class
 de\presentation\popups\IPopup.class
+de\services\AccountBalanceService.class
 de\presentation\popups\popupViews\SWPropertyPopup$1.class
 de\utils\TeamIDInputVerifier.class
 de\application\BundesligaActivityBean$3.class

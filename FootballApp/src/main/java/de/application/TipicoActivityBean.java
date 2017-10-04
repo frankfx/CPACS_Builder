@@ -662,9 +662,11 @@ public class TipicoActivityBean implements ISubController{
 		if(startTableInputPopup(lModel, true)){
 			mView.getTableModel().addRow(lModel);
 			updateTable();
+			
+			Utils.addNewSoccerwayIDToDatabase(Integer.parseInt(lModel.getID()), lModel.getTeam(), mDB);
 		}
 	}
-
+	
 	/**
 	 * Local function to delete to selected row
 	 */		

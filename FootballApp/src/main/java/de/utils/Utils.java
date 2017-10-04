@@ -4,14 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.io.File;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -21,6 +22,8 @@ import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import de.business.TipicoModel;
+import de.presentation.popups.PopupFactory;
+import de.presentation.popups.PopupType;
 import de.services.Database;
 import de.services.SQLService;
 
@@ -79,9 +82,15 @@ public class Utils {
 			try {
 				prepStmt = mDB.getConnection().prepareStatement(SQLService.SQL_CHECK_ID_EXISTS);
 				prepStmt.setString(1, pID);
-				prepStmt.execute();
-				if (mDB.getResultSet().next())
+				//prepStmt.execute();
+				
+				//if (mDB.getResultSet().next())
+				//	generateUniqueIDWithTimestamp(pID);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				if (rs.next())
 					generateUniqueIDWithTimestamp(pID);
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -90,6 +99,53 @@ public class Utils {
 		}
 		return pID;
 	}	
+	
+	public static boolean addNewSoccerwayIDToDatabase(int pID, String pTeam, Database pDB){
+		
+		if (pDB != null && pDB.isConnected()){
+			PreparedStatement prepStmt;
+			try {
+				prepStmt = pDB.getConnection().prepareStatement(SQLService.SQL_CHECK_SWID_EXISTS);
+				prepStmt.setInt(1, pID);
+				ResultSet rs = prepStmt.executeQuery();
+				
+				if (!rs.next()) {
+					prepStmt = pDB.getConnection().prepareStatement(SQLService.SQL_INSERT_NEW_SWID);
+					prepStmt.setInt(1, pID);
+					prepStmt.setString(2, pTeam);
+					return prepStmt.execute();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		return false;
+	}	
+	
+	public static String[] createSWIDTablePopup(Database pDB){
+		
+		List<Object> lResult = null;
+		if (pDB!=null && pDB.isConnected()){
+			lResult = new ArrayList<Object>();
+			
+			pDB.query(SQLService.SQL_SELECT_ALL_SWIDS_FROM_TIPICOSW);
+			
+			try {
+				while (pDB.getResultSet().next()) {
+					lResult.add(pDB.getResultSet().getInt(1));
+					lResult.add(pDB.getResultSet().getString(2));
+				}
+				
+				return PopupFactory.getPopup(PopupType.SWIDS_POPUP, lResult.toArray()).requestInputData();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		return null;
+	}
 	
 	/**
 	 * Converts a unix timestamp to LocalDate

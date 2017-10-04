@@ -2,6 +2,7 @@ package de.services;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -200,11 +201,14 @@ public class Database {
 		Database db = new Database();
 		
 		//if (db.connect("localhost", "3306", "TestData", "root", "")){
-		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "")){
+		if (db.connect("85.10.205.173", "3306", "testdb_tipico", "frankfx", "130386")){
 
 			//db.updateDB("alter table Tipico add betPrediction varchar(20) after team");
 			//db.updateDB("create table TipicoConfig (accountBalance decimal);");
 			//db.updateDB("insert into TipicoConfig(accountBalance) values (121.17);");
+			
+			//db.updateDB("create table TipicoSoccerwayIDs (id int, team varchar(30), Primary Key(id));");
+			//db.updateDB("insert into TipicoSoccerwayIDs(id, team) values (7073, 'Lugo');");
 			
 			
 //			db.updateDB("ALTER TABLE TipicoConfig MODIFY COLUMN accountBalance decimal(6,2);");
@@ -219,6 +223,20 @@ public class Database {
 			
 			//db.updateDB("ALTER TABLE Tipico MODIFY tnr varchar(20);");
 			//db.query(SQLService.SQL_COMPUTE_BALANCE);
+			
+		//	db.query("SELECT 1 FROM TipicoSoccerwayIDs where id=7073;");
+			
+			PreparedStatement prepStmt;
+			prepStmt = db.getConnection().prepareStatement(SQLService.SQL_CHECK_SWID_EXISTS);
+			prepStmt.setInt(1, 7073);
+			//prepStmt.execute();
+			
+			ResultSet rs = prepStmt.executeQuery(); 
+			System.out.println(rs.next());
+			
+			System.out.println(prepStmt.toString());
+			System.out.println(db.getResultSet().next());
+			System.out.println(db.getNextResult(db.getNumberOfColums()));
 			
 			
 			
