@@ -1,0 +1,38 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class BigSum {
+
+    static Long fibonacciModified(Long t1, Longnt t2, int n) {
+        
+    	long ddd = 84266613096281243382112;
+    	
+    	if (n==1)
+    		return t1;
+    	if (n==2)
+    		return t2;
+    	if (n==3)
+    		return t1 + t2*t2;
+    	
+    	long a = fibonacciModified(t1, t2, n-2);
+    	long b = fibonacciModified(t1, t2, n-1);
+    	
+    	long xx = a + b * b;
+    	System.out.println(xx);
+    	
+    	return xx;
+    }
+    
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int t1 = in.nextInt();
+        int t2 = in.nextInt();
+        int n = in.nextInt();
+        long result = fibonacciModified(t1, t2, n);
+        System.out.println(result);
+        in.close();
+    }
+}

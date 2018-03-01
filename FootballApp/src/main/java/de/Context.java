@@ -21,7 +21,7 @@ public class Context {
 	}
 	
 	public boolean authenticate(String pUsername, String pPassword) {
-		if (mDB.connect("85.10.205.173", "3306", "testdb_tipico", pUsername, pPassword)) {
+		if (mDB.connect(Database.sDefaultDBHost, Database.sDefaultDBPort, Database.sDefaultDBName, pUsername, pPassword)) {
 			return true;
 		} else {
 			mDB = null;

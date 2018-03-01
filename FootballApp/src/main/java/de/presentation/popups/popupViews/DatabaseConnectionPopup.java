@@ -1,5 +1,8 @@
 package de.presentation.popups.popupViews;
 
+import static de.services.Database.sDefaultDBHost;
+import static de.services.Database.sDefaultDBName;
+
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
@@ -46,9 +49,9 @@ public class DatabaseConnectionPopup implements IPopup {
 					lHostname.setText(null);
 					lDatabase.setText(null);
 					lUser.setText(null);
-				} else if (lTemplates.getSelectedItem().toString().equals("localhost")) {
-					lHostname.setText("localhost");
-					lDatabase.setText("TestData");
+				} else if (lTemplates.getSelectedItem().toString().equals(sDefaultDBHost)) {
+					lHostname.setText(sDefaultDBHost);
+					lDatabase.setText(sDefaultDBName);
 					lUser.setText("root");
 				} else if (lTemplates.getSelectedItem().toString().equals("db4free")) {
 					lHostname.setText("85.10.205.173");

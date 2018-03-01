@@ -10,6 +10,10 @@ import java.sql.Statement;
 import com.mysql.jdbc.ResultSetMetaData;
 
 public class Database {
+
+	public static String sDefaultDBHost = "localhost";
+	public static String sDefaultDBPort = "3306";
+	public static String sDefaultDBName = "sql11223930";
 	
 	// JDBC driver name and database url
 	//static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -42,7 +46,7 @@ public class Database {
 			mStatement = mConnection.createStatement();
 			return true;
 		} catch(SQLException e){
-			System.out.println("ERROR: SQL-EXCEPTION");
+			System.out.println(e);
 		} catch(ClassNotFoundException e){
 			System.out.println("MYSQL-DRIVER not found");
 		}
@@ -60,6 +64,7 @@ public class Database {
 		else 
 			try{
 				mConnection.close();
+				mConnection = null;
 				return true;
 			} catch (SQLException e) {
 				e.printStackTrace();

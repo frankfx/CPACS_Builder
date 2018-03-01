@@ -26,7 +26,7 @@ import de.presentation.popups.PopupType;
 import de.types.SoccerwayMatchType;
 
 public class SWJSONParser {
-//
+//s
 //	/**
 //	 * Handels the team data given by teamID and matchtype
 //	 * [commands][0]['parameters']['content']

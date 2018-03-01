@@ -1,0 +1,21 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class BigSum {
+
+    static int powerSum(int X, int N) {
+        // Complete this function
+    }
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int X = in.nextInt();
+        int N = in.nextInt();
+        int result = powerSum(X, N);
+        System.out.println(result);
+        in.close();
+    }
+}

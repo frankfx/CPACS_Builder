@@ -225,6 +225,8 @@ public class TipicoActivityBean implements ISubController{
 			mDB = null;
 			mBundesligaListener.actionUpdateConsole("disconnected");
 			mBundesligaListener.actionUpdateStatistics(AccountBalanceService.getBalance(mDB));
+		} else {
+			mBundesligaListener.actionUpdateConsole("already disconnected");
 		}
 	}		
 		

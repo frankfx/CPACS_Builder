@@ -3,18 +3,14 @@ package de.presentation.bundesliga;
 
 import java.awt.BorderLayout;
 import java.util.Comparator;
-import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableModel;
 
 import de.business.SWFixtureTableModel;
-import de.business.SWResultTableModel;
 import de.business.SoccerwayMatchModel;
-import de.utils.Utils;
 
 public class SWFixturePanel extends JPanel{
 
@@ -61,7 +57,6 @@ public class SWFixturePanel extends JPanel{
 		mFixtureTable.revalidate();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void sortTableByDate(){
 		SWFixtureTableModel lModel = (SWFixtureTableModel) mFixtureTable.getModel();
 		lModel.getDataList().sort(new Comparator<SoccerwayMatchModel>() {

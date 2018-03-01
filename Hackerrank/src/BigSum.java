@@ -1,0 +1,27 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class BigSum {
+
+	    static void matrixRotation(int[][] matrix, int r) {
+	        // Complete this function
+	    }
+
+	    public static void main(String[] args) {
+	        Scanner in = new Scanner(System.in);
+	        int m = in.nextInt();
+	        int n = in.nextInt();
+	        int r = in.nextInt();
+	        int[][] matrix = new int[m][n];
+	        for(int matrix_i = 0; matrix_i < m; matrix_i++){
+	            for(int matrix_j = 0; matrix_j < n; matrix_j++){
+	                matrix[matrix_i][matrix_j] = in.nextInt();
+	            }
+	        }
+	        matrixRotation(matrix,r);
+	        in.close();
+	    }
+	}
