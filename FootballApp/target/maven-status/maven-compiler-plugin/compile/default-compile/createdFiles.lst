@@ -77,6 +77,7 @@ de/presentation/bundesliga/StakeOverviewDialog$3.class
 de/services/HyperlinkService.class
 de/presentation/popups/popupViews/DatabaseBrowserPopup.class
 de/presentation/popups/popupViews/TipicoBetValuePopup$1.class
+de/presentation/popups/popupViews/SWIDsPopup$2.class
 de/presentation/JSplitButton$1.class
 de/application/TipicoActivityBean$1.class
 de/application/BundesligaActivityBean$4.class

@@ -5,6 +5,13 @@
 		<item value="249" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="GitCommitMessageComponent">
+		<list key="/home/rene/git/football/.git">
+			<item value="false"/>
+			<item value="rene &lt;rene@rene-IdeaPad-U330p&gt;"/>
+			<item value="Local database instead of db4free"/>
+			<item value="rene &lt;rene@rene-IdeaPad-U330p&gt;"/>
+			<item value="c633bc27ac32f7653c83b523f6da07f98cd06492"/>
+		</list>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.fetch.FetchResultDialog.dialogBounds">
 		<item value="613" key="DIALOG_WIDTH"/>
@@ -14,8 +21,8 @@
 		<item value="238" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
-		<item value="200,200" key="STAGING_SASH_FORM_WEIGHT"/>
+		<item value="500,500" key="STAGING_SASH_FORM_WEIGHT"/>
 		<item value="false" key="sortItemState"/>
-		<item value="200,200" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
+		<item value="500,500" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
 	</section>
 </section>

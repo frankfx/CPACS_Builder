@@ -1,0 +1,168 @@
+package de.presentation.popups.popupViews;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import de.presentation.popups.IPopup;
+
+public class SWIDsPopup implements IPopup {
+
+	private final JTextField mSearchField;
+	private final JButton mSearchButton;
+	private final JTable mSWIDsTable;
+	private final JPanel mMainPanel;
+	private static final int COLUMN_KEY = 0;
+	private static final int COLUMN_VALUE = 1;
+	
+	private Object [] lTabelData;
+	
+	public SWIDsPopup(Object[] pParams) {
+		
+		lTabelData = pParams;
+		
+		mMainPanel = new JPanel();
+		JPanel lSearchPanel = new JPanel();
+		JPanel lTablePanel = new JPanel();
+		
+		// init search elements
+		mSearchField = new JTextField();
+		mSearchButton = new JButton("Search");
+
+		mSearchField.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mSearchButton.doClick();
+			}
+		});
+		
+		mSearchField.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				DefaultTableModel lModel = (DefaultTableModel) mSWIDsTable.getModel();
+				lModel.setRowCount(0);
+				
+				for (int i = 0; i < lTabelData.length-1; i+=2) {
+					if (pParams[i+1].toString().contains(mSearchField.getText()))
+						lModel.addRow(new Object[] {pParams[i], pParams[i+1]});
+				}
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+		});
+		
+		
+		mSearchButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel lModel = (DefaultTableModel) mSWIDsTable.getModel();
+				lModel.setRowCount(0);
+				
+				for (int i = 0; i < lTabelData.length-1; i+=2) {
+					if (pParams[i+1].toString().contains(mSearchField.getText()))
+						lModel.addRow(new Object[] {pParams[i], pParams[i+1]});
+				}
+				
+				
+				System.out.println(mSearchField.getText());
+			}
+		});
+		
+		lSearchPanel.setLayout(new BorderLayout());
+		lSearchPanel.add(mSearchField, BorderLayout.CENTER);
+		lSearchPanel.add(mSearchButton, BorderLayout.EAST);
+		
+		// init table elements
+		mSWIDsTable = new JTable(initTableHeader());
+
+		lTablePanel.setLayout(new BorderLayout());
+		lTablePanel.add(mSWIDsTable.getTableHeader(), BorderLayout.PAGE_START);
+		lTablePanel.add(new JScrollPane(mSWIDsTable), BorderLayout.CENTER);
+		
+		DefaultTableModel lModel = (DefaultTableModel) mSWIDsTable.getModel();
+		
+		for (int i = 0; i < pParams.length-1; i+=2) {
+			lModel.addRow(new Object[] {pParams[i], pParams[i+1]});
+		}
+		
+		// put table and search elements together
+		mMainPanel.setLayout(new BorderLayout());
+		mMainPanel.add(lSearchPanel, BorderLayout.PAGE_START);
+		mMainPanel.add(lTablePanel, BorderLayout.CENTER);
+	}
+	
+	private TableModel initTableHeader() {
+		Object columnNames[] = {"ID", "TEAM"};
+		TableModel model = new DefaultTableModel(null, columnNames){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if (column == COLUMN_KEY )
+					return false;
+				return true;
+			}
+		};
+		return model;
+	}
+
+	@Override
+	public String[] requestInputData() {
+		Object[] mInput = {mMainPanel};
+
+		JOptionPane pane = new JOptionPane(mInput,
+				JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.OK_CANCEL_OPTION);
+		
+		JDialog lDialog = pane.createDialog(null, "SWIDs");
+		lDialog.setVisible(true);
+
+		Object selectedValue = pane.getValue();
+		int n = -1;
+
+		if (selectedValue == null)
+			n = JOptionPane.CLOSED_OPTION;
+		else
+			n = Integer.parseInt(selectedValue.toString());
+
+		lDialog.dispose();
+
+		if (n == JOptionPane.OK_OPTION) {
+			int lSelectedRow = mSWIDsTable.getSelectedRow();
+			
+			if ( lSelectedRow >= 0 )
+				return new String[]{mSWIDsTable.getModel().getValueAt(mSWIDsTable.getSelectedRow(), COLUMN_KEY).toString()};
+		}
+		return null;
+	}
+
+	@Override
+	public List<?> requestInputDataAsObjectList() {
+		return null;
+	}
+
+}
