@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de.services{ResourceService.java[ResourceService" modifiers="1" timestamp="1507830306000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de.services{Database.java[Database" modifiers="1" timestamp="1519906188000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de{Main.java[Main" modifiers="1" timestamp="1519902678000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de.application{TipicoActivityBean.java[TipicoActivityBean" modifiers="1" timestamp="1519904333000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de.presentation.popups.popupViews{DatabaseConnectionPopup.java[DatabaseConnectionPopup" modifiers="1" timestamp="1519906221000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de.presentation.bundesliga{LoginDialog.java[LoginDialog" modifiers="1" timestamp="1505644968000"/>
-<typeInfo handle="=FootballApp/src\/main\/java&lt;de{LoginDialog.java[LoginDialog" modifiers="1" timestamp="1507830306000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de.services{ResourceService.java[ResourceService" modifiers="1" timestamp="1521356942000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de.services{Database.java[Database" modifiers="1" timestamp="1521356942000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de{Main.java[Main" modifiers="1" timestamp="1521356942000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de.presentation.popups.popupViews{SWIDsPopup.java[SWIDsPopup" modifiers="1" timestamp="1521356942000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de.presentation.popups.popupViews{TipicoAccountBalancePopup.java[TipicoAccountBalancePopup" modifiers="1" timestamp="1521356942000"/>
+<typeInfo handle="=FootballApp/src\/main\/java&lt;de.application{BundesligaActivityBean.java[BundesligaActivityBean" modifiers="1" timestamp="1521356942000"/>
 </typeInfoHistroy>

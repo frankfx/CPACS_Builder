@@ -15,8 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import de.presentation.popups.IPopup;
 
@@ -32,22 +34,6 @@ public class SWIDsPopup implements IPopup {
 		mMainPanel = new JPanel();
 		JPanel lTablePanel = new JPanel();
 		
-		// init search elements
-		JTextField mSearchField = new JTextField();
-		mSearchField.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {                
-			
-				DefaultTableModel lModel = (DefaultTableModel) mSWIDsTable.getModel();
-				lModel.setRowCount(0);
-				
-				for (int i = 0; i < pParams.length-1; i+=2) {
-					if (pParams[i+1].toString().contains(mSearchField.getText()))
-						lModel.addRow(new Object[] {pParams[i], pParams[i+1]});
-				}
-				
-			}  
-		});
-		
 		// init table elements
 		mSWIDsTable = new JTable(initTableHeader());
 
@@ -60,6 +46,20 @@ public class SWIDsPopup implements IPopup {
 		for (int i = 0; i < pParams.length-1; i+=2) {
 			lModel.addRow(new Object[] {pParams[i], pParams[i+1]});
 		}
+		
+		TableRowSorter<TableModel> lSorter = new TableRowSorter<TableModel>(lModel);
+		lSorter.setSortable(COLUMN_KEY, false);
+		mSWIDsTable.setRowSorter(lSorter);
+		
+
+		// init search elements
+		JTextField mSearchField = new JTextField();
+		mSearchField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {   
+				lSorter.setRowFilter(RowFilter.regexFilter(mSearchField.getText(), COLUMN_KEY, COLUMN_VALUE));
+			}			
+		});		
 		
 		// put table and search elements together
 		mMainPanel.setLayout(new BorderLayout());

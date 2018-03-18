@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.Box;
@@ -153,27 +155,26 @@ public class StakeOverviewDialog extends JDialog{
 		JLabel lLabelFilterTeam = new JLabel(" Team <Filter> : ");
 		lLabelFilterTeam.setLabelFor(lTextFieldFilterTeam);
 		
-		// button to filter the table content
-		JButton mButtonFilter = new JButton("Toggle filter");
-		mButtonFilter.addActionListener(new ActionListener() {
-			@SuppressWarnings("unused")
-			private RowFilter<TableModel, Object> filter = new RowFilter<TableModel, Object>() {
-				
-				@Override
-				public boolean include(javax.swing.RowFilter.Entry<? extends TableModel, ? extends Object> entry) {
-					if (entry.getValue(0) != null){
-						//return ((Number) entry.getValue(0)).intValue() % 2 == 0;
-						return ((String) entry.getValue(0)).length()>0 ;
-						//return ((Date) entry.getValue(0)).getTime()< ;
-					}
-					else{
-						return true;
-					}
-				}
-			};
+		lTextFieldFilterTeam.addKeyListener(new KeyAdapter() {
+		
+//			@SuppressWarnings("unused")
+//			private RowFilter<TableModel, Object> filter = new RowFilter<TableModel, Object>() {
+//				
+//				@Override
+//				public boolean include(javax.swing.RowFilter.Entry<? extends TableModel, ? extends Object> entry) {
+//					if (entry.getValue(0) != null){
+//						//return ((Number) entry.getValue(0)).intValue() % 2 == 0;
+//						return ((String) entry.getValue(0)).length()>0 ;
+//						//return ((Date) entry.getValue(0)).getTime()< ;
+//					}
+//					else{
+//						return true;
+//					}
+//				}
+//			};
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void keyReleased(KeyEvent e) {   
 				sorter.setRowFilter(RowFilter.regexFilter(lTextFieldFilterTeam.getText(),0));
 				// sorter.setRowFilter(sorter.getRowFilter() != null ? null : filter);
 			}
@@ -194,7 +195,6 @@ public class StakeOverviewDialog extends JDialog{
 		Container box = Box.createHorizontalBox();
 	    box.add(lLabelFilterTeam);
 	    box.add(lTextFieldFilterTeam);
-	    box.add(mButtonFilter);
 		
 		getContentPane().add(box, BorderLayout.NORTH);
 		getContentPane().add(pane, BorderLayout.CENTER);

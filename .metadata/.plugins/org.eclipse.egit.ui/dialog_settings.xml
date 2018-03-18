@@ -5,13 +5,6 @@
 		<item value="249" key="DIALOG_Y_ORIGIN"/>
 	</section>
 	<section name="GitCommitMessageComponent">
-		<list key="/home/rene/git/football/.git">
-			<item value="false"/>
-			<item value="rene &lt;rene@rene-IdeaPad-U330p&gt;"/>
-			<item value="Local database instead of db4free"/>
-			<item value="rene &lt;rene@rene-IdeaPad-U330p&gt;"/>
-			<item value="c633bc27ac32f7653c83b523f6da07f98cd06492"/>
-		</list>
 	</section>
 	<section name="org.eclipse.egit.ui.internal.fetch.FetchResultDialog.dialogBounds">
 		<item value="613" key="DIALOG_WIDTH"/>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract local variable &apos;lSorter&apos; from expression &apos;new TableRowSorter&lt;TableModel&gt;(lModel)&apos;&#x0A;- Original project: &apos;FootballApp&apos;&#x0A;- Variable name: &apos;lSorter&apos;&#x0A;- Destination method: &apos;de.presentation.popups.popupViews.SWIDsPopup.SWIDsPopup()&apos;&#x0A;- Variable expression: &apos;new TableRowSorter&lt;TableModel&gt;(lModel)&apos;&#x0A;- Replace occurrences of expression with variable" description="Extract local variable &apos;lSorter&apos;" final="false" id="org.eclipse.jdt.ui.extract.temp" input="/src\/main\/java&lt;de.presentation.popups.popupViews{SWIDsPopup.java" name="lSorter" replace="true" selection="1962 39" stamp="1521357896650" version="1.0"/>
+</session>
