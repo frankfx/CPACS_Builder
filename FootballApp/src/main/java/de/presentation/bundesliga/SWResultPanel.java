@@ -1,82 +1,64 @@
 package de.presentation.bundesliga;
 
-import java.awt.BorderLayout;
-import java.util.Comparator;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 
+import de.business.AbstractSWTableModel;
 import de.business.SWResultTableModel;
-import de.business.SoccerwayMatchModel;
 
-public class SWResultPanel extends JPanel{
+public class SWResultPanel extends SWPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private JButton mAcceptButton = new JButton("Submit");
 	
-	private JTable mResultTable;
-	private JButton mAcceptButton;
-	
+	/**
+	 * Constructor calls SWPanel (super class) constructor initView
+	 */
 	public SWResultPanel() {
-		this.setLayout(new BorderLayout());
+		super.initView();
 		
-		SWResultTableModel model = new SWResultTableModel();
-		
-		mResultTable = new JTable(model);
-		mAcceptButton = new JButton("Submit");
-		
-		TableColumnModel columnModel = mResultTable.getColumnModel();
+		TableColumnModel columnModel = getSWJTable().getColumnModel();
 		columnModel.getColumn(1).setMaxWidth(55);
 		columnModel.getColumn(1).setResizable(false);
-		
-		this.add(new JScrollPane(mResultTable), BorderLayout.CENTER);
-		this.add(mAcceptButton, BorderLayout.SOUTH);
-	}
-
-	public void addToTable(SoccerwayMatchModel dataVec){
-		((SWResultTableModel) mResultTable.getModel()).addToTable(dataVec);
 	}
 	
-	public void updateTableMarker(String pID){
-		SWResultTableModel lModel = (SWResultTableModel) mResultTable.getModel();
-		ListSelectionModel selectionModel = mResultTable.getSelectionModel();
+	/*
+	 * ===========================================================
+	 * inherited methods
+	 * ===========================================================
+	 */	
+	@Override
+	public AbstractSWTableModel getSWDataModel() {
+		if (getSWJTable() != null)
+			return (SWResultTableModel) getSWJTable().getModel();
+		return new SWResultTableModel();
+	}
 
-		selectionModel.clearSelection();
-	
-		for (int row = 0; row < lModel.getRowCount(); row++){
-			if (pID.equals(lModel.getSoccerwayMatchModel(row).getTeamID())){
-				selectionModel.addSelectionInterval(row, row);
+	@Override
+	public List<JButton> getButtons() {
+		return Arrays.asList(mAcceptButton);
+	}
+
+	@Override
+	public ActionListener actionRefresh() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("SWResult");
 			}
-		}
+		};
 	}	
 	
-	public void clearTable(){
-		((SWResultTableModel) mResultTable.getModel()).clear();
-		mResultTable.revalidate();
-	}
-
 	public JButton getSubmitButton() {
 		return mAcceptButton;
 	}	
 	
 	public List<String> getDataListWithAcceptedValues(){
-		return ((SWResultTableModel) mResultTable.getModel()).getDataListWithValueAccepted();
-	}
-	
-	public void sortTableByDate(){
-		SWResultTableModel lModel = (SWResultTableModel) mResultTable.getModel();
-		lModel.getDataList().sort(new Comparator<SoccerwayMatchModel>() {
-			@Override
-			public int compare(SoccerwayMatchModel o1, SoccerwayMatchModel o2) {
-				return o1.getDate().compareTo(o2.getDate());
-			}
-		});
+		return ((SWResultTableModel) getSWDataModel()).getDataListWithValueAccepted();
 	}
 }

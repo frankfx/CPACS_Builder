@@ -36,6 +36,7 @@ public class TipicoPrintService {
 		HashMap<String, Object> parameter = new HashMap<String, Object>();
 
 		parameter.put("monat", LocalDate.now().getMonth().toString());
+		parameter.put("user", "Rene Frank");
 		
 
 		//		String[] header = { "tnr", "team", "winValue", "expenses", "attempts", "date", "success" };

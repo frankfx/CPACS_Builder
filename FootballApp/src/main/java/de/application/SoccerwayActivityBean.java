@@ -8,13 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.presentation.bundesliga.ConsolenPanel;
-import de.services.Database;
 import de.services.LoggerService;
 
 public class SoccerwayActivityBean implements ISubController {
 
-	private BundesligaActivityBean mBundesligaListener;
-	private Database mDB = null;
 	private ConsolenPanel mView;
 	
 	final static Logger logger = LoggerService.getInstance().getLogger();
@@ -27,25 +24,21 @@ public class SoccerwayActivityBean implements ISubController {
 	
 	@Override
 	public void initBean(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void updateBean() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void setUpdateListener(BundesligaActivityBean pSubController) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void print() {
-		// TODO Auto-generated method stub
 
 	}
 

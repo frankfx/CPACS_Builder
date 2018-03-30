@@ -1,42 +1,32 @@
 package de.business;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.table.AbstractTableModel;
-
 import de.types.SWDataType;
 
-public class SWResultTableModel extends AbstractTableModel{
+public class SWResultTableModel extends AbstractSWTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private List<SoccerwayMatchModel> mList;
+	
 	private final int COLUMN_COUNT = 6;
 	
 	public SWResultTableModel(){
+		// creats an empty data list (mList) in the superclass
 		this(null);
 	}
 
 	public SWResultTableModel(SoccerwayMatchModel [] entries){
-		mList = new ArrayList<SoccerwayMatchModel>();
-		
-		if(entries != null)
-			for (SoccerwayMatchModel lMatch : entries)
-				mList.add(lMatch);
+		// creats an data list (mList) in the superclass with entries
+		super.initDataList(entries);
 	}	
 	
-	@Override
-	public int getRowCount() {
-		return mList.size();
-	}
-
 	@Override
 	public int getColumnCount() {
 		return COLUMN_COUNT;
 	}
-
+	
 	@Override
 	public String getColumnName(int columnIndex) {
 		return SWDataType.getSWDataTypeResultsTableDescription(columnIndex);
@@ -66,17 +56,17 @@ public class SWResultTableModel extends AbstractTableModel{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return mList.get(rowIndex).getDate();
+			return getDataList().get(rowIndex).getDate();
 		case 1 :
-			return mList.get(rowIndex).getCompetition();
+			return getDataList().get(rowIndex).getCompetition();
 		case 2 :
-			return mList.get(rowIndex).getTeam1();
+			return getDataList().get(rowIndex).getTeam1();
 		case 3 :
-			return mList.get(rowIndex).getTeam2();	
+			return getDataList().get(rowIndex).getTeam2();	
 		case 4 :
-			return mList.get(rowIndex).getResult();
+			return getDataList().get(rowIndex).getResult();
 		case 5 :
-			return mList.get(rowIndex).getAccept();
+			return getDataList().get(rowIndex).getAccept();
 		default:
 			return null;
 		}
@@ -100,35 +90,13 @@ public class SWResultTableModel extends AbstractTableModel{
 	public void setValueAt(Object value, int row, int col) {
 		switch (col) {
 		case 5 :  
-			mList.get(row).setAccept((boolean)value); break;
+			getDataList().get(row).setAccept((boolean)value); break;
 		default:
 			break;
 		}
     }
 	
-	/**
-	 * adds a new row to the table Resutl.
-	 * 
-	 * @param dataVec data for one table row
-	 */
-	public void addToTable(SoccerwayMatchModel pModel){
-		if(!this.mList.contains(pModel))
-			this.mList.add(pModel);		
-	}
-	
-	public SoccerwayMatchModel getSoccerwayMatchModel(int row){
-		return mList.get(row);
-	}
-	
-	public void clear(){
-		this.mList.clear();
-	}
-	
-	public List<SoccerwayMatchModel> getDataList(){
-		return mList;
-	}
-	
 	public List<String> getDataListWithValueAccepted(){
-		return mList.stream().filter(match -> match.getAccept()).map(match -> match.getTeamID()).collect(Collectors.<String>toList());
+		return getDataList().stream().filter(match -> match.getAccept()).map(match -> match.getTeamID()).collect(Collectors.<String>toList());
 	}
 }

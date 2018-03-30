@@ -135,7 +135,6 @@ public class BundesligaActivityBean implements IController{
 		/**
 		 * Open dialog to change the account balance
 		 */
-		//TODO
 		mView.setMenuItemAccountBalance(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -238,7 +237,7 @@ public class BundesligaActivityBean implements IController{
 		/**
 		 * Apply soccerway result to tipico
 		 */		
-		mView.setButtonSubmitSelectedResultsListener(new ActionListener() {
+		mView.setSWButtonSubmitSelectedResultsListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				List<String> lResultList = mView.getSWResultPanel().getDataListWithAcceptedValues();
@@ -249,6 +248,30 @@ public class BundesligaActivityBean implements IController{
 					mTipicoController.setTipicoModelsToSuccess(lResultList);
 					mTipicoController.updateTable();
 				}
+			}
+		});
+		
+		/**
+		 * Refresh SW-Results table
+		 */
+		mView.setSWResultButtonRefreshListener( new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipicoActivityBean lTipico = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
+				Utils.executeFunctionWithWaitingDialogHint(mView, x -> createResults(x), lTipico.getTipicoOpenGameIDsFromDB());
+			}
+		});
+		
+		/**
+		 * Refresh SW-Fixtures table
+		 */
+		mView.setSWFixturesResultButtonRefreshListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipicoActivityBean lTipico = (TipicoActivityBean) mSubController.get(TIPICO_CONTROLLER_KEY);
+				Utils.executeFunctionWithWaitingDialogHint(mView, x -> createFixtures(x), lTipico.getTipicoOpenGameIDsFromDB());
 			}
 		});
 
@@ -344,9 +367,10 @@ public class BundesligaActivityBean implements IController{
 		
 		try {
 			if (pIDList != null){
+				//TODO REGELWERK: create a Regelwerk for the magic number (7 days)
 				iter = SWHTMLParser.getFixturesBySWObserverIDs(pIDList, 7);
 			} else if (mPropertiesFile != null) {
-				iter = SWHTMLParser.getAufgabenBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
+				iter = SWHTMLParser.getFixtuesBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
 			}
 		} catch (IOException e) {
 			PopupFactory.getPopup(PopupType.ERROR, e.getMessage());
@@ -361,6 +385,7 @@ public class BundesligaActivityBean implements IController{
 				mView.getFixturesPanel().addToTable(iter.next());			
 			}
 			mView.getFixturesPanel().sortTableByDate();
+			mView.getFixturesPanel().getSWJTable().revalidate();
 		}
 	}
 	
@@ -371,6 +396,7 @@ public class BundesligaActivityBean implements IController{
 		
 		try {
 			if (pIDList != null){
+				// create a Regelwerk for the magic number (7 days)
 				iter = SWHTMLParser.getResultsBySWObserverIDs(pIDList, 7);
 			} else if (mPropertiesFile != null) {
 				iter = SWHTMLParser.getResultsBySWObserverPropertyFile(new FileInputStream(mPropertiesFile));
@@ -388,6 +414,7 @@ public class BundesligaActivityBean implements IController{
 				mView.getSWResultPanel().addToTable(iter.next());			
 			}
 			mView.getSWResultPanel().sortTableByDate();
+			mView.getSWResultPanel().getSWJTable().revalidate();
 		}		
 	}
 	

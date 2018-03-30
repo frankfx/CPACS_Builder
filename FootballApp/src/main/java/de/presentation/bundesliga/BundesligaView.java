@@ -31,7 +31,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 
 	private JTabbedPane mTabbedPane;	
 	private ConsolenPanel mConsolenPanel;
-	private SWFixturePanel mAufgabenPanel;
+	private SWFixturePanel mFixturesPanel;
 	private SWResultPanel mSWResultPanel;
 	private TipicoBetView mTipicoPanel;
 	private StatisticPanel mStatisticPanel;
@@ -86,14 +86,14 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 		mStatusMessagePanel = new StatusPanel(LocalDate.now().toString(), this.getWidth());
 		mTabbedPane = new JTabbedPane();
 		mConsolenPanel = new ConsolenPanel();
-		mAufgabenPanel = new SWFixturePanel();
+		mFixturesPanel = new SWFixturePanel();
 		mSWResultPanel = new SWResultPanel();
 		mStatisticPanel = new StatisticPanel();
 		mTipicoPanel = new TipicoBetView();
 		mButtonPanel = new ButtonPanelContainer();
 		
 		mTabbedPane.addTab("Console", mConsolenPanel);
-		mTabbedPane.addTab("Fixtures", mAufgabenPanel);
+		mTabbedPane.addTab("Fixtures", mFixturesPanel);
 		mTabbedPane.addTab("Results", mSWResultPanel);
 		
 		mPanelLeftHorizontal = new JPanel();
@@ -173,10 +173,18 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
         this.mButtonPanel.getBtnExit().addActionListener(l);
     }	
     
-    public void setButtonSubmitSelectedResultsListener(ActionListener l){
+    public void setSWButtonSubmitSelectedResultsListener(ActionListener l){
     	this.mSWResultPanel.getSubmitButton().addActionListener(l);
     }
-
+    
+    public void setSWResultButtonRefreshListener(ActionListener l){
+    	this.mSWResultPanel.getRefreshButton().addActionListener(l);
+    }
+    
+    public void setSWFixturesResultButtonRefreshListener(ActionListener l){
+    	this.mFixturesPanel.getRefreshButton().addActionListener(l);
+    }
+    
 	public void setMenuItemExitListener(ActionListener l){
     	this.menuItemExit.addActionListener(l);
     }  
@@ -273,7 +281,7 @@ public class BundesligaView extends JFrame implements IDefaultGUI{
 	}
 	
 	public SWFixturePanel getFixturesPanel(){
-		return mAufgabenPanel;
+		return mFixturesPanel;
 	}
 	
 	public SWResultPanel getSWResultPanel() {

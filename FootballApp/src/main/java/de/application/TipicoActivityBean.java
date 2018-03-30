@@ -243,7 +243,7 @@ public class TipicoActivityBean implements ISubController{
 	 * 
 	 */		
 	public boolean initDB(String pHost, String pPort, String pDatabase, String pUser, String pPass){
-		mDB = new Database();
+		mDB = Context.getInstance().initDB();
 		
 		if (mDB.connect(pHost, pPort, pDatabase, pUser, pPass)){
 			return true;

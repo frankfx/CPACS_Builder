@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="74c78ad8-3db4-49a0-a3e3-08d34c906552">
-	<property name="ireport.zoom" value="1.0000000000000036"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="173"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<parameter name="monat" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
 	<field name="tnr" class="java.lang.String"/>
 	<field name="team" class="java.lang.String"/>
 	<field name="winValue" class="java.lang.String"/>
 	<field name="expenses" class="java.lang.String"/>
-	<field name="attempts" class="java.lang.String"/>
+	<field name="prediction" class="java.lang.String"/>
 	<field name="date" class="java.lang.String"/>
 	<field name="success" class="java.lang.String"/>
 	<group name="Group1">
@@ -47,46 +48,46 @@
 					<text><![CDATA[ID]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="47" y="10" width="127" height="20" uuid="bdbd070c-2f8a-42b5-8769-6eb61e1943b7"/>
+					<reportElement x="47" y="10" width="172" height="20" uuid="bdbd070c-2f8a-42b5-8769-6eb61e1943b7"/>
 					<textElement>
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[TEAM]]></text>
+					<text><![CDATA[Team]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="186" y="10" width="58" height="20" uuid="f2418f56-521d-44c6-87ee-2ad963b6f854"/>
+					<reportElement x="313" y="10" width="60" height="20" uuid="f2418f56-521d-44c6-87ee-2ad963b6f854"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[WINVALUE]]></text>
+					<text><![CDATA[WinValue]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="263" y="10" width="58" height="20" uuid="bc327c45-abee-4cf8-8401-4b4420d814fb"/>
+					<reportElement x="374" y="10" width="60" height="20" uuid="bc327c45-abee-4cf8-8401-4b4420d814fb"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[EXPENSES]]></text>
+					<text><![CDATA[Expenses]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="339" y="10" width="58" height="20" uuid="54d70ee6-aa29-4535-99c3-85bd7c825c7a"/>
+					<reportElement x="434" y="10" width="60" height="20" uuid="129ef921-89ba-4066-ae9a-4b526b2b34f3"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[ATTEMPTS]]></text>
+					<text><![CDATA[Date]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="410" y="10" width="84" height="20" uuid="129ef921-89ba-4066-ae9a-4b526b2b34f3"/>
+					<reportElement x="494" y="10" width="60" height="20" uuid="0a7f4925-f1cf-47f6-8cd3-c2d35a369ef7"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[DATE]]></text>
+					<text><![CDATA[Success]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="497" y="10" width="58" height="20" uuid="0a7f4925-f1cf-47f6-8cd3-c2d35a369ef7"/>
+					<reportElement x="247" y="10" width="60" height="20" uuid="54d70ee6-aa29-4535-99c3-85bd7c825c7a"/>
 					<textElement textAlignment="Center">
 						<font fontName="Serif"/>
 					</textElement>
-					<text><![CDATA[SUCCESS]]></text>
+					<text><![CDATA[Prediction	]]></text>
 				</staticText>
 			</band>
 		</groupHeader>
@@ -111,7 +112,7 @@
 				<text><![CDATA[Dokument: Monatsuebersicht]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement mode="Transparent" x="0" y="66" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e8f86b03-c3e5-4e46-8132-91a53dd564e1"/>
+				<reportElement mode="Transparent" x="0" y="66" width="202" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e8f86b03-c3e5-4e46-8132-91a53dd564e1"/>
 				<textElement verticalAlignment="Middle" rotation="None" markup="none">
 					<font fontName="Serif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -123,7 +124,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Serif"/>
 				</textElement>
-				<text><![CDATA[Bearbeiter: Rene Frank]]></text>
+				<text><![CDATA[Bearbeiter: $P{user}]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -153,33 +154,33 @@
 				<textFieldExpression><![CDATA[$F{tnr}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="47" y="0" width="127" height="12" uuid="f0f7835a-0802-4cc1-8554-757425bf9411"/>
+				<reportElement x="47" y="0" width="172" height="12" uuid="f0f7835a-0802-4cc1-8554-757425bf9411"/>
 				<textFieldExpression><![CDATA[$F{team}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="0" width="58" height="12" uuid="388ac561-0ce1-45b2-ad1c-a5b35cc1c38f"/>
+				<reportElement x="313" y="0" width="60" height="12" uuid="388ac561-0ce1-45b2-ad1c-a5b35cc1c38f"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{winValue}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="339" y="0" width="58" height="13" uuid="75bb57fb-c32e-4d77-955c-bd6071a6c989"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{attempts}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="410" y="0" width="84" height="13" uuid="a40368d9-055e-4e81-9994-691e1c409b4e"/>
+				<reportElement x="434" y="0" width="60" height="12" uuid="a40368d9-055e-4e81-9994-691e1c409b4e"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="497" y="0" width="58" height="13" uuid="56c156b5-aecf-44b9-a507-5f4681dda948"/>
+				<reportElement x="494" y="0" width="60" height="12" uuid="56c156b5-aecf-44b9-a507-5f4681dda948"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{success}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="263" y="0" width="58" height="12" uuid="d6443b8a-1538-47f8-9730-0ac6be5844fc"/>
+				<reportElement x="374" y="0" width="60" height="12" uuid="d6443b8a-1538-47f8-9730-0ac6be5844fc"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{expenses}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="247" y="0" width="60" height="12" uuid="75bb57fb-c32e-4d77-955c-bd6071a6c989"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{prediction}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

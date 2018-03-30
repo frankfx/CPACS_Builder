@@ -73,7 +73,6 @@ public class TipicoBetValuePopup implements IPopup {
 
 	@Override
 	public List<?> requestInputDataAsObjectList() {
-		// TODO Auto-generated method stub
 		return null;
 	}	
 }

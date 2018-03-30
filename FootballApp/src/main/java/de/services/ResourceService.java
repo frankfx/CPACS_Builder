@@ -17,7 +17,7 @@ public class ResourceService {
 	private static ResourceService instance = new ResourceService();
 
 	// Get current classloader
-	private ClassLoader cl;
+	private ClassLoader cl = this.getClass().getClassLoader();;
 
 	// predefined fields
 	public final BufferedImage IMAGE_ICON_ARROW_DOWN;
@@ -33,7 +33,8 @@ public class ResourceService {
 	
 	//make the constructor private so that this class cannot be instantiated
 	private ResourceService() {
-		cl = this.getClass().getClassLoader();
+		// TODO check if this line is necessary
+//		cl = this.getClass().getClassLoader();
 		IMAGE_ICON_ARROW_DOWN = getResourceImages("arrow.png");
 		IMAGE_ICON_ADD_GREEN = getResourceImages("add_green.png");
 		IMAGE_ICON_REMOVE_RED = getResourceImages("minus_red.png");
@@ -75,8 +76,8 @@ public class ResourceService {
 	}
 		
 	public String getResourceScripts(String pPath) {
-		// TODO check if this line is notwendig
-		cl = this.getClass().getClassLoader();
+		// TODO check if this line is necessary
+//		cl = this.getClass().getClassLoader();
 		InputStream a = cl.getResourceAsStream("scripts/" + pPath);
 
 		File tempFile = new File("");

@@ -143,7 +143,7 @@ public class SWHTMLParser {
 		return lResult;
 	}
 
-	public static Iterator<SoccerwayMatchModel> getAufgabenBySWObserverPropertyFile(InputStream pPropertyInputStream){
+	public static Iterator<SoccerwayMatchModel> getFixtuesBySWObserverPropertyFile(InputStream pPropertyInputStream){
 		List<SoccerwayMatchModel> lResultList = new ArrayList<SoccerwayMatchModel>();
 		Properties prop = new Properties();
 

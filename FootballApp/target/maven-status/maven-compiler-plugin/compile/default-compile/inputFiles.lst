@@ -40,6 +40,7 @@
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/bundesliga/StatusPanel.java
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/popups/popupViews/TipicoNewPopup.java
 /home/rene/git/football/FootballApp/src/main/java/de/LoginDialog.java
+/home/rene/git/football/FootballApp/src/main/java/de/presentation/bundesliga/SWPanel.java
 /home/rene/git/football/FootballApp/src/main/java/de/Context.java
 /home/rene/git/football/FootballApp/src/main/java/de/types/TipicoDataType.java
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/bundesliga/ConsolenPanel.java
@@ -65,6 +66,7 @@
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/IDefaultGUI.java
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/bundesliga/TipicoBetTable.java
 /home/rene/git/football/FootballApp/src/main/java/de/services/AccountBalanceService.java
+/home/rene/git/football/FootballApp/src/main/java/de/business/AbstractSWTableModel.java
 /home/rene/git/football/FootballApp/src/main/java/de/presentation/bundesliga/LoginDialog.java
 /home/rene/git/football/FootballApp/src/main/java/de/utils/PleaseWaitEg.java
 /home/rene/git/football/FootballApp/src/main/java/de/business/SWFixtureTableModel.java

@@ -16,8 +16,9 @@ public class Context {
 		return Context.instance;
 	}
 
-	public void initDB(){
+	public Database initDB(){
 		mDB = new Database();
+		return mDB;
 	}
 	
 	public boolean authenticate(String pUsername, String pPassword) {
@@ -29,7 +30,7 @@ public class Context {
 		}
 	}
 	
-	public Database getDatabase(){
-		return mDB;
-	}
+//	public Database getDatabase(){
+//		return mDB;
+//	}
 }

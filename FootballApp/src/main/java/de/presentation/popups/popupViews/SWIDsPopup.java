@@ -103,10 +103,10 @@ public class SWIDsPopup implements IPopup {
 		lDialog.dispose();
 
 		if (n == JOptionPane.OK_OPTION) {
-			int lSelectedRow = mSWIDsTable.getSelectedRow();
-			
+			int lSelectedRow = mSWIDsTable.convertRowIndexToModel(mSWIDsTable.getSelectedRow());
+		
 			if ( lSelectedRow >= 0 )
-				return new String[]{mSWIDsTable.getModel().getValueAt(mSWIDsTable.getSelectedRow(), COLUMN_KEY).toString()};
+				return new String[]{mSWIDsTable.getModel().getValueAt(lSelectedRow, COLUMN_KEY).toString()};
 		}
 		return null;
 	}
